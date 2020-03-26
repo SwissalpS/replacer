@@ -15,6 +15,11 @@ function replacer.patterns.get_node(pos)
 	return node
 end
 
+-- The cache is only valid as long as no node is changed in the world.
+function replacer.patterns.reset_nodes_cache()
+	replacer.patterns.known_nodes = {}
+end
+
 -- tests if there's a node at pos which should be replaced
 function replacer.patterns.replaceable(pos, name, pname)
 	return (rp.get_node(pos).name == name) and (not minetest.is_protected(pos, pname))
@@ -139,18 +144,6 @@ function replacer.patterns.reduce_crust_above_ps(data)
 	data.num = n
 end
 
-function replacer.patterns.mantle_position(pos, data)
-	if not rp.replaceable(pos, data.name, data.pname) then
-		return false
-	end
-	for i = 1, 6 do
-		if rp.get_node(vector.add(pos, rp.offsets_touch[i])).name ~= data.name then
-			return true
-		end
-	end
-	return false
-end
-
 
 -- Algorithm created by sofar and changed by others:
 -- https://github.com/minetest/minetest/commit/d7908ee49480caaab63d05c8a53d93103579d7a9
@@ -206,9 +199,10 @@ local function search_dfs(go, p, apply_move, moves)
 end
 
 
-function replacer.patterns.get_ps(pos, fdata, moves, max_positions)
-	moves = moves or rp.offsets_touch
-	max_positions = max_positions or math.huge
+function replacer.patterns.search_positions(params)
+	moves = params.moves
+	max_positions = params.max_positions
+	local fdata = params.fdata
 	-- visiteds has only positions where fdata.func evaluated to true
 	local visiteds = {}
 	local founds = {}
@@ -227,6 +221,6 @@ function replacer.patterns.get_ps(pos, fdata, moves, max_positions)
 		end
 		return true
 	end
-	search_dfs(go, pos, vector.add, moves)
+	search_dfs(go, params.startpos, vector.add, moves)
 	return founds, n_founds, visiteds
 end
