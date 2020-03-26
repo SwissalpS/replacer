@@ -27,9 +27,6 @@ replacer.mode_colours[r.modes[1]] = "#ffffff"
 replacer.mode_colours[r.modes[2]] = "#54FFAC"
 replacer.mode_colours[r.modes[3]] = "#9F6200"
 
-local path = minetest.get_modpath("replacer")
-local datastructures = dofile(path .. "/datastructures.lua")
-
 local is_int = function(value)
 	return type(value) == 'number' and math.floor(value) == value
 end
@@ -404,7 +401,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	-- TODO
 	local max_time_us = 1000000 * replacer.max_time
 	-- Turn ps into a binary heap
-	datastructures.create_binary_heap({
+	replacer.datastructures.create_binary_heap({
 		input = ps,
 		n = num,
 		compare = function(pos1, pos2)

@@ -151,42 +151,82 @@ function replacer.patterns.mantle_position(pos, data)
 	return false
 end
 
--- finds out positions using depth first search
-function replacer.patterns.get_ps(pos, fdata, adps, max)
-	adps = adps or rp.offsets_touch
 
-	local tab = {}
-	local num = 0
+-- Algorithm created by sofar and changed by others:
+-- https://github.com/minetest/minetest/commit/d7908ee49480caaab63d05c8a53d93103579d7a9
 
-	local todo = { pos }
-	local ti = 1
+local function search_dfs(go, p, apply_move, moves)
+	local num_moves = #moves
 
-	local tab_avoid = {}
-	local p, i
+	-- Uncomment if the starting position should be walked even if its
+	-- neighbours cannot be walked
+	--~ go(p)
 
-	while 0 ~= ti do
-		p = todo[ti]
-		ti = ti - 1
+	-- The stack contains the path to the current position;
+	-- an element of it contains a position and direction (index to moves)
+	local s = replacer.datastructures.create_stack()
+	-- The neighbor order we will visit from our table.
+	local v = 1
 
-		for _, p2 in pairs(adps) do
-			p2 = vector.add(p, p2)
-			i = poshash(p2)
-			if (not tab_avoid[i]) and fdata.func(p2, fdata) then
-
-				num = num + 1
-				tab[num] = p2
-
-				ti = ti + 1
-				todo[ti] = p2
-
-				tab_avoid[i] = true
-
-				if max and (num >= max) then
-					return tab, num, tab_avoid
+	while true do
+		-- Push current state onto the stack.
+		s:push({p = p, v = v})
+		-- Go to the next position.
+		p = apply_move(p, moves[v])
+		-- Now we check out the node. If it is in need of an update,
+		-- it will let us know in the return value (true = updated).
+		local can_go, abort = go(p)
+		if not can_go then
+			if abort then
+				return
+			end
+			-- If we don't need to "recurse" (walk) to it then pop
+			-- our previous pos off the stack and continue from there,
+			-- with the v value we were at when we last were at that
+			-- node
+			repeat
+				local pop = s:pop()
+				p = pop.p
+				v = pop.v
+				-- If there's nothing left on the stack, and no
+				-- more sides to walk to, we're done and can exit
+				if s:is_empty() and v == num_moves then
+					return
 				end
-			end -- if
-		end -- for
-	end -- while
-	return tab, num, tab_avoid
+			until v < num_moves
+			-- The next round walk the next neighbor in list.
+			v = v + 1
+		else
+			-- If we did need to walk the neighbor/current position, then
+			-- start walking from here from the walk order start (1),
+			-- and not the order we just pushed up the stack.
+			v = 1
+		end
+	end
 end
 
+
+function replacer.patterns.get_ps(pos, fdata, moves, max_positions)
+	moves = moves or rp.offsets_touch
+	max_positions = max_positions or math.huge
+	-- visiteds has only positions where fdata.func evaluated to true
+	local visiteds = {}
+	local founds = {}
+	local n_founds = 0
+	local function go(p)
+		local vi = poshash(p)
+		if visiteds[vi] or not fdata.func(p, fdata) then
+			return false
+		end
+		n_founds = n_founds+1
+		founds[n_founds] = p
+		visiteds[vi] = true
+		if n_founds >= max_positions then
+			-- Abort, too many positions
+			return false, true
+		end
+		return true
+	end
+	search_dfs(go, pos, vector.add, moves)
+	return founds, n_founds, visiteds
+end
