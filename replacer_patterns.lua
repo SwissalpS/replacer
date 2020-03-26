@@ -200,9 +200,10 @@ end
 
 
 function replacer.patterns.search_positions(params)
-	moves = params.moves
-	max_positions = params.max_positions
+	local moves = params.moves
+	local max_positions = params.max_positions
 	local fdata = params.fdata
+	local startpos = params.startpos
 	-- visiteds has only positions where fdata.func evaluated to true
 	local visiteds = {}
 	local founds = {}
@@ -221,6 +222,36 @@ function replacer.patterns.search_positions(params)
 		end
 		return true
 	end
-	search_dfs(go, params.startpos, vector.add, moves)
+	search_dfs(go, startpos, vector.add, moves)
+	if n_founds < max_positions or not params.radius_exceeded then
+		return founds, n_founds, visiteds
+	end
+
+	-- Too many positions were found, so search again but only within
+	-- a limited sphere around startpos
+	local rr = params.radius_exceeded ^ 2
+	local visiteds_old = visiteds
+	visiteds = {}
+	founds = {}
+	n_founds = 0
+	local function go(p)
+		local vi = poshash(p)
+		if visiteds[vi] then
+			return false
+		end
+		local d = vector.subtract(p, startpos)
+		if d.x * d.x + d.y * d.y + d.z * d.z > rr then
+			-- Outside of the sphere
+			return false
+		end
+		if not visiteds_old[vi] and not fdata.func(p, fdata) then
+			return false
+		end
+		n_founds = n_founds+1
+		founds[n_founds] = p
+		visiteds[vi] = true
+		return true
+	end
+	search_dfs(go, startpos, vector.add, moves)
 	return founds, n_founds, visiteds
 end

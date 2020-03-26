@@ -354,7 +354,8 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 			fdata = {func = rp.field_position, name = node_toreplace.name,
 				pname = name, above = normal, right_clicked = right_clicked},
 			moves = dirs,
-			max_positions = max_nodes
+			max_positions = max_nodes,
+			radius_exceeded = 4,
 		})
 	elseif mode == "crust" then
 		-- Search positions of air (or similar) nodes next to the crust
@@ -364,7 +365,8 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 			fdata = {func = rp.crust_above_position, name = nodename_clicked,
 				pname = name},
 			moves = rp.offsets_touch,
-			max_positions = max_nodes
+			max_positions = max_nodes,
+			radius_exceeded = 4,
 		})
 		if right_clicked then
 			-- Remove positions which are not directly touching the crust
@@ -429,6 +431,11 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	local num_nodes = 0
 	while not ps:is_empty() do
 		num_nodes = num_nodes+1
+		if num_nodes > max_nodes then
+			-- This can happen if too many nodes were detected and the nodes
+			-- limit has been set to a small value
+			break
+		end
 		-- Take the position nearest to the start position
 		local pos = ps:take()
 		local succ, err = r.replace_single_node(pos, minetest.get_node(pos), nnd,
