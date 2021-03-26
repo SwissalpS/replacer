@@ -15,7 +15,6 @@ replacer.blabla.not_a_node = 'Error: "%s" is not a node.'
 replacer.blabla.wait_for_load = "Target node not yet loaded. Please wait a moment for the server to catch up."
 replacer.blabla.nothing_to_replace = "Nothing to replace."
 replacer.blabla.need_more_charge = "Not enough charge to use this mode."
-replacer.blabla.too_many_nodes_detected = "Aborted, too many nodes detected."
 replacer.blabla.charge_required = "Need %d charge to replace %d nodes."
 replacer.blabla.count_replaced = "%s nodes replaced."
 replacer.blabla.mode_changed = "Mode changed to %s: %s"

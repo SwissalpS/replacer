@@ -74,7 +74,7 @@ replacer.blacklist["protector:protect2"] = true
 replacer.max_charge = 30000
 replacer.charge_per_node = 15
 -- node count limit
-replacer.max_nodes = tonumber(minetest.settings:get("replacer.max_nodes") or 3168)
+replacer.max_nodes = tonumber(minetest.settings:get("replacer.max_nodes") or 716)
 -- Time limit when placing the nodes, in seconds
 replacer.max_time = tonumber(minetest.settings:get("replacer.max_time") or 1.0)
 
@@ -108,6 +108,8 @@ replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 dofile(path .. "/utils.lua")
 -- unifiedddyes support functions
 dofile(path .. "/unifieddyes.lua")
+
+replacer.datastructures = dofile(path .. "/datastructures.lua")
 -- adds a tool for inspecting nodes and entities
 dofile(path .. "/inspect.lua")
 dofile(path .. "/replacer_blabla.lua")
