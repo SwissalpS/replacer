@@ -92,6 +92,10 @@ function replacer.set_data(stack, node, mode)
 		colourName = " " .. colourName
 	end
 	local toolItemName = stack:get_name()
+	if (not toolItemName) or (not minetest.registered_items[toolItemName]) then
+		metaRef:set_string("description", "Unknown item")
+		return "Unknown item"
+	end
 	local toolName = minetest.registered_items[toolItemName].description
 	local short_description = "(" .. param1 .. " " .. param2
 								.. colourName .. ") " .. node.name
