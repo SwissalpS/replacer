@@ -29,4 +29,6 @@ replacer.blabla.limit_override = 'Setting already set node-limit for "%s" was %d
 replacer.blabla.limit_insert = 'Setting node-limit for "%s" to %d.'
 replacer.blabla.blacklist_insert = 'Blacklisted "%s".'
 replacer.blabla.timed_out = 'Time-limit reached.'
+replacer.blabla.tool_short_description = "(%s %s%s) %s"
+replacer.blabla.tool_long_description = "%s\n%s\n%s"
 
