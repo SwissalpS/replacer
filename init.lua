@@ -20,7 +20,8 @@
 
 -- Changelog:
 -- 30.09.2021 * SwissalpS merged patch provided by S-S-X to prevent a rare but possible crash with
--- 		Unknown Items in hotbar
+--              Unknown Items in hotbar
+--            * Also cleaned up tool change messages to blabla.lua
 -- 15.10.2020 * SwissalpS cleaned up inspector code and made inspector better readable on smaller screens
 --            * SwissalpS added backward compatibility for non technic servers, restored
 --              creative/give behaviour and fixed the 'too many nodes detected' issue
