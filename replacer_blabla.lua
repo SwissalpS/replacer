@@ -3,7 +3,6 @@ replacer.blabla.log = "[replacer] %s: %s"
 replacer.blabla.mode_single = "Replace single node."
 replacer.blabla.mode_field = "Left click: Replace field of nodes of a kind where a translucent node is in front of it. Right click: Replace field of air where no translucent node is behind the air."
 replacer.blabla.mode_crust = "Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air. Right click: Replace air nodes which touch the crust"
-
 replacer.blabla.protected_at = "Protected at %s"
 replacer.blabla.blacklisted = 'Replacing nodes of type "%s" is not allowed on this server. Replacement failed.'
 replacer.blabla.run_out = 'You have no further "%s". Replacement failed.'
