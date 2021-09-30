@@ -74,6 +74,14 @@ end
 
 function replacer.set_data(stack, node, mode)
 	mode = mode or r.modes[1]
+	local toolItemName = stack:get_name()
+	local toolDef = minetest.registered_items[toolItemName]
+	-- some accidents or deliberate actions can be harmful
+	-- if user has an unknown item. So we check here to
+	-- prevent possible server crash
+	if (not toolItemName) or (not toolDef) then
+		return "Unkown Item"
+	end
 	local param1 = tostring(node.param1 or 0)
 	local param2 = tostring(node.param2 or 0)
 	local nodeName = node.name or replacer.tool_default_node
@@ -91,12 +99,7 @@ function replacer.set_data(stack, node, mode)
 	if 0 < #colourName then
 		colourName = " " .. colourName
 	end
-	local toolItemName = stack:get_name()
-	if (not toolItemName) or (not minetest.registered_items[toolItemName]) then
-		metaRef:set_string("description", "Unknown item")
-		return "Unknown item"
-	end
-	local toolName = minetest.registered_items[toolItemName].description
+	local toolName = toolDef.description
 	local short_description = "(" .. param1 .. " " .. param2
 								.. colourName .. ") " .. node.name
 	local description = toolName .. "\n"
