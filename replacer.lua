@@ -101,7 +101,7 @@ function replacer.set_data(stack, node, mode)
 	end
 	local toolName = toolDef.description
 	local short_description = "(" .. param1 .. " " .. param2
-								.. colourName .. ") " .. node.name
+		.. colourName .. ") " .. node.name
 	local description = toolName .. "\n"
 		.. short_description .. "\n"
 		.. nodeDescription -- .. r.titleCase(colourName)
