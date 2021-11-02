@@ -111,24 +111,29 @@ end
 
 local discharge_replacer
 if replacer.has_technic_mod then
-	-- technic still stores data serialized, so this is the nearest we get to current standard
-	function replacer.get_charge(itemstack)
-		local meta = minetest.deserialize(itemstack:get_meta():get_string(''))
-		if (not meta) or (not meta.charge) then
-			return 0
+	if technic.plus then
+		replacer.get_charge = technic.get_RE_charge
+		replacer.set_charge = technic.set_RE_charge
+	else
+		-- technic still stores data serialized, so this is the nearest we get to current standard
+		function replacer.get_charge(itemstack)
+			local meta = minetest.deserialize(itemstack:get_meta():get_string(''))
+			if (not meta) or (not meta.charge) then
+				return 0
+			end
+			return meta.charge
 		end
-		return meta.charge
-	end
 
-	function replacer.set_charge(itemstack, charge, max)
-		technic.set_RE_wear(itemstack, charge, max)
-		local metaRef = itemstack:get_meta()
-		local meta = minetest.deserialize(metaRef:get_string(''))
-		if (not meta) or (not meta.charge) then
-			meta = { charge = 0 }
+		function replacer.set_charge(itemstack, charge, max)
+			technic.set_RE_wear(itemstack, charge, max)
+			local metaRef = itemstack:get_meta()
+			local meta = minetest.deserialize(metaRef:get_string(''))
+			if (not meta) or (not meta.charge) then
+				meta = { charge = 0 }
+			end
+			meta.charge = charge
+			metaRef:set_string('', minetest.serialize(meta))
 		end
-		meta.charge = charge
-		metaRef:set_string('', minetest.serialize(meta))
 	end
 
 	function discharge_replacer(creative_enabled, has_give, charge, itemstack,
