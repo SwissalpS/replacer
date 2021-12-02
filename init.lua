@@ -108,15 +108,15 @@ replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 								and minetest.global_exists('unifieddyes')
 
 -- utilities
-dofile(path .. "/utils.lua")
+dofile(path .. '/utils.lua')
 -- unifiedddyes support functions
-dofile(path .. "/unifieddyes.lua")
+dofile(path .. '/unifieddyes.lua')
 -- adds a tool for inspecting nodes and entities
-dofile(path .. "/inspect.lua")
-dofile(path .. "/replacer_blabla.lua")
-dofile(path .. "/replacer_patterns.lua")
-dofile(path .. "/replacer.lua")
-dofile(path .. "/crafts.lua")
+dofile(path .. '/inspect.lua')
+dofile(path .. '/replacer_blabla.lua')
+dofile(path .. '/replacer_patterns.lua')
+dofile(path .. '/replacer.lua')
+dofile(path .. '/crafts.lua')
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 print('[replacer] loaded')
