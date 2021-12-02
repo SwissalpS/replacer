@@ -117,6 +117,7 @@ dofile(path .. '/replacer_blabla.lua')
 dofile(path .. '/replacer_patterns.lua')
 dofile(path .. '/replacer.lua')
 dofile(path .. '/crafts.lua')
+dofile(path .. '/chat_commands.lua')
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 print('[replacer] loaded')
