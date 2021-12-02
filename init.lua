@@ -16,9 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
--- Version 3.0
+-- Version 3.1
 
 -- Changelog:
+-- 02.12.2021 * SwissalpS added /replacer_mute command
 -- 30.09.2021 * SwissalpS merged patch provided by S-S-X to prevent a rare but possible crash with
 --              Unknown Items in hotbar
 --            * Also cleaned up tool change messages to blabla.lua
