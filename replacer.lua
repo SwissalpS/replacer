@@ -366,6 +366,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		end
 		right_clicked = (right_clicked and true) or false
 		ps, num = rp.get_ps(pos, { func = rp.field_position, name = node_toreplace.name,
+			param2 = node_toreplace.param2,
 			pname = name, above = pdif, right_clicked = right_clicked }, adps, max_nodes)
 	elseif r.modes[3] == mode then
 		-- crust

@@ -16,8 +16,21 @@ function replacer.patterns.get_node(pos)
 end
 
 -- tests if there's a node at pos which should be replaced
-function replacer.patterns.replaceable(pos, name, pname)
-	return (rp.get_node(pos).name == name) and (not minetest.is_protected(pos, pname))
+function replacer.patterns.replaceable(pos, name, pname, param2)
+	local node = rp.get_node(pos)
+	if nil == param2 then
+		-- crust mode ignores param2
+		if 'air' ~= name then
+			return (node.name == name) and (not minetest.is_protected(pos, pname))
+		end
+		-- right clicking in crust mode checks for air, but vacuum should work too
+		-- TODO: add mechanism to register allowed types
+		-- some servers might have other nodes like mars-lights that should be allowed too
+		-- maybe dummy lights, on the other hand, it might be useful to be able to stop replacer with dummy lights
+		return (('air' == node.name) or ('vacuum:vacuum' == node.name)) and (not minetest.is_protected(pos, pname))
+	end
+	-- in field mode we also check that param2 is the same as the initial node that was clicked on
+	return (node.name == name) and (node.param2 == param2) and (not minetest.is_protected(pos, pname))
 end
 
 replacer.patterns.translucent_nodes = {}
@@ -36,7 +49,7 @@ function replacer.patterns.node_translucent(name)
 end
 
 function replacer.patterns.field_position(pos, data)
-	return rp.replaceable(pos, data.name, data.pname)
+	return rp.replaceable(pos, data.name, data.pname, data.param2)
 		and rp.node_translucent(
 			rp.get_node(vector.add(data.above, pos)).name) ~= data.right_clicked
 end
