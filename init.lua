@@ -16,9 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
--- Version 3.1
+-- Version 3.2 (20220112)
 
 -- Changelog:
+-- 12.01.2022 * SwissalpS improved field mode: when replacing also check for same param2
+--              improved crust mode: when placing also allow vacuum instead of only air
 -- 02.12.2021 * SwissalpS added /replacer_mute command
 -- 30.09.2021 * SwissalpS merged patch provided by S-S-X to prevent a rare but possible crash with
 --              Unknown Items in hotbar
@@ -56,6 +58,8 @@
 local path = minetest.get_modpath("replacer")
 
 replacer = {}
+
+replacer.version = 20220112
 
 -- limit by node, use replacer.register_limit(sName, iMax)
 replacer.limit_list = {}
