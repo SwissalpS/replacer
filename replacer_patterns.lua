@@ -15,6 +15,11 @@ function replacer.patterns.get_node(pos)
 	return node
 end
 
+-- The cache is only valid as long as no node is changed in the world.
+function replacer.patterns.reset_nodes_cache()
+	replacer.patterns.known_nodes = {}
+end
+
 -- tests if there's a node at pos which should be replaced
 function replacer.patterns.replaceable(pos, name, pname, param2)
 	local node = rp.get_node(pos)
@@ -152,54 +157,114 @@ function replacer.patterns.reduce_crust_above_ps(data)
 	data.num = n
 end
 
-function replacer.patterns.mantle_position(pos, data)
-	if not rp.replaceable(pos, data.name, data.pname) then
-		return false
-	end
-	for i = 1, 6 do
-		if rp.get_node(vector.add(pos, rp.offsets_touch[i])).name ~= data.name then
-			return true
+
+-- Algorithm created by sofar and changed by others:
+-- https://github.com/minetest/minetest/commit/d7908ee49480caaab63d05c8a53d93103579d7a9
+
+local function search_dfs(go, p, apply_move, moves)
+	local num_moves = #moves
+
+	-- Uncomment if the starting position should be walked even if its
+	-- neighbours cannot be walked
+	--~ go(p)
+
+	-- The stack contains the path to the current position;
+	-- an element of it contains a position and direction (index to moves)
+	local s = replacer.datastructures.create_stack()
+	-- The neighbor order we will visit from our table.
+	local v = 1
+
+	while true do
+		-- Push current state onto the stack.
+		s:push({p = p, v = v})
+		-- Go to the next position.
+		p = apply_move(p, moves[v])
+		-- Now we check out the node. If it is in need of an update,
+		-- it will let us know in the return value (true = updated).
+		local can_go, abort = go(p)
+		if not can_go then
+			if abort then
+				return
+			end
+			-- If we don't need to "recurse" (walk) to it then pop
+			-- our previous pos off the stack and continue from there,
+			-- with the v value we were at when we last were at that
+			-- node
+			repeat
+				local pop = s:pop()
+				p = pop.p
+				v = pop.v
+				-- If there's nothing left on the stack, and no
+				-- more sides to walk to, we're done and can exit
+				if s:is_empty() and v == num_moves then
+					return
+				end
+			until v < num_moves
+			-- The next round walk the next neighbor in list.
+			v = v + 1
+		else
+			-- If we did need to walk the neighbor/current position, then
+			-- start walking from here from the walk order start (1),
+			-- and not the order we just pushed up the stack.
+			v = 1
 		end
 	end
-	return false
 end
 
--- finds out positions using depth first search
-function replacer.patterns.get_ps(pos, fdata, adps, max)
-	adps = adps or rp.offsets_touch
 
-	local tab = {}
-	local num = 0
+function replacer.patterns.search_positions(params)
+	local moves = params.moves
+	local max_positions = params.max_positions
+	local fdata = params.fdata
+	local startpos = params.startpos
+	-- visiteds has only positions where fdata.func evaluated to true
+	local visiteds = {}
+	local founds = {}
+	local n_founds = 0
+	local function go(p)
+		local vi = poshash(p)
+		if visiteds[vi] or not fdata.func(p, fdata) then
+			return false
+		end
+		n_founds = n_founds+1
+		founds[n_founds] = p
+		visiteds[vi] = true
+		if n_founds >= max_positions then
+			-- Abort, too many positions
+			return false, true
+		end
+		return true
+	end
+	search_dfs(go, startpos, vector.add, moves)
+	if n_founds < max_positions or not params.radius_exceeded then
+		return founds, n_founds, visiteds
+	end
 
-	local todo = { pos }
-	local ti = 1
-
-	local tab_avoid = {}
-	local p, i
-
-	while 0 ~= ti do
-		p = todo[ti]
-		ti = ti - 1
-
-		for _, p2 in pairs(adps) do
-			p2 = vector.add(p, p2)
-			i = poshash(p2)
-			if (not tab_avoid[i]) and fdata.func(p2, fdata) then
-
-				num = num + 1
-				tab[num] = p2
-
-				ti = ti + 1
-				todo[ti] = p2
-
-				tab_avoid[i] = true
-
-				if max and (num >= max) then
-					return tab, num, tab_avoid
-				end
-			end -- if
-		end -- for
-	end -- while
-	return tab, num, tab_avoid
+	-- Too many positions were found, so search again but only within
+	-- a limited sphere around startpos
+	local rr = params.radius_exceeded ^ 2
+	local visiteds_old = visiteds
+	visiteds = {}
+	founds = {}
+	n_founds = 0
+	local function go(p)
+		local vi = poshash(p)
+		if visiteds[vi] then
+			return false
+		end
+		local d = vector.subtract(p, startpos)
+		if d.x * d.x + d.y * d.y + d.z * d.z > rr then
+			-- Outside of the sphere
+			return false
+		end
+		if not visiteds_old[vi] and not fdata.func(p, fdata) then
+			return false
+		end
+		n_founds = n_founds+1
+		founds[n_founds] = p
+		visiteds[vi] = true
+		return true
+	end
+	search_dfs(go, startpos, vector.add, moves)
+	return founds, n_founds, visiteds
 end
-

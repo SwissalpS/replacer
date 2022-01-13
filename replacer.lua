@@ -32,8 +32,6 @@ replacer.mode_colours[r.modes[1]] = "#ffffff"
 replacer.mode_colours[r.modes[2]] = "#54FFAC"
 replacer.mode_colours[r.modes[3]] = "#9F6200"
 
-local path = minetest.get_modpath("replacer")
-local datastructures = dofile(path .. "/datastructures.lua")
 
 local is_int = function(value)
 	return type(value) == 'number' and math.floor(value) == value
@@ -85,7 +83,7 @@ function replacer.set_data(stack, node, mode)
 	-- if user has an unknown item. So we check here to
 	-- prevent possible server crash
 	if (not toolItemName) or (not toolDef) then
-		return "Unkown Item"
+		return 'Unkown Item'
 	end
 	local param1 = tostring(node.param1 or 0)
 	local param2 = tostring(node.param2 or 0)
@@ -347,58 +345,77 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	local ps, num
 	if r.modes[2] == mode then
 		-- field
-		-- get connected positions for plane field replacing
-		local pdif = vector.subtract(pt.above, pt.under)
-		local adps, n = {}, 1
+		-- Get four walk directions which are orthogonal to the field
+		local normal = vector.subtract(pt.above, pt.under)
+		local dirs, n = {}, 1
 		local p
-		for _, i in pairs{ "x", "y", "z" } do
-			if 0 == pdif[i] then
+		for coord in pairs(normal) do
+			if normal[coord] == 0 then
 				for a = -1, 1, 2 do
 					p = { x = 0, y = 0, z = 0 }
-					p[i] = a
-					adps[n] = p
+					p[coord] = a
+					dirs[n] = p
 					n = n + 1
 				end
 			end
 		end
+		-- The normal is used as offset to test if the searched position
+		-- is next to the field; the offset goes in the other direction when
+		-- a right click happens
 		if right_clicked then
-			pdif = vector.multiply(pdif, -1)
+			normal = vector.multiply(normal, -1)
 		end
+		-- Search along the plane next to the field
 		right_clicked = (right_clicked and true) or false
-		ps, num = rp.get_ps(pos, { func = rp.field_position, name = node_toreplace.name,
-			param2 = node_toreplace.param2,
-			pname = name, above = pdif, right_clicked = right_clicked }, adps, max_nodes)
+		ps, num = rp.search_positions({
+			startpos = pos,
+			fdata = {
+				func = rp.field_position, name = node_toreplace.name,
+				param2 = node_toreplace.param2,
+				pname = name, above = normal, right_clicked = right_clicked
+			},
+			moves = dirs,
+			max_positions = max_nodes,
+			radius_exceeded = 4,
+		})
 	elseif r.modes[3] == mode then
 		-- crust
+		-- Search positions of air (or similar) nodes next to the crust
 		local nodename_clicked = rp.get_node(pt.under).name
-		local aps, n, aboves = rp.get_ps(pt.above, { func = rp.crust_above_position,
-			name = nodename_clicked, pname = name }, nil, max_nodes)
-		if aps then
-			if right_clicked then
-				local data = { ps = aps, num = n, name = nodename_clicked, pname = name }
-				rp.reduce_crust_above_ps(data)
-				ps, num = data.ps, data.num
-			else
-				ps, num = rp.get_ps(pt.under, { func = rp.crust_under_position,
-					name = node_toreplace.name, pname = name, aboves = aboves },
-					rp.offsets_hollowcube, max_nodes)
-				if ps then
-					local data = { aboves = aboves, ps = ps, num = num }
-					rp.reduce_crust_ps(data)
-					ps, num = data.ps, data.num
-				end
-			end
+		local aps, n, aboves = rp.search_positions({
+			startpos = pt.above,
+			fdata = {func = rp.crust_above_position, name = nodename_clicked,
+				pname = name},
+			moves = rp.offsets_touch,
+			max_positions = max_nodes,
+			radius_exceeded = 4,
+		})
+		if right_clicked then
+			-- Remove positions which are not directly touching the crust
+			local data = {ps = aps, num = n, name = nodename_clicked,
+				pname = name}
+			rp.reduce_crust_above_ps(data)
+			ps, num = data.ps, data.num
+		else
+			-- Search crust positions which are next to the previously found
+			-- air (or similar) node positions
+			ps, num = rp.search_positions({
+				startpos = pt.under,
+				fdata = {func = rp.crust_under_position,
+					name = node_toreplace.name, pname = name,
+					aboves = aboves},
+				moves = rp.offsets_hollowcube,
+				max_positions = max_nodes
+			})
+			-- Keep only positions which are directly touching those previously
+			-- found positions
+			local data = {aboves = aboves, ps = ps, num = num}
+			rp.reduce_crust_ps(data)
+			ps, num = data.ps, data.num
 		end
 	end
 
-	-- reset known nodes table
-	replacer.patterns.known_nodes = {}
-
-	if not ps then
-		-- TODO: does this ever happen anymore?
-		r.inform(name, rb.too_many_nodes_detected)
-		return
-	end
+	replacer.patterns.reset_nodes_cache()
 
 	if 0 == num then
 		local succ, err = r.replace_single_node(pos, node_toreplace, nnd, user,
@@ -421,7 +438,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	-- TODO
 	local max_time_us = 1000000 * replacer.max_time
 	-- Turn ps into a binary heap
-	datastructures.create_binary_heap({
+	r.datastructures.create_binary_heap({
 		input = ps,
 		n = num,
 		compare = function(pos1, pos2)
@@ -437,6 +454,12 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	local num_nodes = 0
 	while not ps:is_empty() do
 		num_nodes = num_nodes+1
+		if num_nodes > max_nodes then
+			-- This can happen if too many nodes were detected and the nodes
+			-- limit has been set to a small value
+			r.inform(name, rb.too_many_nodes_detected)
+			break
+		end
 		-- Take the position nearest to the start position
 		local pos = ps:take()
 		local succ, err = r.replace_single_node(pos, minetest.get_node(pos), nnd,
