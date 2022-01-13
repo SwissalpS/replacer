@@ -45,7 +45,7 @@ function replacer.patterns.node_translucent(name)
 		return is_translucent
 	end
 	local data = minetest.registered_nodes[name]
-	if data and ((not data.drawtype) or ("normal" == data.drawtype)) then
+	if data and ((not data.drawtype) or ('normal' == data.drawtype)) then
 		rp.translucent_nodes[name] = false
 		return false
 	end
@@ -142,7 +142,7 @@ function replacer.patterns.reduce_crust_above_ps(data)
 	local p, p2
 	for i = 1, data.num do
 		p = data.ps[i]
-		if rp.replaceable(p, "air", data.pname) then
+		if rp.replaceable(p, 'air', data.pname) then
 			for i = 1, 6 do
 				p2 = rp.offsets_touch[i]
 				if rp.replaceable(vector.add(p, p2), data.name, data.pname) then

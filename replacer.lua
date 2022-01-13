@@ -1,6 +1,6 @@
-replacer.tool_name_basic = "replacer:replacer"
-replacer.tool_name_technic = "replacer:replacer_technic"
-replacer.tool_default_node = "default:dirt"
+replacer.tool_name_basic = 'replacer:replacer'
+replacer.tool_name_technic = 'replacer:replacer_technic'
+replacer.tool_default_node = 'default:dirt'
 
 local r = replacer
 local rb = replacer.blabla
@@ -17,7 +17,7 @@ function replacer.inform(name, msg)
 	minetest.chat_send_player(name, msg)
 end
 
-replacer.modes = {"single", "field", "crust"}
+replacer.modes = { 'single', 'field', 'crust' }
 for n = 1, #r.modes do
 	r.modes[r.modes[n]] = n
 end
@@ -28,10 +28,9 @@ replacer.mode_infos[r.modes[2]] = rb.mode_field
 replacer.mode_infos[r.modes[3]] = rb.mode_crust
 
 replacer.mode_colours = {}
-replacer.mode_colours[r.modes[1]] = "#ffffff"
-replacer.mode_colours[r.modes[2]] = "#54FFAC"
-replacer.mode_colours[r.modes[3]] = "#9F6200"
-
+replacer.mode_colours[r.modes[1]] = '#ffffff'
+replacer.mode_colours[r.modes[2]] = '#54FFAC'
+replacer.mode_colours[r.modes[3]] = '#9F6200'
 
 local is_int = function(value)
 	return type(value) == 'number' and math.floor(value) == value
@@ -49,26 +48,26 @@ function replacer.register_limit(node_name, node_max)
 	-- add to blacklist if limit is zero
 	if 0 == node_max then
 		replacer.blacklist[node_name] = true
-		minetest.log("info", rb.blacklist_insert:format(node_name))
+		minetest.log('info', rb.blacklist_insert:format(node_name))
 		return
 	end
 	-- log info if already limited
 	if nil ~= r.limit_list[node_name] then
-		minetest.log("info", rb.limit_override:format(node_name, r.limit_list[node_name]))
+		minetest.log('info', rb.limit_override:format(node_name, r.limit_list[node_name]))
 	end
 	r.limit_list[node_name] = node_max
-	minetest.log("info", rb.limit_insert:format(node_name, node_max))
+	minetest.log('info', rb.limit_insert:format(node_name, node_max))
 end
 
 function replacer.get_data(stack)
 	local metaRef = stack:get_meta()
-	local data = metaRef:get_string("replacer"):split(" ") or {}
+	local data = metaRef:get_string('replacer'):split(' ') or {}
 	local node = {
 		name = data[1] or r.tool_default_node,
 		param1 = tonumber(data[2]) or 0,
 		param2 = tonumber(data[3]) or 0
 	}
-	local mode = metaRef:get_string("mode")
+	local mode = metaRef:get_string('mode')
 	if nil == r.modes[mode] then
 		mode = r.modes[1]
 	end
@@ -88,11 +87,11 @@ function replacer.set_data(stack, node, mode)
 	local param1 = tostring(node.param1 or 0)
 	local param2 = tostring(node.param2 or 0)
 	local nodeName = node.name or replacer.tool_default_node
-	local metadata = nodeName .. " " .. param1 .. " " .. param2
+	local metadata = nodeName .. ' ' .. param1 .. ' ' .. param2
 	local metaRef = stack:get_meta()
-	metaRef:set_string("mode", mode)
-	metaRef:set_string("replacer", metadata)
-	metaRef:set_string("color", r.mode_colours[mode])
+	metaRef:set_string('mode', mode)
+	metaRef:set_string('replacer', metadata)
+	metaRef:set_string('color', r.mode_colours[mode])
 	local nodeDef = minetest.registered_items[node.name]
 	local nodeDescription = nodeName
 	if nodeDef and nodeDef.description then
@@ -108,7 +107,7 @@ function replacer.set_data(stack, node, mode)
 	local description = rb.tool_long_description:format(
 		toolName, short_description, nodeDescription) -- r.titleCase(colourName))
 
-	metaRef:set_string("description", description)
+	metaRef:set_string('description', description)
 	return short_description
 end
 
@@ -151,29 +150,29 @@ else
 	function discharge_replacer() end
 end
 
-replacer.form_name_modes = "replacer_replacer_mode_change"
+replacer.form_name_modes = 'replacer_replacer_mode_change'
 function replacer.get_form_modes(current_mode)
 	-- TODO: possibly add the info here instead of as
 	-- a chat message
-	local formspec = "size[3.9,2]"
-		.. "label[0,0;Choose mode]"
-		.. "button_exit[0.0,0.6;2,0.5;"
+	local formspec = 'size[3.9,2]'
+		.. 'label[0,0;Choose mode]'
+		.. 'button_exit[0.0,0.6;2,0.5;'
 	if r.modes[1] == current_mode then
-		formspec = formspec .. "_;< " .. r.modes[1] .. " >]"
+		formspec = formspec .. '_;< ' .. r.modes[1] .. ' >]'
 	else
-		formspec = formspec .. "mode;" .. r.modes[1] .. "]"
+		formspec = formspec .. 'mode;' .. r.modes[1] .. ']'
 	end
-	formspec = formspec .. "button_exit[1.9,0.6;2,0.5;"
+	formspec = formspec .. 'button_exit[1.9,0.6;2,0.5;'
 	if r.modes[2] == current_mode then
-		formspec = formspec .. "_;< " .. r.modes[2] .. " >]"
+		formspec = formspec .. '_;< ' .. r.modes[2] .. ' >]'
 	else
-		formspec = formspec .. "mode;" .. r.modes[2] .. "]"
+		formspec = formspec .. 'mode;' .. r.modes[2] .. ']'
 	end
-	formspec = formspec .. "button_exit[0.0,1.4;2,0.5;"
+	formspec = formspec .. 'button_exit[0.0,1.4;2,0.5;'
 	if r.modes[3] == current_mode then
-		formspec = formspec .. "_;< " .. r.modes[3] .. " >]"
+		formspec = formspec .. '_;< ' .. r.modes[3] .. ' >]'
 	else
-		formspec = formspec .. "mode;" .. r.modes[3] .. "]"
+		formspec = formspec .. 'mode;' .. r.modes[3] .. ']'
 	end
 	return formspec
 end -- get_form_modes
@@ -198,8 +197,8 @@ function replacer.replace_single_node(pos, node, nnd, player, name, inv, creativ
 	end
 
 	-- does the player carry at least one of the desired nodes with him?
-	if (not creative) and (not inv:contains_item("main", nnd.name)) then
-		return false, rb.run_out:format(nnd.name or "?")
+	if (not creative) and (not inv:contains_item('main', nnd.name)) then
+		return false, rb.run_out:format(nnd.name or '?')
 	end
 
 	local ndef = minetest.registered_nodes[node.name]
@@ -226,7 +225,7 @@ function replacer.replace_single_node(pos, node, nnd, player, name, inv, creativ
 	-- place the node similar to how a player does it
 	-- (other than the pointed_thing)
 	local newitem, succ = new_ndef.on_place(ItemStack(nnd.name), player,
-		{ type = "node", under = vector.new(pos), above = vector.new(pos) })
+		{ type = 'node', under = vector.new(pos), above = vector.new(pos) })
 	-- replacing with trellis set, succ is returned but newitem is nil
 	-- possible that other nodes react the same way.
 	-- this allows users to dig nodes, I don't see reason to stop that
@@ -238,10 +237,10 @@ function replacer.replace_single_node(pos, node, nnd, player, name, inv, creativ
 	-- update inventory in survival mode
 	if not creative then
 		-- consume the item
-		inv:remove_item("main", nnd.name .. " 1")
+		inv:remove_item('main', nnd.name .. ' 1')
 		-- if placing the node didn't result in empty stack…
-		if "" ~= newitem:to_string() then
-			inv:add_item("main", newitem)
+		if '' ~= newitem:to_string() then
+			inv:add_item('main', newitem)
 		end
 	end
 
@@ -271,7 +270,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	local keys = user:get_player_control()
 	local name = user:get_player_name()
 	local creative_enabled = creative.is_enabled_for(name)
-	local has_give = minetest.check_player_privs(name, "give")
+	local has_give = minetest.check_player_privs(name, 'give')
 	local is_technic = itemstack:get_name() == replacer.tool_name_technic
 	local modes_are_available = is_technic or has_give or creative_enabled
 
@@ -286,7 +285,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		return itemstack
 	end
 
-	if "node" ~= pt.type then
+	if 'node' ~= pt.type then
 		r.inform(name, rb.not_a_node:format(pt.type))
 		return
 	end
@@ -497,7 +496,7 @@ function replacer.common_on_place(itemstack, placer, pt)
 	local keys = placer:get_player_control()
 	local name = placer:get_player_name()
 	local creative_enabled = creative.is_enabled_for(name)
-	local has_give = minetest.check_player_privs(name, "give")
+	local has_give = minetest.check_player_privs(name, 'give')
 	local is_technic = itemstack:get_name() == replacer.tool_name_technic
 	local modes_are_available = is_technic or has_give or creative_enabled
 
@@ -523,7 +522,7 @@ function replacer.common_on_place(itemstack, placer, pt)
 	end
 
 	-- Select new node
-	if pt.type ~= "node" then
+	if 'node' ~= pt.type then
 		r.inform(name, rb.none_selected)
 		return
 	end
@@ -603,7 +602,7 @@ end -- common_on_place
 function replacer.tool_def_basic()
 	return {
 		description = rb.description_basic,
-		inventory_image = "replacer_replacer.png",
+		inventory_image = 'replacer_replacer.png',
 		stack_max = 1, -- it has to store information - thus only one can be stacked
 		liquids_pointable = true, -- it is ok to painit in/with water
 		--node_placement_prediction = nil,
@@ -620,7 +619,7 @@ if replacer.has_technic_mod then
 	function replacer.tool_def_technic()
 		local def = replacer.tool_def_basic()
 		def.description = rb.description_technic
-		def.wear_represents = "technic_RE_charge"
+		def.wear_represents = 'technic_RE_charge'
 		def.on_refill = technic.refill_RE_charge
 		return def
 	end
