@@ -16,9 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
--- Version 3.2 (20220112)
+-- Version 3.3 (20220113)
 
 -- Changelog:
+-- 13.01.2022 * SwissalpS worked in HybridDog's nicer pattern algorithm, modifying a little.
+--              Also cleaned up some code and give-priv does not grant modes anymore,
+--              creative still does.
 -- 12.01.2022 * SwissalpS improved field mode: when replacing also check for same param2
 --              improved crust mode: when placing also allow vacuum instead of only air
 -- 02.12.2021 * SwissalpS added /replacer_mute command
