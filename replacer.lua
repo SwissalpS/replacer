@@ -111,7 +111,6 @@ function replacer.set_data(stack, node, mode)
 	return short_description
 end
 
-local discharge_replacer
 if replacer.has_technic_mod then
 	if technic.plus then
 		replacer.get_charge = technic.get_RE_charge
@@ -138,16 +137,16 @@ if replacer.has_technic_mod then
 		end
 	end
 
-	function discharge_replacer(creative_enabled, has_give, charge, itemstack,
-			num_nodes)
-		if (not technic.creative_mode) and (not (creative_enabled or has_give)) then
+	function replacer.discharge(has_creative_or_give, charge, itemstack, num_nodes)
+		if (not technic.creative_mode) and (not has_creative_or_give) then
 			charge = charge - replacer.charge_per_node * num_nodes
 			r.set_charge(itemstack, charge, replacer.max_charge)
 			return itemstack
 		end
 	end
 else
-	function discharge_replacer() end
+	function replacer.discharge() end
+	function replacer.get_charge() return replacer.max_charge end
 end
 
 replacer.form_name_modes = 'replacer_replacer_mode_change'
@@ -271,8 +270,9 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	local name = user:get_player_name()
 	local creative_enabled = creative.is_enabled_for(name)
 	local has_give = minetest.check_player_privs(name, 'give')
+	local has_creative_or_give = creative_enabled or has_give
 	local is_technic = itemstack:get_name() == replacer.tool_name_technic
-	local modes_are_available = is_technic or has_give or creative_enabled
+	local modes_are_available = is_technic or creative_enabled
 
 	-- is special-key held? (aka fast-key)
 	if keys.aux1 then
@@ -327,9 +327,8 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	end
 
 	local max_nodes = r.limit_list[nnd.name] or r.max_nodes
-	local charge
-	if replacer.has_technic_mod and (not (creative_enabled or has_give)) then
-		charge = r.get_charge(itemstack)
+	local charge = r.get_charge(itemstack)
+	if not has_creative_or_give then
 		if charge < replacer.charge_per_node then
 			r.inform(name, rb.need_more_charge)
 			return
@@ -432,7 +431,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 
 	if 0 == num then
 		local succ, err = r.replace_single_node(pos, node_toreplace, nnd, user,
-			name, user:get_inventory(), creative_enabled)
+			name, user:get_inventory(), has_creative_or_give)
 		if not succ then
 			r.inform(name, err)
 		end
@@ -440,8 +439,8 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	end
 
 	local charge_needed = replacer.charge_per_node * num
-	if replacer.has_technic_mod and (not (creative_enabled or has_give)) then
-		if (charge < charge_needed) then
+	if not has_creative_or_give then
+		if charge < charge_needed then
 			num = math.floor(charge / replacer.charge_per_node)
 		end
 	end
@@ -476,27 +475,20 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		-- Take the position nearest to the start position
 		local pos = ps:take()
 		local succ, err = r.replace_single_node(pos, minetest.get_node(pos), nnd,
-			user, name, inv, creative_enabled)
+			user, name, inv, has_creative_or_give)
 		if not succ then
 			r.inform(name, err)
-			return discharge_replacer(creative_enabled, has_give, charge,
-				itemstack, num_nodes)
+			break
 		end
 		if minetest.get_us_time() - t_start > max_time_us then
 			r.inform(name, rb.timed_out)
-			return discharge_replacer(creative_enabled, has_give, charge,
-				itemstack, num_nodes)
+			break
 		end
 	end
 
-	if replacer.has_technic_mod and (not technic.creative_mode) then
-		if not (creative_enabled or has_give) then
-			charge = charge - charge_needed
-			r.set_charge(itemstack, charge, replacer.max_charge)
-			return itemstack
-		end
-	end
-	r.inform(name, rb.count_replaced:format(num))
+	r.discharge(has_creative_or_give, charge, itemstack, num_nodes)
+	if has_creative_or_give then r.inform(name, rb.count_replaced:format(num_nodes)) end
+	return itemstack
 end -- replacer.replace
 
 -- right-click with tool -> place set node
@@ -511,8 +503,9 @@ function replacer.common_on_place(itemstack, placer, pt)
 	local name = placer:get_player_name()
 	local creative_enabled = creative.is_enabled_for(name)
 	local has_give = minetest.check_player_privs(name, 'give')
+	local has_creative_or_give = creative_enabled or has_give
 	local is_technic = itemstack:get_name() == replacer.tool_name_technic
-	local modes_are_available = is_technic or has_give or creative_enabled
+	local modes_are_available = is_technic or creative_enabled
 
 	-- is special-key held? (aka fast-key)
 	if keys.aux1 then
@@ -549,14 +542,16 @@ function replacer.common_on_place(itemstack, placer, pt)
 	end
 
 	local inv = placer:get_inventory()
-	if (not (creative_enabled and has_give))
-		and (not inv:contains_item("main", node.name)) then
+	if (not (creative_enabled and has_give)) and
+		(not inv:contains_item('main', node.name))
+	then
 		-- not in inv and not (creative and give)
 		local found_item = false
 		local drops = minetest.get_node_drops(node.name)
-		if creative_enabled then
-			if minetest.get_item_group(node.name,
-					"not_in_creative_inventory") > 0 then
+		if has_creative_or_give then
+			if 0 < minetest.get_item_group(node.name,
+					'not_in_creative_inventory')
+			then
 				-- search for a drop available in creative inventory
 				for i = 1, #drops do
 					local name = drops[i]
