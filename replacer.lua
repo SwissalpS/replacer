@@ -253,8 +253,8 @@ function replacer.replace_single_node(pos, node, nnd, player, name, inv, creativ
 	end
 
 	-- fix orientation if needed
-	if placed_node.param1 ~= nnd.param1
-	or placed_node.param2 ~= nnd.param2 then
+	if placed_node.param1 ~= nnd.param1 or
+	   placed_node.param2 ~= nnd.param2 then
 		minetest.swap_node(pos, nnd)
 	end
 
@@ -301,7 +301,8 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	local nnd, mode = r.get_data(itemstack)
 	if (node_toreplace.name == nnd.name)
 		and (node_toreplace.param1 == nnd.param1)
-		and (node_toreplace.param2 == nnd.param2) then
+		and (node_toreplace.param2 == nnd.param2)
+	then
 		r.inform(name, rb.nothing_to_replace)
 		return
 	end
@@ -317,8 +318,8 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 
 	if r.modes[1] == mode then
 		-- single
-		local succ, err = replacer.replace_single_node(pos, node_toreplace, nnd, user,
-			name, user:get_inventory(), creative_enabled)
+		local succ, err = replacer.replace_single_node(pos, node_toreplace, nnd,
+			user, name, user:get_inventory(), has_creative_or_give)
 		if not succ then
 			r.inform(name, err)
 		end
@@ -349,7 +350,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		local dirs, n = {}, 1
 		local p
 		for coord in pairs(normal) do
-			if normal[coord] == 0 then
+			if 0 == normal[coord] then
 				for a = -1, 1, 2 do
 					p = { x = 0, y = 0, z = 0 }
 					p[coord] = a
@@ -369,9 +370,12 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		ps, num = rp.search_positions({
 			startpos = pos,
 			fdata = {
-				func = rp.field_position, name = node_toreplace.name,
+				func = rp.field_position,
+				name = node_toreplace.name,
 				param2 = node_toreplace.param2,
-				pname = name, above = normal, right_clicked = right_clicked
+				pname = name,
+				above = normal,
+				right_clicked = right_clicked
 			},
 			moves = dirs,
 			max_positions = max_nodes,
@@ -383,16 +387,23 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		local nodename_clicked = rp.get_node(pt.under).name
 		local aps, n, aboves = rp.search_positions({
 			startpos = pt.above,
-			fdata = {func = rp.crust_above_position, name = nodename_clicked,
-				pname = name},
+			fdata = {
+				func = rp.crust_above_position,
+				name = nodename_clicked,
+				pname = name
+			},
 			moves = rp.offsets_touch,
 			max_positions = max_nodes,
 			radius_exceeded = 4,
 		})
 		if right_clicked then
 			-- Remove positions which are not directly touching the crust
-			local data = {ps = aps, num = n, name = nodename_clicked,
-				pname = name}
+			local data = {
+				ps = aps,
+				num = n,
+				name = nodename_clicked,
+				pname = name
+			}
 			rp.reduce_crust_above_ps(data)
 			ps, num = data.ps, data.num
 		else
@@ -400,15 +411,18 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 			-- air (or similar) node positions
 			ps, num = rp.search_positions({
 				startpos = pt.under,
-				fdata = {func = rp.crust_under_position,
-					name = node_toreplace.name, pname = name,
-					aboves = aboves},
+				fdata = {
+					func = rp.crust_under_position,
+					name = node_toreplace.name,
+					pname = name,
+					aboves = aboves
+				},
 				moves = rp.offsets_hollowcube,
 				max_positions = max_nodes
 			})
 			-- Keep only positions which are directly touching those previously
 			-- found positions
-			local data = {aboves = aboves, ps = ps, num = num}
+			local data = { aboves = aboves, ps = ps, num = num }
 			rp.reduce_crust_ps(data)
 			ps, num = data.ps, data.num
 		end
@@ -452,7 +466,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	local inv = user:get_inventory()
 	local num_nodes = 0
 	while not ps:is_empty() do
-		num_nodes = num_nodes+1
+		num_nodes = num_nodes + 1
 		if num_nodes > max_nodes then
 			-- This can happen if too many nodes were detected and the nodes
 			-- limit has been set to a small value
@@ -489,7 +503,7 @@ end -- replacer.replace
 -- special+right-click -> cycle mode (if tool/privs permit)
 -- sneak+right-click -> set node
 function replacer.common_on_place(itemstack, placer, pt)
-	if (not placer)	or (not pt) then
+	if (not placer) or (not pt) then
 		return
 	end
 
@@ -546,9 +560,10 @@ function replacer.common_on_place(itemstack, placer, pt)
 				-- search for a drop available in creative inventory
 				for i = 1, #drops do
 					local name = drops[i]
-					if minetest.registered_nodes[name]
-					and minetest.get_item_group(name,
-							"not_in_creative_inventory") == 0 then
+					if minetest.registered_nodes[name] and
+						0 == minetest.get_item_group(name,
+							'not_in_creative_inventory')
+					then
 						node.name = name
 						found_item = true
 						break
@@ -563,8 +578,9 @@ function replacer.common_on_place(itemstack, placer, pt)
 			-- search for a drop that the player has if possible
 			for i = 1, #drops do
 				local name = drops[i]
-				if minetest.registered_nodes[name]
-				and inv:contains_item("main", name) then
+				if minetest.registered_nodes[name] and
+					inv:contains_item('main', name)
+				then
 					node.name = name
 					found_item = true
 					break
@@ -576,9 +592,10 @@ function replacer.common_on_place(itemstack, placer, pt)
 				-- then digging the nodes works
 				for i = 1, #drops do
 					local name = drops[i]
-					if minetest.registered_nodes[name]
-					and minetest.get_item_group(name,
-							"not_in_creative_inventory") == 0 then
+					if minetest.registered_nodes[name] and
+						0 == minetest.get_item_group(name,
+							'not_in_creative_inventory')
+					then
 						node.name = name
 						found_item = true
 						break

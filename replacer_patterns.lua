@@ -176,7 +176,7 @@ local function search_dfs(go, p, apply_move, moves)
 
 	while true do
 		-- Push current state onto the stack.
-		s:push({p = p, v = v})
+		s:push({ p = p, v = v })
 		-- Go to the next position.
 		p = apply_move(p, moves[v])
 		-- Now we check out the node. If it is in need of an update,
@@ -226,7 +226,7 @@ function replacer.patterns.search_positions(params)
 		if visiteds[vi] or not fdata.func(p, fdata) then
 			return false
 		end
-		n_founds = n_founds+1
+		n_founds = n_founds + 1
 		founds[n_founds] = p
 		visiteds[vi] = true
 		if n_founds >= max_positions then
@@ -260,7 +260,7 @@ function replacer.patterns.search_positions(params)
 		if not visiteds_old[vi] and not fdata.func(p, fdata) then
 			return false
 		end
-		n_founds = n_founds+1
+		n_founds = n_founds + 1
 		founds[n_founds] = p
 		visiteds[vi] = true
 		return true
@@ -268,3 +268,4 @@ function replacer.patterns.search_positions(params)
 	search_dfs(go, startpos, vector.add, moves)
 	return founds, n_founds, visiteds
 end
+
