@@ -85,6 +85,10 @@ replacer.charge_per_node = 15
 replacer.max_nodes = tonumber(minetest.settings:get('replacer.max_nodes') or 3168)
 -- Time limit when placing the nodes, in seconds (not including search time)
 replacer.max_time = tonumber(minetest.settings:get('replacer.max_time') or 1.0)
+-- Radius limit factor when more possible positions are found than either max_nodes or charge
+-- Set to 0 or less for behaviour of before version 3.3
+-- [see replacer_patterns.lua>replacer.patterns.search_positions()]
+replacer.radius_factor = tonumber(minetest.settings:get('replacer.radius_factor') or 0.4)
 
 -- select which recipes to hide (not all combinations make sense)
 replacer.hide_recipe_basic =

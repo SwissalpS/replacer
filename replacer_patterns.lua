@@ -236,13 +236,13 @@ function replacer.patterns.search_positions(params)
 		return true
 	end
 	search_dfs(go, startpos, vector.add, moves)
-	if n_founds < max_positions or not params.radius_exceeded then
+	if n_founds < max_positions or 0 >= replacer.radius_factor then
 		return founds, n_founds, visiteds
 	end
 
 	-- Too many positions were found, so search again but only within
 	-- a limited sphere around startpos
-	local rr = params.radius_exceeded ^ 2
+	local rr = math.floor(max_positions ^ replacer.radius_factor + .5)
 	local visiteds_old = visiteds
 	visiteds = {}
 	founds = {}
@@ -252,8 +252,7 @@ function replacer.patterns.search_positions(params)
 		if visiteds[vi] then
 			return false
 		end
-		local d = vector.subtract(p, startpos)
-		if d.x * d.x + d.y * d.y + d.z * d.z > rr then
+		if vector.distance(p, startpos) > rr then
 			-- Outside of the sphere
 			return false
 		end

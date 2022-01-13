@@ -378,7 +378,6 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 			},
 			moves = dirs,
 			max_positions = max_nodes,
-			radius_exceeded = 4,
 		})
 	elseif r.modes[3] == mode then
 		-- crust
@@ -393,7 +392,6 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 			},
 			moves = rp.offsets_touch,
 			max_positions = max_nodes,
-			radius_exceeded = 4,
 		})
 		if right_clicked then
 			-- Remove positions which are not directly touching the crust
