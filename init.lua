@@ -59,8 +59,6 @@
 --			* receipe changed
 --			* inventory image added
 
-local path = minetest.get_modpath('replacer')
-
 replacer = {}
 
 replacer.version = 20220112
@@ -80,6 +78,7 @@ replacer.has_technic_mod = minetest.get_modpath('technic')
 replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 								and minetest.global_exists('unifieddyes')
 
+local path = minetest.get_modpath('replacer')
 -- utilities
 dofile(path .. '/utils.lua')
 -- unifiedddyes support functions
