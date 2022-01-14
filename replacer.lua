@@ -8,11 +8,11 @@ local rp = replacer.patterns
 local rud = replacer.unifieddyes
 
 function replacer.inform(name, msg)
+	if (not msg) or ('' == msg) then return end
 	minetest.log('info', rb.log:format(name, msg))
 	local player = minetest.get_player_by_name(name)
 	if not player then return end
-	local meta = player:get_meta()
-	if not meta then return end
+	local meta = player:get_meta() if not meta then return end
 	if 0 < meta:get_int('replacer_mute') then return end
 	minetest.chat_send_player(name, msg)
 end
