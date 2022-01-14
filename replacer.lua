@@ -190,12 +190,9 @@ end -- get_form_modes
 
 -- replaces one node with another one and returns if it was successful
 function replacer.replace_single_node(pos, node, nnd, player, name, inv, creative)
-	if minetest.is_protected(pos, name) then
-		return false, rb.protected_at:format(minetest.pos_to_string(pos))
-	end
-
-	if replacer.blacklist[node.name] then
-		return false, rb.blacklisted:format(node.name)
+	local bRes, sMsg = replacer.permit_replace(pos, node, nnd, player, name, inv, creative)
+	if not bRes then
+		return false, sMsg
 	end
 
 	-- do not replace if there is nothing to be done
