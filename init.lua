@@ -16,9 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
--- Version 3.3 (20220113)
+-- Version 3.4 (20220114)
 
 -- Changelog:
+-- 14.01.2022 * SwissalpS added support for cable plates and similar nodes
 -- 13.01.2022 * SwissalpS worked in HybridDog's nicer pattern algorithm, modifying a little.
 --              Also cleaned up some code and give-priv does not grant modes anymore,
 --              creative still does.
