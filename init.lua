@@ -79,6 +79,8 @@ replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 								and minetest.global_exists('unifieddyes')
 
 local path = minetest.get_modpath('replacer')
+-- strings for translation
+dofile(path .. '/replacer_blabla.lua')
 -- utilities
 dofile(path .. '/utils.lua')
 -- unifiedddyes support functions
@@ -86,7 +88,6 @@ dofile(path .. '/unifieddyes.lua')
 replacer.datastructures = dofile(path .. '/datastructures.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. '/inspect.lua')
-dofile(path .. '/replacer_blabla.lua')
 dofile(path .. '/replacer_constrain.lua')
 dofile(path .. '/replacer_patterns.lua')
 dofile(path .. '/replacer.lua')

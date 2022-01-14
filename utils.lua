@@ -1,3 +1,5 @@
+local rb = replacer.blabla
+
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 
