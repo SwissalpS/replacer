@@ -330,7 +330,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	end
 
 	if replacer.blacklist[nnd.name] then
-		minetest.chat_send_player(name, rb.blacklisted:format(nnd.name))
+		r.inform(name, rb.blacklisted:format(nnd.name))
 		return
 	end
 
