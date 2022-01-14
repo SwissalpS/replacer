@@ -15,7 +15,7 @@ function replacer.inform(name, msg)
 	local meta = player:get_meta() if not meta then return end
 	if 0 < meta:get_int('replacer_mute') then return end
 	minetest.chat_send_player(name, msg)
-end
+end -- inform
 
 replacer.modes = {"single", "field", "crust"}
 for n = 1, #r.modes do
@@ -60,7 +60,8 @@ function replacer.register_limit(node_name, node_max)
 	end
 	r.limit_list[node_name] = node_max
 	minetest.log("info", rb.limit_insert:format(node_name, node_max))
-end
+end -- register_limit
+
 function replacer.register_exception(node_name, drop_name, callback)
 	if r.exception_map[node_name] then
 		minetest.log('info', rb.reg_rot_exception_override:format(node_name))
@@ -86,7 +87,7 @@ function replacer.get_data(stack)
 		mode = r.modes[1]
 	end
 	return node, mode
-end
+end -- get_data
 
 function replacer.set_data(stack, node, mode)
 	mode = mode or r.modes[1]
@@ -123,7 +124,7 @@ function replacer.set_data(stack, node, mode)
 
 	metaRef:set_string("description", description)
 	return short_description
-end
+end -- set_data
 
 local discharge_replacer
 if replacer.has_technic_mod then
