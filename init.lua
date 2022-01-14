@@ -16,9 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
--- Version 3.4 (20220114)
+-- Version 3.5 (20220115)
 
 -- Changelog:
+-- 15.01.2022 * SwissalpS refactored constraints and renamed blacklist to deny_list
 -- 14.01.2022 * SwissalpS added support for cable plates and similar nodes
 -- 13.01.2022 * SwissalpS worked in HybridDog's nicer pattern algorithm, modifying a little.
 --              Also cleaned up some code and give-priv does not grant modes anymore,
@@ -60,8 +61,7 @@
 --			* inventory image added
 
 replacer = {}
-
-replacer.version = 20220112
+replacer.version = 20220115
 
 replacer.has_bakedclay = minetest.get_modpath('bakedclay')
 replacer.has_basic_dyes = minetest.get_modpath('dye')
