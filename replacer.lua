@@ -275,8 +275,8 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		return
 	end
 
-	if replacer.blacklist[nnd.name] then
-		r.inform(name, rb.blacklisted:format(nnd.name))
+	if replacer.deny_list[nnd.name] then
+		r.inform(name, rb.deny_listed:format(nnd.name))
 		return
 	end
 

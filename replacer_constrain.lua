@@ -17,18 +17,18 @@ replacer.exception_map = {}
 replacer.exception_callbacks = {}
 
 -- don't allow these at all
-replacer.blacklist = {}
+replacer.deny_list = {}
 
 -- playing with tnt and creative building are usually contradictory
 -- (except when doing large-scale landscaping in singleplayer)
-replacer.blacklist['tnt:boom'] = true
-replacer.blacklist['tnt:gunpowder'] = true
-replacer.blacklist['tnt:gunpowder_burning'] = true
-replacer.blacklist['tnt:tnt'] = true
+replacer.deny_list['tnt:boom'] = true
+replacer.deny_list['tnt:gunpowder'] = true
+replacer.deny_list['tnt:gunpowder_burning'] = true
+replacer.deny_list['tnt:tnt'] = true
 
 -- prevent accidental replacement of your protector
-replacer.blacklist['protector:protect'] = true
-replacer.blacklist['protector:protect2'] = true
+replacer.deny_list['protector:protect'] = true
+replacer.deny_list['protector:protect2'] = true
 
 -- charge limits
 replacer.max_charge = 30000
@@ -66,8 +66,8 @@ function replacer.permit_replace(pos, old_node_def, new_node_def,
 		return false, rb.protected_at:format(minetest.pos_to_string(pos))
 	end
 
-	if replacer.blacklist[old_node_def.name] then
-		return false, rb.blacklisted:format(old_node_def.name)
+	if replacer.deny_list[old_node_def.name] then
+		return false, rb.deny_listed:format(old_node_def.name)
 	end
 
     return true
@@ -93,10 +93,10 @@ function replacer.register_limit(node_name, node_max)
 	if not is_positive_int(node_max) then
 		return
 	end
-	-- add to blacklist if limit is zero
+	-- add to deny_list if limit is zero
 	if 0 == node_max then
-		replacer.blacklist[node_name] = true
-		minetest.log('info', rb.blacklist_insert:format(node_name))
+		replacer.deny_list[node_name] = true
+		minetest.log('info', rb.deny_list_insert:format(node_name))
 		return
 	end
 	-- log info if already limited
