@@ -22,45 +22,6 @@ replacer.mode_colours[r.modes[1]] = '#ffffff'
 replacer.mode_colours[r.modes[2]] = '#54FFAC'
 replacer.mode_colours[r.modes[3]] = '#9F6200'
 
-local is_int = function(value)
-	return type(value) == 'number' and math.floor(value) == value
-end
-
-function replacer.register_limit(node_name, node_max)
-	-- ignore nil and negative numbers
-	if (nil == node_max) or (0 > node_max) then
-		return
-	end
-	-- ignore non-integers
-	if not is_int(node_max) then
-		return
-	end
-	-- add to blacklist if limit is zero
-	if 0 == node_max then
-		replacer.blacklist[node_name] = true
-		minetest.log('info', rb.blacklist_insert:format(node_name))
-		return
-	end
-	-- log info if already limited
-	if nil ~= r.limit_list[node_name] then
-		minetest.log('info', rb.limit_override:format(node_name, r.limit_list[node_name]))
-	end
-	r.limit_list[node_name] = node_max
-	minetest.log('info', rb.limit_insert:format(node_name, node_max))
-end -- register_limit
-
-function replacer.register_exception(node_name, drop_name, callback)
-	if r.exception_map[node_name] then
-		minetest.log('info', rb.reg_rot_exception_override:format(node_name))
-	end
-	r.exception_map[node_name] = drop_name
-	minetest.log('info', rb.reg_rot_exception:format(node_name, drop_name))
-
-	if 'function' ~= type(callback) then return end
-	r.exception_callbacks[node_name] = callback
-	minetest.log('info', rb.reg_exception_callback:format(node_name))
-end -- register_exception
-
 function replacer.get_data(stack)
 	local metaRef = stack:get_meta()
 	local data = metaRef:get_string('replacer'):split(' ') or {}
