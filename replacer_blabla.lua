@@ -36,4 +36,8 @@ replacer.blabla.ccm_description = 'Toggles mute of replacer tool.\nWhen on, no '
 replacer.blabla.ccm_player_not_found = 'Player not found'
 replacer.blabla.ccm_player_meta_error = 'Player meta not existant'
 replacer.blabla.ccm_hint = 'Valid parameter is either "on" or "off"'
+replacer.blabla.reg_rot_exception_override = 'replacer.register_rotation_exception '
+    .. 'for "%s" already exists.'
+replacer.blabla.reg_rot_exception = 'replacer.registered exception for "%s" to "%s"'
+replacer.blabla.reg_exception_callback = 'replacer.registered after on_place callback for "%s"'
 

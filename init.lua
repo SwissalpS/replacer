@@ -64,6 +64,18 @@ replacer.version = 20220112
 -- limit by node, use replacer.register_limit(sName, iMax)
 replacer.limit_list = {}
 
+-- some nodes don't rotate using param2. They can be added
+-- using replacer.register_exception(node_name, inv_node_name[, callback_function])
+-- where: node_name is the itemstring of node when placed in world
+--        inv_node_name the itemstring of item in inventory to consume
+--        callback_function is optional and will be called after node is placed.
+--          It must return true on success and false, error_message on fail.
+--          In order to register only a callback, pass two identical itemstrings.
+--          Generally the callback is not needed as on_place() is called on the placed node
+--          callback signature is: (pos, old_node_def, new_node_def, player_ref)
+replacer.exception_map = {}
+replacer.exception_callbacks = {}
+
 -- don't allow these at all
 replacer.blacklist = {}
 
@@ -123,6 +135,10 @@ dofile(path .. '/replacer_patterns.lua')
 dofile(path .. '/replacer.lua')
 dofile(path .. '/crafts.lua')
 dofile(path .. '/chat_commands.lua')
+-- add cable plate exceptions
+if replacer.has_technic_mod then
+	dofile(path .. '/compat_technic.lua')
+end
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 print('[replacer] loaded')
