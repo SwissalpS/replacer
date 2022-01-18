@@ -91,15 +91,15 @@ end -- permit_replace
 
 function replacer.register_exception(node_name, drop_name, callback)
 	if r.exception_map[node_name] then
-		minetest.log('info', rb.reg_rot_exception_override:format(node_name))
+		minetest.log('info', rb.log_reg_exception_override:format(node_name))
 	end
 	r.exception_map[node_name] = drop_name
-	minetest.log('info', rb.reg_rot_exception:format(node_name, drop_name))
+	minetest.log('info', rb.log_reg_exception:format(node_name, drop_name))
 
 	if 'function' ~= type(callback) then return end
 
 	r.exception_callbacks[node_name] = callback
-	minetest.log('info', rb.reg_exception_callback:format(node_name))
+	minetest.log('info', rb.log_reg_exception_callback:format(node_name))
 end -- register_exception
 
 local function is_positive_int(value)
@@ -113,16 +113,16 @@ function replacer.register_limit(node_name, node_max)
 
 	-- add to deny_list if limit is zero
 	if 0 == node_max then
-		minetest.log('info', rb.deny_list_insert:format(node_name))
 		r.deny_list[node_name] = true
+		minetest.log('info', rb.log_deny_list_insert:format(node_name))
 		return
 	end
 
 	-- log info if already limited
 	if nil ~= r.limit_list[node_name] then
-		minetest.log('info', rb.limit_override:format(node_name, r.limit_list[node_name]))
+		minetest.log('info', rb.log_limit_override:format(node_name, r.limit_list[node_name]))
 	end
 	r.limit_list[node_name] = node_max
-	minetest.log('info', rb.limit_insert:format(node_name, node_max))
+	minetest.log('info', rb.log_limit_insert:format(node_name, node_max))
 end -- register_limit
 
