@@ -1,21 +1,23 @@
 replacer.unifieddyes = {}
 local ud = replacer.unifieddyes
+local make_readable_color = unifieddyes.make_readable_color
+local colour_to_name = unifieddyes.color_to_name
 
 if not replacer.has_unifieddyes_mod then
-	function ud.colourName(param2, nodeDef) return '' end
-	function ud.addRecipe(nodeName, recipes) return recipes end
+	function ud.colour_name(param2, node_def) return '' end
+	function ud.add_recipe(node_name, recipes) return recipes end
 	return
 end
 
 
 -- for inspector formspec
-function replacer.unifieddyes.addRecipe(param2, nodeName, recipes)
+function replacer.unifieddyes.add_recipe(param2, node_name, recipes)
 	if not param2 then
 		return recipes
 	end
 
-	local nodeDef = minetest.registered_items[nodeName]
-	if ud.isAirbrushed(nodeDef) then
+	local node_def = minetest.registered_items[node_name]
+	if ud.is_airbrushed(node_def) then
 		-- find the correct recipe and append it to bottom of list
 		local first, last
 		local needle = 'u0002' .. tostring(param2)
@@ -32,41 +34,41 @@ function replacer.unifieddyes.addRecipe(param2, nodeName, recipes)
 end -- add_recipe
 
 
-function replacer.unifieddyes.colourName(param2, nodeDef)
+function replacer.unifieddyes.colour_name(param2, node_def)
 	param2 = tonumber(param2)
-	if param2 and ud.isAirbrushed(nodeDef) then
-		return unifieddyes.make_readable_color(
-				unifieddyes.color_to_name(param2, nodeDef))
+	if param2 and ud.is_airbrushed(node_def) then
+		return make_readable_color(
+				colour_to_name(param2, node_def))
 	else
 		return ''
 	end
 end -- colour_name
 
 
-function replacer.unifieddyes.dyeName(param2, nodeDef)
+function replacer.unifieddyes.dye_name(param2, node_def)
 	param2 = tonumber(param2)
-	if param2 and ud.isAirbrushed(nodeDef) then
-		return 'dye:' .. unifieddyes.color_to_name(param2, nodeDef)
+	if param2 and ud.is_airbrushed(node_def) then
+		return 'dye:' .. colour_to_name(param2, node_def)
 	else
 		return ''
 	end
 end -- dye_name
 
 
-function replacer.unifieddyes.isAirbrushCompatible(nodeDef)
-	return nodeDef and nodeDef.palette
-		and nodeDef.groups and nodeDef.groups.ud_param2_colorable
-		and 0 < nodeDef.groups.ud_param2_colorable
+function replacer.unifieddyes.is_airbrush_compatible(node_def)
+	return node_def and node_def.palette
+		and node_def.groups and node_def.groups.ud_param2_colorable
+		and 0 < node_def.groups.ud_param2_colorable
 end -- is_airbrush_compatible
 
 
-function replacer.unifieddyes.isAirbrushed(nodeDef)
-	if not replacer.unifieddyes.isAirbrushCompatible(nodeDef) then
+function replacer.unifieddyes.is_airbrushed(node_def)
+	if not ud.is_airbrush_compatible(node_def) then
 		return false
 	end
-	if nil ~= nodeDef.name:find('_tinted$') then
+	if nil ~= node_def.name:find('_tinted$') then
 		return true
 	end
-	return not nodeDef.airbrush_replacement_node
+	return not node_def.airbrush_replacement_node
 end -- is_airbrushed
 

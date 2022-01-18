@@ -1,4 +1,7 @@
 local funcs = {}
+local floor = math.floor
+local log = math.log
+local table_concat = table.concat
 
 local stack_mt
 stack_mt = {
@@ -154,8 +157,8 @@ fifo_mt = {
 			for i = 1, #t do
 				t[i] = value_tostring(t[i])
 			end
-				table.concat(t, ", ")
 			return size .. ' elements; oldest to newest: '
+				.. table_concat(t, ', ')
 		end,
 	}
 }
@@ -175,14 +178,14 @@ end
 
 
 local function sift_up(binary_heap, i)
-	local p = math.floor(i / 2)
+	local p = floor(i * .5)
 	while p > 0
 		and binary_heap.compare(binary_heap[i], binary_heap[p])
 	do
 		-- new data has higher priority than its parent
 		binary_heap[i], binary_heap[p] = binary_heap[p], binary_heap[i]
 		i = p
-		p = math.floor(p / 2)
+		p = floor(p * .5)
 	end
 end
 
@@ -214,7 +217,7 @@ local function sift_down(binary_heap, i)
 end
 
 local function build(binary_heap)
-	for i = math.floor(binary_heap.n / 2), 1, -1 do
+	for i = floor(binary_heap.n * .5), 1, -1 do
 		sift_down(binary_heap, i)
 	end
 end
@@ -305,13 +308,13 @@ binary_heap_mt = {
 			value_tostring = value_tostring or tostring
 			local t = {}
 			for i = 1, self.n do
-					sep = (math.log(i) / math.log(2)) % 1 == 0 and "; " or ", "
 				local sep = ''
 				if 1 < i then
+					sep = (0 == (log(i) / log(2)) % 1) and '; ' or ', '
 				end
 				t[i] = sep .. value_tostring(self[i])
 			end
-			return self.n .. " elements: " .. table.concat(t, "")
+			return self.n .. ' elements: ' .. table_concat(t, '0')
 		end,
 	}
 }

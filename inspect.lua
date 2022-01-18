@@ -340,7 +340,7 @@ replacer.inspect_show_crafting = function(player_name, node_name, fields)
 	-- add special recipes for nodes created by machines
 	replacer.add_circular_saw_recipe(node_name, res)
 	replacer.add_colormachine_recipe(node_name, res)
-	replacer.unifieddyes.addRecipe(fields.param2, node_name, res)
+	replacer.unifieddyes.add_recipe(fields.param2, node_name, res)
 
 	-- offer all alternate creafting recipes thrugh prev/next buttons
 	if fields and fields.prev_recipe and 1 < recipe_nr then

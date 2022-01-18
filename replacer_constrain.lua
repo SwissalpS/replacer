@@ -1,5 +1,7 @@
 local r = replacer
 local rb = replacer.blabla
+local is_protected = minetest.is_protected
+local pos_to_string = minetest.pos_to_string
 
 -- limit by node, use replacer.register_limit(sName, iMax)
 replacer.limit_list = {}
@@ -62,12 +64,12 @@ end
 function replacer.permit_replace(pos, old_node_def, new_node_def,
 		player_ref, player_name, player_inv, creative_or_give)
 
-	if minetest.is_protected(pos, player_name) then
-		return false, rb.protected_at:format(minetest.pos_to_string(pos))
 	if r.deny_list[old_node_def.name] then
 		return false, rb.deny_listed:format(old_node_def.name)
 	end
 
+	if is_protected(pos, player_name) then
+		return false, rb.protected_at:format(pos_to_string(pos))
 	end
 
 	return true

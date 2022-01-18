@@ -1,16 +1,19 @@
 local rb = replacer.blabla
+local chat_send_player = minetest.chat_send_player
+local get_player_name = minetest.get_player_by_name
+local log = minetest.log
 
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 
-	minetest.log('info', rb.log:format(name, message))
-	local player = minetest.get_player_by_name(name)
+	log('info', rb.log_messages:format(name, message))
+	local player = get_player_by_name(name)
 	if not player then return end
 
 	local meta = player:get_meta() if not meta then return end
 
 	if 0 < meta:get_int('replacer_mute') then return end
-	minetest.chat_send_player(name, message)
+	chat_send_player(name, message)
 
 end -- inform
 

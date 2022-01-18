@@ -1,6 +1,12 @@
 replacer.patterns = {}
+local r = replacer
 local rp = replacer.patterns
+local floor = math.floor
+local is_protected = minetest.is_protected
 local poshash = minetest.hash_node_position
+local core_registered_nodes = minetest.registered_nodes
+local vector_add = vector.add
+local vector_distance = vector.distance
 
 -- cache results of minetest.get_node
 replacer.patterns.known_nodes = {}
@@ -21,22 +27,24 @@ function replacer.patterns.reset_nodes_cache()
 end
 
 -- tests if there's a node at pos which should be replaced
-function replacer.patterns.replaceable(pos, name, pname, param2)
+function replacer.patterns.replaceable(pos, node_name, player_name, param2)
 	local node = rp.get_node(pos)
 	if nil == param2 then
 		-- crust mode ignores param2
-		if 'air' ~= name then
-			return (node.name == name) and (not minetest.is_protected(pos, pname))
+		if 'air' ~= node_name then
+			return (node.name == node_name) and (not is_protected(pos, player_name))
 		end
 		-- right clicking in crust mode checks for air, but vacuum should work too
 		-- TODO: add mechanism to register allowed types
 		-- some servers might have other nodes like mars-lights that should be allowed too
 		-- maybe dummy lights, on the other hand, it might be useful to be able to stop replacer with dummy lights
-		return (('air' == node.name) or ('vacuum:vacuum' == node.name)) and (not minetest.is_protected(pos, pname))
+		return (('air' == node.name) or ('vacuum:vacuum' == node.name))
+			and (not is_protected(pos, player_name))
 	end
-	return (node.name == name) and (node.param2 == param2) and (not minetest.is_protected(pos, pname))
 	-- in field mode we also check that param2 is the same as the
 	-- initial node that was clicked on
+	return (node.name == node_name) and (node.param2 == param2)
+		and (not is_protected(pos, player_name))
 end -- replaceable
 
 replacer.patterns.translucent_nodes = {}
@@ -45,8 +53,8 @@ function replacer.patterns.node_translucent(name)
 	if nil ~= is_translucent then
 		return is_translucent
 	end
-	local data = minetest.registered_nodes[name]
-	if data and ((not data.drawtype) or ('normal' == data.drawtype)) then
+	local def = core_registered_nodes[name]
+	if def and ((not def.drawtype) or ('normal' == def.drawtype)) then
 		rp.translucent_nodes[name] = false
 		return false
 	end
@@ -57,7 +65,7 @@ end -- node_translucent
 function replacer.patterns.field_position(pos, data)
 	return rp.replaceable(pos, data.name, data.pname, data.param2)
 		and rp.node_translucent(
-			rp.get_node(vector.add(data.above, pos)).name) ~= data.right_clicked
+			rp.get_node(vector_add(data.above, pos)).name) ~= data.right_clicked
 end -- field_position
 
 replacer.patterns.offsets_touch = {
@@ -86,15 +94,15 @@ end
 -- To get the crust, first nodes near it need to be collected
 function replacer.patterns.crust_above_position(pos, data)
 	-- test if the node at pos is a translucent node and not part of the crust
-	local nd = rp.get_node(pos).name
-	if (nd == data.name) or (not rp.node_translucent(nd)) then
+	local node_name = rp.get_node(pos).name
+	if (node_name == data.name) or (not rp.node_translucent(node_name)) then
 		return false
 	end
 	-- test if a node of the crust is near pos
 	local p2
 	for i = 1, 26 do
 		p2 = rp.offsets_hollowcube[i]
-		if rp.replaceable(vector.add(pos, p2), data.name, data.pname) then
+		if rp.replaceable(vector_add(pos, p2), data.name, data.pname) then
 			return true
 		end
 	end
@@ -109,7 +117,7 @@ function replacer.patterns.crust_under_position(pos, data)
 	local p2
 	for i = 1, 26 do
 		p2 = rp.offsets_hollowcube[i]
-		if data.aboves[poshash(vector.add(pos, p2))] then
+		if data.aboves[poshash(vector_add(pos, p2))] then
 			return true
 		end
 	end
@@ -125,7 +133,7 @@ function replacer.patterns.reduce_crust_ps(data)
 		p = data.ps[i]
 		for i = 1, 6 do
 			p2 = rp.offsets_touch[i]
-			if data.aboves[poshash(vector.add(p, p2))] then
+			if data.aboves[poshash(vector_add(p, p2))] then
 				n = n + 1
 				newps[n] = p
 				break
@@ -146,7 +154,7 @@ function replacer.patterns.reduce_crust_above_ps(data)
 		if rp.replaceable(p, 'air', data.pname) then
 			for i = 1, 6 do
 				p2 = rp.offsets_touch[i]
-				if rp.replaceable(vector.add(p, p2), data.name, data.pname) then
+				if rp.replaceable(vector_add(p, p2), data.name, data.pname) then
 					n = n + 1
 					newps[n] = p
 					break
@@ -236,14 +244,14 @@ function replacer.patterns.search_positions(params)
 		end
 		return true
 	end
-	search_dfs(go, startpos, vector.add, moves)
+	search_dfs(go, startpos, vector_add, moves)
 	if n_founds < max_positions or 0 >= r.radius_factor then
 		return founds, n_founds, visiteds
 	end
 
 	-- Too many positions were found, so search again but only within
 	-- a limited sphere around startpos
-	local rr = math.floor(max_positions ^ replacer.radius_factor + .5)
+	local rr = floor(max_positions ^ r.radius_factor + .5)
 	local visiteds_old = visiteds
 	visiteds = {}
 	founds = {}
@@ -253,7 +261,7 @@ function replacer.patterns.search_positions(params)
 		if visiteds[vi] then
 			return false
 		end
-		if vector.distance(p, startpos) > rr then
+		if vector_distance(p, startpos) > rr then
 			-- Outside of the sphere
 			return false
 		end
@@ -265,7 +273,7 @@ function replacer.patterns.search_positions(params)
 		visiteds[vi] = true
 		return true
 	end
-	search_dfs(go, startpos, vector.add, moves)
+	search_dfs(go, startpos, vector_add, moves)
 	return founds, n_founds, visiteds
 end -- search_positions
 
