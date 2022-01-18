@@ -26,21 +26,22 @@ local vector_multiply = vector.multiply
 local vector_new = vector.new
 local vector_subtract = vector.subtract
 
-replacer.modes = { 'single', 'field', 'crust' }
-for n = 1, #r.modes do
-	r.modes[r.modes[n]] = n
-end
+replacer.mode_major_names = { rb.mode_single, rb.mode_field, rb.mode_crust }
+replacer.mode_major_infos = {
+	rb.mode_single_tooltip,
+	rb.mode_field_tooltip:gsub('\n', ' '),
+	rb.mode_crust_tooltip:gsub('\n', ' ')
+}
+replacer.mode_minor_names = { rb.mode_minor1, rb.mode_minor2, rb.mode_minor3 }
+replacer.mode_minor_infos = {
+	rb.mode_minor1_info, rb.mode_minor2_info, rb.mode_minor3_info
+}
 
-replacer.mode_infos = {}
-replacer.mode_infos[r.modes[1]] = rb.mode_single
-replacer.mode_infos[r.modes[2]] = rb.mode_field
-replacer.mode_infos[r.modes[3]] = rb.mode_crust
-
-replacer.mode_colours = {}
-replacer.mode_colours[r.modes[1]] = '#ffffff'
-replacer.mode_colours[r.modes[2]] = '#54FFAC'
-replacer.mode_colours[r.modes[3]] = '#9F6200'
-
+replacer.mode_colours = {
+	{ '#ffffff', '#cccccc', '#999999' },
+	{ '#38fb9a', '#21cc79', '#10bb68' },
+	{ '#f4b755', '#d29533', '#9F6200' }
+}
 function replacer.get_data(stack)
 	local meta = stack:get_meta()
 	local data = meta:get_string('replacer'):split(' ') or {}
@@ -49,22 +50,29 @@ function replacer.get_data(stack)
 		param1 = tonumber(data[2]) or 0,
 		param2 = tonumber(data[3]) or 0
 	}
-	local mode = metaRef:get_string('mode')
-	if nil == r.modes[mode] then
-		mode = r.modes[1]
-	end
+	local mode, mode_bare = {}, meta:get_string('mode'):split('.') or {}
+	mode.major = tonumber(mode_bare[1] or 1) or 1
+	mode.minor = tonumber(mode_bare[2] or 1)
 	return node, mode
 end -- get_data
 
 function replacer.set_data(stack, node, mode)
-	mode = mode or r.modes[1]
+	node = 'table' == type(node) and node or {}
+	-- allow passing nil mode -> when ignoring mode in history
+	if 'table' ~= type(mode) then
+		_, mode = r.get_data(stack)
+	end
 	local tool_itemstring = stack:get_name()
 	local tool_def = core_registered_items[tool_itemstring]
 	-- some accidents or deliberate actions can be harmful
 	-- if user has an unknown item. So we check here to
 	-- prevent possible server crash
-		return 'Unkown Item'
 	if (not tool_itemstring) or (not tool_def) then
+		local t = {
+			'Blessed', 'Somewhat known', 'Unknown if known',
+			'Pwned', 'Hued', 'Strange', 'Found'
+		}
+		return t[os.date('*t').wday] .. ' Item'
 	end
 	local param1 = tostring(node.param1 or 0)
 	local param2 = tostring(node.param2 or 0)
@@ -130,33 +138,6 @@ else
 	function replacer.discharge() end
 	function replacer.get_charge() return r.max_charge end
 end
-
-replacer.form_name_modes = 'replacer_replacer_mode_change'
-function replacer.get_form_modes(current_mode)
-	-- TODO: possibly add the info here instead of as
-	-- a chat message
-	local formspec = 'size[3.9,2]'
-		.. 'label[0,0;Choose mode]'
-		.. 'button_exit[0.0,0.6;2,0.5;'
-	if r.modes[1] == current_mode then
-		formspec = formspec .. '_;< ' .. r.modes[1] .. ' >]'
-	else
-		formspec = formspec .. 'mode;' .. r.modes[1] .. ']'
-	end
-	formspec = formspec .. 'button_exit[1.9,0.6;2,0.5;'
-	if r.modes[2] == current_mode then
-		formspec = formspec .. '_;< ' .. r.modes[2] .. ' >]'
-	else
-		formspec = formspec .. 'mode;' .. r.modes[2] .. ']'
-	end
-	formspec = formspec .. 'button_exit[0.0,1.4;2,0.5;'
-	if r.modes[3] == current_mode then
-		formspec = formspec .. '_;< ' .. r.modes[3] .. ' >]'
-	else
-		formspec = formspec .. 'mode;' .. r.modes[3] .. ']'
-	end
-	return formspec
-end -- get_form_modes
 
 -- replaces one node with another one and returns if it was successful
 function replacer.replace_single_node(pos, node_old, node_new, player,
@@ -273,7 +254,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 		-- fetch current mode
 		local _, mode = r.get_data(itemstack)
 		-- Show formspec to choose mode
-		minetest.show_formspec(name, r.form_name_modes, r.get_form_modes(mode))
+		r.show_mode_formspec(player, mode)
 		-- return unchanged tool
 		return itemstack
 	end
@@ -291,25 +272,36 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 		return
 	end
 
-	if (node_toreplace.name == nnd.name)
-		and (node_toreplace.param1 == nnd.param1)
-		and (node_toreplace.param2 == nnd.param2)
-	then
 	local node_new, mode = r.get_data(itemstack)
+	if not modes_are_available then
+		mode = { major = 1, minor = 1 }
+	end
+	-- utility function to adjust new node to mode.minor
+	-- returns true if adjustments make them equal
+	local function adjust_new_to_minor(minor, node_old, node_new)
+		-- minor mode overrides to node_new
+		if 2 == minor then
+			-- node only
+			node_new.param1 = node.old.param1
+			node_new.param2 = node.old.param2
+		elseif 3 == minor then
+			-- rotation only
+			node_new.name = node_old.name
+		end
+		-- can we skip right away?
+		if (node_old.name == node_new.name)
+			and (node_old.param1 == node_new.param1)
+			and (node_old.param2 == node_new.param2)
+		then
+			return true
+		end
+	end -- adjust_new_to_minor
+	if adjust_new_to_minor(mode.minor, node_old, node_new) then
 		r.inform(name, rb.nothing_to_replace)
 		return
 	end
 
-	if replacer.deny_list[nnd.name] then
-		r.inform(name, rb.deny_listed:format(nnd.name))
-		return
-	end
-
-	if not modes_are_available then
-		mode = r.modes[1]
-	end
-
-	if r.modes[1] == mode then
+	local inv = player:get_inventory()
 	if 1 == mode.major then
 		-- single
 		succ, error = r.replace_single_node(pos, node_old, node_new,
@@ -328,11 +320,10 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 			return
 		end
 
-		local max_charge_to_use = math.min(charge, replacer.max_charge)
-		max_nodes = math.floor(max_charge_to_use / replacer.charge_per_node)
-		if max_nodes > replacer.max_nodes then
-			max_nodes = replacer.max_nodes
-		end
+		-- clamp so it works as single mode even without charge
+		local max_charge_to_use = min(charge, r.max_charge)
+		max_nodes = floor(max_charge_to_use / r.charge_per_node)
+		max_nodes = max(1, min(max_nodes, r.max_nodes))
 	end
 
 	local found_positions, found_count
@@ -488,7 +479,8 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 end -- on_use
 
 -- right-click with tool -> place set node
--- special+right-click -> cycle mode (if tool/privs permit)
+-- special+right-click -> cycle major mode (if tool/privs permit)
+-- special+sneak+right-click -> cycle minor mode (if tool/privs permit)
 -- sneak+right-click -> set node
 function replacer.on_place(itemstack, player, pt)
 	if (not player) or (not pt) then
@@ -509,12 +501,21 @@ function replacer.on_place(itemstack, player, pt)
 		if not modes_are_available then return end
 		-- fetch current mode
 		local node, mode = r.get_data(itemstack)
-		-- increment and roll-over mode
-		mode = r.modes[r.modes[mode] % #r.modes + 1]
+		if keys.sneak then
+			-- increment and roll-over minor mode
+			mode.minor = mode.minor % 3 + 1
+			-- spam chat
+			r.inform(name, rb.mode_changed:format(
+				r.mode_minor_names[mode.minor], r.mode_minor_infos[mode.minor]))
+		else
+			-- increment and roll-over major mode
+			mode.major = mode.major % 3 + 1
+			-- spam chat
+			r.inform(name, rb.mode_changed:format(
+				r.mode_major_names[mode.major], r.mode_major_infos[mode.major]))
+		end
 		-- update tool
 		r.set_data(itemstack, node, mode)
-		-- spam chat
-		r.inform(name, rb.mode_changed:format(mode, r.mode_infos[mode]))
 		-- return changed tool
 		return itemstack
 	end
@@ -603,6 +604,7 @@ function replacer.on_place(itemstack, player, pt)
 	end
 
 	local short_description = r.set_data(itemstack, node, mode)
+	r.history.add_item(player, mode, node, short_description)
 
 	r.inform(name, rb.set_to:format(short_description))
 
@@ -636,29 +638,4 @@ if r.has_technic_mod then
 	technic.register_power_tool(r.tool_name_technic, r.max_charge)
 	minetest.register_tool(r.tool_name_technic, r.tool_def_technic())
 end
-
-function replacer.register_on_player_receive_fields(player, form_name, fields)
-	-- no need to process if it's not expected formspec that triggered call
-	if form_name ~= replacer.form_name_modes then return end
-	-- no need to process if user closed formspec without changing mode
-	if nil == fields.mode then return end
-
-	-- collect some information
-	local itemstack = player:get_wielded_item()
-	local node, _ = r.get_data(itemstack)
-	local mode = fields.mode
-	local name = player:get_player_name()
-
-	-- set metadata and itemstring
-	r.set_data(itemstack, node, mode)
-	-- update wielded item
-	player:set_wielded_item(itemstack)
-	--[[ NOTE: for now I leave this code here in case we later make this a setting in
-				some way that does not mute all messages of tool
-	-- spam players chat with information
-	r.inform(name, rb.set_to:format(mode, r.mode_infos[mode]))
-	--]]
-end
--- listen to submitted fields
-minetest.register_on_player_receive_fields(replacer.register_on_player_receive_fields)
 

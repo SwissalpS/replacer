@@ -89,6 +89,8 @@ replacer.datastructures = dofile(path .. 'datastructures.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
 dofile(path .. 'replacer_constrain.lua')
+dofile(path .. 'replacer_formspecs.lua')
+dofile(path .. 'replacer_history.lua')
 dofile(path .. 'replacer_patterns.lua')
 dofile(path .. 'replacer.lua')
 dofile(path .. 'crafts.lua')

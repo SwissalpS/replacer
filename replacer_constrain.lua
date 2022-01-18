@@ -44,6 +44,20 @@ replacer.max_time = tonumber(minetest.settings:get('replacer.max_time') or 1.0)
 -- [see replacer_patterns.lua>replacer.patterns.search_positions()]
 replacer.radius_factor = tonumber(minetest.settings:get('replacer.radius_factor') or 0.4)
 
+-- priv to allow using history
+replacer.history_priv = minetest.settings:get('replacer.history_priv') or 'creative'
+-- disable saving history over sessions/reboots. IOW: don't use player meta e.g. if using old MT
+replacer.history_disable_persistancy =
+	minetest.settings:get_bool('replacer.history_disable_persistancy') or false
+-- ignored when persistancy is disabled. Interval in minutes to
+replacer.history_save_interval =
+	tonumber(minetest.settings:get('replacer.history_save_interval') or 7)
+-- include mode when changing from history
+replacer.history_include_mode =
+	minetest.settings:get_bool('replacer.history_include_mode') or false
+-- amount of items in history
+replacer.history_max = tonumber(minetest.settings:get('replacer.history_max') or 7)
+
 -- select which recipes to hide (not all combinations make sense)
 replacer.hide_recipe_basic =
 	minetest.settings:get_bool('replacer.hide_recipe_basic') or false
