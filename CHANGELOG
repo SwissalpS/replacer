@@ -1,0 +1,57 @@
+20220118 * SwissalpS cleaned up more code, giving more discriptive variable names and
+           cleaning out ugly modes table that had both number and string indexes
+         * Don't allow replacer to be set to deny_list nodes
+         * History works for users with priv. Various settings added to
+           fine-tune how it behaves.
+         * Implemented minor-modes with more colours ;)
+         * Added non-formspec way to cycle minor modes: Special+Sneak+right-click
+         * Especially in functions with tight loops, local references to global functions was added.
+20220117 * SwissalpS changed mode storage in tool meta to major.minor format
+         * Added version 4 formspec that enables changing minor mode
+           and has prepared history selector.
+         * Moved changelog and cleaned it up adding some dates
+         * Moved formspec code to separate file.
+         * Started implementing translations and history.
+20220115 * SwissalpS refactored constraints and renamed blacklist to deny_list
+20220114 * SwissalpS added support for cable plates and similar nodes
+20220113 * SwissalpS worked in HybridDog's nicer pattern algorithm, modifying a little.
+           Also cleaned up some code and give-priv does not grant modes anymore,
+           creative still does.
+20220112 * SwissalpS improved field mode: when replacing also check for same param2
+           improved crust mode: when placing also allow vacuum instead of only air
+20211202 * SwissalpS added /replacer_mute command
+20210930 * SwissalpS merged patch provided by S-S-X to prevent a rare but possible crash with
+           Unknown Items in hotbar
+         * Also cleaned up tool change messages to blabla.lua
+20201016 * HybridDog provided first documentation and SwissalpS added some more explaining modes.
+20201015 * SwissalpS cleaned up inspector code and made inspector better readable on smaller screens
+20200322 * HybridDog removed fourth mode and improved node search
+         * SwissalpS added backward compatibility for non technic servers, restored
+           creative/give behaviour and fixed the 'too many nodes detected' issue
+         * S-S-X and some players from pandorabox.io requested and inspired ideas to
+           implement which SwissalpS tried to satisfy.
+20200131 * SwissalpS added method to change mode via formspec
+20200109 * BuckarooBanzay added server-setting max_nodes, moved crafts and replacer to
+           separate files, added .luacheckrc and cleaned up inspection tool, fixing
+           some issues on the way and updated readme to look nice
+20191217 * OgelGames fixed digging to be simulated properly
+20191212 * coil0 made modes available as technic tool and added limits
+         * SwissalpS merged Sokomine's and HybridDog's versions
+         * HybridDog added modes for creative mode
+20190628 * coil0 fixed issue by using buildable_to
+20171209 * Got rid of outdated minetest.env
+         * Fixed error in protection function.
+         * Fixed minor bugs.
+         * Added blacklist
+20141002 * Some more improvements for inspect-tool. Added craft-guide.
+20141001 * Added inspect-tool.
+20130112 * If digging the node was unsuccessful, then the replacement will now fail
+           (instead of destroying the old node with its metadata; i.e. chests with content)
+20131120 * if the server version is new enough, minetest.is_protected is used
+           in order to check if the replacement is allowed
+20130424 * param1 and param2 are now stored
+         * hold sneak + right click to store new pattern
+         * right click: place one of the itmes
+         * receipe changed
+         * inventory image added
+

@@ -159,6 +159,7 @@ function replacer.replace_single_node(pos, node_old, node_new, player,
 		return true
 	end
 
+	-- map exception
 	local inv_name = r.exception_map[node_new.name] or node_new.name
 	-- does the player carry at least one of the desired nodes with him?
 	if (not creative) and (not inv:contains_item('main', inv_name)) then
@@ -234,6 +235,7 @@ function replacer.replace_single_node(pos, node_old, node_new, player,
 end -- replace_single_node
 
 -- the function which happens when the replacer is used
+-- also called by on_place if sneak isn't pressed
 function replacer.on_use(itemstack, player, pt, right_clicked)
 	if (not player) or (not pt) then
 		return
@@ -312,6 +314,8 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 		return
 	end
 
+	-- figure out how many nodes we can modify before we reach
+	-- either the count or charge limit
 	local max_nodes = r.limit_list[node_new.name] or r.max_nodes
 	local charge = r.get_charge(itemstack)
 	if not has_creative_or_give then
@@ -413,6 +417,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 
 	rp.reset_nodes_cache()
 
+	-- at least do the one that was clicked on
 	if 0 == found_count then
 		succ, error = r.replace_single_node(pos, node_old, node_new, player,
 			name, inv, has_creative_or_give)
@@ -449,6 +454,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	})
 	local actual_node_count = 0
 	while not found_positions:is_empty() do
+		-- Take the position nearest to the start position
 		pos = found_positions:take()
 		node_old = core_get_node(pos)
 		adjust_new_to_minor(minor, node_old, node_new)
@@ -465,6 +471,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 			r.inform(name, rb.too_many_nodes_detected)
 			break
 		end
+		-- time-out check
 		if us_time() - t_start > max_time_us then
 			r.inform(name, rb.timed_out)
 			break
