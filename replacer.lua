@@ -321,7 +321,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	if not has_creative_or_give then
 		if charge < r.charge_per_node then
 			r.inform(name, rb.need_more_charge)
-			return
+			--return
 		end
 
 		-- clamp so it works as single mode even without charge
