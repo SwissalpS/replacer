@@ -284,8 +284,8 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 		-- minor mode overrides to node_new
 		if 2 == minor then
 			-- node only
-			node_new.param1 = node.old.param1
-			node_new.param2 = node.old.param2
+			node_new.param1 = node_old.param1
+			node_new.param2 = node_old.param2
 		elseif 3 == minor then
 			-- rotation only
 			node_new.name = node_old.name

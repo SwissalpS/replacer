@@ -1,7 +1,5 @@
 replacer.unifieddyes = {}
 local ud = replacer.unifieddyes
-local make_readable_color = unifieddyes.make_readable_color
-local colour_to_name = unifieddyes.color_to_name
 
 if not replacer.has_unifieddyes_mod then
 	function ud.colour_name(param2, node_def) return '' end
@@ -9,6 +7,8 @@ if not replacer.has_unifieddyes_mod then
 	return
 end
 
+local make_readable_color = unifieddyes.make_readable_color
+local colour_to_name = unifieddyes.color_to_name
 
 -- for inspector formspec
 function replacer.unifieddyes.add_recipe(param2, node_name, recipes)

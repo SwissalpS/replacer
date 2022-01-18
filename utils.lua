@@ -1,6 +1,6 @@
 local rb = replacer.blabla
 local chat_send_player = minetest.chat_send_player
-local get_player_name = minetest.get_player_by_name
+local get_player_by_name = minetest.get_player_by_name
 local log = minetest.log
 
 function replacer.inform(name, message)
