@@ -29,7 +29,7 @@ function replacer.unifieddyes.addRecipe(param2, nodeName, recipes)
 	end
 
 	return recipes
-end
+end -- add_recipe
 
 
 function replacer.unifieddyes.colourName(param2, nodeDef)
@@ -40,7 +40,7 @@ function replacer.unifieddyes.colourName(param2, nodeDef)
 	else
 		return ''
 	end
-end
+end -- colour_name
 
 
 function replacer.unifieddyes.dyeName(param2, nodeDef)
@@ -50,14 +50,14 @@ function replacer.unifieddyes.dyeName(param2, nodeDef)
 	else
 		return ''
 	end
-end
+end -- dye_name
 
 
 function replacer.unifieddyes.isAirbrushCompatible(nodeDef)
 	return nodeDef and nodeDef.palette
 		and nodeDef.groups and nodeDef.groups.ud_param2_colorable
 		and 0 < nodeDef.groups.ud_param2_colorable
-end
+end -- is_airbrush_compatible
 
 
 function replacer.unifieddyes.isAirbrushed(nodeDef)
@@ -68,5 +68,5 @@ function replacer.unifieddyes.isAirbrushed(nodeDef)
 		return true
 	end
 	return not nodeDef.airbrush_replacement_node
-end
+end -- is_airbrushed
 

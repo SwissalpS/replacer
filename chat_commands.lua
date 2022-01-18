@@ -6,13 +6,12 @@ replacer.chatcommand_mute = {
 	params = rb.ccm_params,
 	description = rb.ccm_description,
 	func = function(name, param)
-
 		local player = minetest.get_player_by_name(name)
-		if not player then
+		if not player then -- TODO: seems unlikely to happen
 			return false, rb.ccm_player_not_found
 		end
 		local meta = player:get_meta()
-		if not meta then
+		if not meta then -- TODO: seems unlikely to happen
 			return false, rb.ccm_player_meta_error
 		end
 

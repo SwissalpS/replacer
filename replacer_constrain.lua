@@ -7,12 +7,12 @@ replacer.limit_list = {}
 -- some nodes don't rotate using param2. They can be added
 -- using replacer.register_exception(node_name, inv_node_name[, callback_function])
 -- where: node_name is the itemstring of node when placed in world
---        inv_node_name the itemstring of item in inventory to consume
---        callback_function is optional and will be called after node is placed.
---          It must return true on success and false, error_message on fail.
---          In order to register only a callback, pass two identical itemstrings.
---          Generally the callback is not needed as on_place() is called on the placed node
---          callback signature is: (pos, old_node_def, new_node_def, player_ref)
+--		inv_node_name the itemstring of item in inventory to consume
+--		callback_function is optional and will be called after node is placed.
+--		  It must return true on success and false, error_message on fail.
+--		  In order to register only a callback, pass two identical itemstrings.
+--		  Generally the callback is not needed as on_place() is called on the placed node
+--		  callback signature is: (pos, old_node_def, new_node_def, player_ref)
 replacer.exception_map = {}
 replacer.exception_callbacks = {}
 
@@ -60,17 +60,17 @@ end
 -- a boolean return and in the case of fail, an optional message
 -- that will be sent to player
 function replacer.permit_replace(pos, old_node_def, new_node_def,
-        player_ref, player_name, player_inv, creative_or_give)
+		player_ref, player_name, player_inv, creative_or_give)
 
 	if minetest.is_protected(pos, player_name) then
 		return false, rb.protected_at:format(minetest.pos_to_string(pos))
-	end
-
-	if replacer.deny_list[old_node_def.name] then
+	if r.deny_list[old_node_def.name] then
 		return false, rb.deny_listed:format(old_node_def.name)
 	end
 
-    return true
+	end
+
+	return true
 end -- permit_replace
 
 function replacer.register_exception(node_name, drop_name, callback)
@@ -81,6 +81,7 @@ function replacer.register_exception(node_name, drop_name, callback)
 	minetest.log('info', rb.reg_rot_exception:format(node_name, drop_name))
 
 	if 'function' ~= type(callback) then return end
+
 	r.exception_callbacks[node_name] = callback
 	minetest.log('info', rb.reg_exception_callback:format(node_name))
 end -- register_exception
@@ -93,12 +94,14 @@ function replacer.register_limit(node_name, node_max)
 	if not is_positive_int(node_max) then
 		return
 	end
+
 	-- add to deny_list if limit is zero
 	if 0 == node_max then
-		replacer.deny_list[node_name] = true
 		minetest.log('info', rb.deny_list_insert:format(node_name))
+		r.deny_list[node_name] = true
 		return
 	end
+
 	-- log info if already limited
 	if nil ~= r.limit_list[node_name] then
 		minetest.log('info', rb.limit_override:format(node_name, r.limit_list[node_name]))

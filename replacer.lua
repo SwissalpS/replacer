@@ -74,7 +74,7 @@ function replacer.set_data(stack, node, mode)
 	return short_description
 end -- set_data
 
-if replacer.has_technic_mod then
+if r.has_technic_mod then
 	if technic.plus then
 		replacer.get_charge = technic.get_RE_charge
 		replacer.set_charge = technic.set_RE_charge
@@ -102,14 +102,14 @@ if replacer.has_technic_mod then
 
 	function replacer.discharge(has_creative_or_give, charge, itemstack, num_nodes)
 		if (not technic.creative_mode) and (not has_creative_or_give) then
-			charge = charge - replacer.charge_per_node * num_nodes
-			r.set_charge(itemstack, charge, replacer.max_charge)
+			charge = charge - r.charge_per_node * num_nodes
+			r.set_charge(itemstack, charge, r.max_charge)
 			return itemstack
 		end
 	end
 else
 	function replacer.discharge() end
-	function replacer.get_charge() return replacer.max_charge end
+	function replacer.get_charge() return r.max_charge end
 end
 
 replacer.form_name_modes = 'replacer_replacer_mode_change'
@@ -361,11 +361,12 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 			moves = rp.offsets_touch,
 			max_positions = max_nodes,
 		})
+		local data
 		if right_clicked then
 			-- Remove positions which are not directly touching the crust
-			local data = {
 				ps = aps,
 				num = n,
+			data = {
 				name = nodename_clicked,
 				pname = name
 			}
@@ -393,7 +394,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		end
 	end
 
-	replacer.patterns.reset_nodes_cache()
+	rp.reset_nodes_cache()
 
 	if 0 == num then
 		local succ, err = r.replace_single_node(pos, node_toreplace, nnd, user,
@@ -404,7 +405,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 		return
 	end
 
-	local charge_needed = replacer.charge_per_node * num
+	local charge_needed = r.charge_per_node * found_count
 	if not has_creative_or_give then
 		if charge < charge_needed then
 			num = math.floor(charge / replacer.charge_per_node)
@@ -414,8 +415,8 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	-- set nodes
 	local t_start = minetest.get_us_time()
 	-- TODO
-	local max_time_us = 1000000 * replacer.max_time
 	-- Turn ps into a binary heap
+	local max_time_us = 1000000 * r.max_time
 	r.datastructures.create_binary_heap({
 		input = ps,
 		n = num,
@@ -455,7 +456,7 @@ function replacer.replace(itemstack, user, pt, right_clicked)
 	r.discharge(has_creative_or_give, charge, itemstack, num_nodes)
 	if has_creative_or_give then r.inform(name, rb.count_replaced:format(num_nodes)) end
 	return itemstack
-end -- replacer.replace
+end -- on_use
 
 -- right-click with tool -> place set node
 -- special+right-click -> cycle mode (if tool/privs permit)
@@ -470,7 +471,7 @@ function replacer.common_on_place(itemstack, placer, pt)
 	local creative_enabled = creative.is_enabled_for(name)
 	local has_give = minetest.check_player_privs(name, 'give')
 	local has_creative_or_give = creative_enabled or has_give
-	local is_technic = itemstack:get_name() == replacer.tool_name_technic
+	local is_technic = itemstack:get_name() == r.tool_name_technic
 	local modes_are_available = is_technic or creative_enabled
 
 	-- is special-key held? (aka fast-key)
@@ -576,7 +577,7 @@ function replacer.common_on_place(itemstack, placer, pt)
 	r.inform(name, rb.set_to:format(short_description))
 
 	return itemstack --data changed
-end -- common_on_place
+end -- on_place
 
 function replacer.tool_def_basic()
 	return {
@@ -592,18 +593,18 @@ function replacer.tool_def_basic()
 	}
 end
 
-minetest.register_tool(replacer.tool_name_basic, replacer.tool_def_basic())
+minetest.register_tool(r.tool_name_basic, r.tool_def_basic())
 
-if replacer.has_technic_mod then
+if r.has_technic_mod then
 	function replacer.tool_def_technic()
-		local def = replacer.tool_def_basic()
+		local def = r.tool_def_basic()
 		def.description = rb.description_technic
 		def.wear_represents = 'technic_RE_charge'
 		def.on_refill = technic.refill_RE_charge
 		return def
 	end
-	technic.register_power_tool(replacer.tool_name_technic, replacer.max_charge)
-	minetest.register_tool(replacer.tool_name_technic, replacer.tool_def_technic())
+	technic.register_power_tool(r.tool_name_technic, r.max_charge)
+	minetest.register_tool(r.tool_name_technic, r.tool_def_technic())
 end
 
 function replacer.register_on_player_receive_fields(player, form_name, fields)

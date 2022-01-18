@@ -17,13 +17,13 @@ stack_mt = {
 			return self[self.n]
 		end,
 		get = function(self, i)
-			if i <= 0 then
+			if 0 >= i then
 				return self[self.n + i]
 			end
 			return self[i]
 		end,
 		is_empty = function(self)
-			return self.n == 0
+			return 0 == self.n
 		end,
 		size = function(self)
 			return self.n
@@ -50,23 +50,23 @@ stack_mt = {
 			return t, self.n
 		end,
 		to_string = function(self, value_tostring)
-			if self.n == 0 then
-				return "empty stack"
+			if 0 == self.n then
+				return 'empty stack'
 			end
 			value_tostring = value_tostring or tostring
 			local t = {}
 			for i = 1, self.n do
 				t[i] = value_tostring(self[i])
 			end
-			return self.n .. " elements; bottom to top: " ..
-				table.concat(t, ", ")
+			return self.n .. ' elements; bottom to top: '
+				.. table_concat(t, ', ')
 		end,
 	}
 }
 
 function funcs.create_stack(data)
 	local stack
-	if type(data) == "table"
+	if 'table' == type(data)
 	and data.input then
 		stack = data.input
 		stack.n = data.n or #data.input
@@ -114,7 +114,7 @@ fifo_mt = {
 			return self.sink[1]
 		end,
 		is_empty = function(self)
-			return self.n_in == 0 and self.p_out == self.n_out + 1
+			return 0 == self.n_in and self.p_out == self.n_out + 1
 		end,
 		size = function(self)
 			return self.n_in + self.n_out - self.p_out + 1
@@ -146,23 +146,23 @@ fifo_mt = {
 		end,
 		to_string = function(self, value_tostring)
 			local size = self:size()
-			if size == 0 then
-				return "empty fifo"
+			if 0 == size then
+				return 'empty fifo'
 			end
 			value_tostring = value_tostring or tostring
 			local t = self:to_table()
 			for i = 1, #t do
 				t[i] = value_tostring(t[i])
 			end
-			return size .. " elements; oldest to newest: " ..
 				table.concat(t, ", ")
+			return size .. ' elements; oldest to newest: '
 		end,
 	}
 }
 
 function funcs.create_queue(data)
 	local fifo
-	if type(data) == "table"
+	if 'table' == type(data)
 	and data.input then
 		fifo = { n_in = 0, n_out = data.n or #data.input, p_out = 1,
 			sink = { true }, source = data.input }
@@ -177,7 +177,8 @@ end
 local function sift_up(binary_heap, i)
 	local p = math.floor(i / 2)
 	while p > 0
-	and binary_heap.compare(binary_heap[i], binary_heap[p]) do
+		and binary_heap.compare(binary_heap[i], binary_heap[p])
+	do
 		-- new data has higher priority than its parent
 		binary_heap[i], binary_heap[p] = binary_heap[p], binary_heap[i]
 		i = p
@@ -201,8 +202,9 @@ local function sift_down(binary_heap, i)
 		end
 		local preferred_child =
 			binary_heap.compare(binary_heap[l], binary_heap[r]) and l or r
-		if not binary_heap.compare(binary_heap[preferred_child],
-				binary_heap[i]) then
+		if not binary_heap.compare(
+			binary_heap[preferred_child], binary_heap[i])
+		then
 			break
 		end
 		binary_heap[i], binary_heap[preferred_child] =
@@ -250,7 +252,7 @@ binary_heap_mt = {
 			self[i] = v
 			if priority_lower then
 				sift_down(self, i)
-			elseif i > 1 then
+			elseif 1 < i then
 				sift_up(self, i)
 			end
 		end,
@@ -263,7 +265,7 @@ binary_heap_mt = {
 			build(self)
 		end,
 		is_empty = function(self)
-			return self.n == 0
+			return 0 == self.n
 		end,
 		size = function(self)
 			return self.n
@@ -297,15 +299,15 @@ binary_heap_mt = {
 			self.compare = nil
 		end,
 		to_string = function(self, value_tostring)
-			if self.n == 0 then
-				return "empty binary heap"
+			if 0 == self.n then
+				return 'empty binary heap'
 			end
 			value_tostring = value_tostring or tostring
 			local t = {}
 			for i = 1, self.n do
-				local sep = ""
-				if i > 1 then
 					sep = (math.log(i) / math.log(2)) % 1 == 0 and "; " or ", "
+				local sep = ''
+				if 1 < i then
 				end
 				t[i] = sep .. value_tostring(self[i])
 			end
@@ -316,7 +318,7 @@ binary_heap_mt = {
 
 function funcs.create_binary_heap(data)
 	local compare = data
-	if type(data) == "table" then
+	if 'table' == type(data) then
 		if data.input then
 			-- make data.elements a binary heap
 			local binary_heap = data.input
@@ -336,3 +338,4 @@ function funcs.create_binary_heap(data)
 end
 
 return funcs
+

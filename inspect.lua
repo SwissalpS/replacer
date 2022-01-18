@@ -334,7 +334,7 @@ replacer.inspect_show_crafting = function(player_name, node_name, fields)
 	end
 --print(dump(res))
 	-- TODO: filter out invalid recipes with no items
-	--       such as "group:flower,color_dark_grey"
+	--	   such as "group:flower,color_dark_grey"
 	--
 
 	-- add special recipes for nodes created by machines

@@ -1,19 +1,19 @@
 --[[
-    Replacement tool for creative building (Mod for MineTest)
     Copyright (C) 2013 Sokomine
+	Replacement tool for creative building (Mod for MineTest)
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
 -- Version 3.5 (20220115)
@@ -78,24 +78,24 @@ replacer.has_technic_mod = minetest.get_modpath('technic')
 replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 								and minetest.global_exists('unifieddyes')
 
-local path = minetest.get_modpath('replacer')
+local path = minetest.get_modpath('replacer') .. '/'
 -- strings for translation
-dofile(path .. '/replacer_blabla.lua')
+dofile(path .. 'replacer_blabla.lua')
 -- utilities
-dofile(path .. '/utils.lua')
+dofile(path .. 'utils.lua')
 -- unifiedddyes support functions
-dofile(path .. '/unifieddyes.lua')
-replacer.datastructures = dofile(path .. '/datastructures.lua')
+dofile(path .. 'unifieddyes.lua')
+replacer.datastructures = dofile(path .. 'datastructures.lua')
 -- adds a tool for inspecting nodes and entities
-dofile(path .. '/inspect.lua')
-dofile(path .. '/replacer_constrain.lua')
-dofile(path .. '/replacer_patterns.lua')
-dofile(path .. '/replacer.lua')
-dofile(path .. '/crafts.lua')
-dofile(path .. '/chat_commands.lua')
+dofile(path .. 'inspect.lua')
+dofile(path .. 'replacer_constrain.lua')
+dofile(path .. 'replacer_patterns.lua')
+dofile(path .. 'replacer.lua')
+dofile(path .. 'crafts.lua')
+dofile(path .. 'chat_commands.lua')
 -- add cable plate exceptions
 if replacer.has_technic_mod then
-	dofile(path .. '/compat_technic.lua')
+	dofile(path .. 'compat_technic.lua')
 end
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------

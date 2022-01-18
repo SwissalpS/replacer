@@ -13,11 +13,11 @@ function replacer.patterns.get_node(pos)
 	node = minetest.get_node(pos)
 	rp.known_nodes[i] = node
 	return node
-end
+end -- get_node
 
 -- The cache is only valid as long as no node is changed in the world.
 function replacer.patterns.reset_nodes_cache()
-	replacer.patterns.known_nodes = {}
+	rp.known_nodes = {}
 end
 
 -- tests if there's a node at pos which should be replaced
@@ -34,9 +34,10 @@ function replacer.patterns.replaceable(pos, name, pname, param2)
 		-- maybe dummy lights, on the other hand, it might be useful to be able to stop replacer with dummy lights
 		return (('air' == node.name) or ('vacuum:vacuum' == node.name)) and (not minetest.is_protected(pos, pname))
 	end
-	-- in field mode we also check that param2 is the same as the initial node that was clicked on
 	return (node.name == name) and (node.param2 == param2) and (not minetest.is_protected(pos, pname))
-end
+	-- in field mode we also check that param2 is the same as the
+	-- initial node that was clicked on
+end -- replaceable
 
 replacer.patterns.translucent_nodes = {}
 function replacer.patterns.node_translucent(name)
@@ -51,13 +52,13 @@ function replacer.patterns.node_translucent(name)
 	end
 	rp.translucent_nodes[name] = true
 	return true
-end
+end -- node_translucent
 
 function replacer.patterns.field_position(pos, data)
 	return rp.replaceable(pos, data.name, data.pname, data.param2)
 		and rp.node_translucent(
 			rp.get_node(vector.add(data.above, pos)).name) ~= data.right_clicked
-end
+end -- field_position
 
 replacer.patterns.offsets_touch = {
 	{ x =-1, y = 0, z = 0 },
@@ -98,7 +99,7 @@ function replacer.patterns.crust_above_position(pos, data)
 		end
 	end
 	return false
-end
+end -- crust_above_position
 
 -- used to get nodes the crust belongs to
 function replacer.patterns.crust_under_position(pos, data)
@@ -113,7 +114,7 @@ function replacer.patterns.crust_under_position(pos, data)
 		end
 	end
 	return false
-end
+end -- crust_under_position
 
 -- extract the crust from the nodes the crust belongs to
 function replacer.patterns.reduce_crust_ps(data)
@@ -133,7 +134,7 @@ function replacer.patterns.reduce_crust_ps(data)
 	end
 	data.ps = newps
 	data.num = n
-end
+end -- reduce_crust_ps
 
 -- gets the air nodes touching the crust
 function replacer.patterns.reduce_crust_above_ps(data)
@@ -155,7 +156,7 @@ function replacer.patterns.reduce_crust_above_ps(data)
 	end
 	data.ps = newps
 	data.num = n
-end
+end -- reduce_crust_above_ps
 
 
 -- Algorithm created by sofar and changed by others:
@@ -170,7 +171,7 @@ local function search_dfs(go, p, apply_move, moves)
 
 	-- The stack contains the path to the current position;
 	-- an element of it contains a position and direction (index to moves)
-	local s = replacer.datastructures.create_stack()
+	local s = r.datastructures.create_stack()
 	-- The neighbor order we will visit from our table.
 	local v = 1
 
@@ -209,7 +210,7 @@ local function search_dfs(go, p, apply_move, moves)
 			v = 1
 		end
 	end
-end
+end -- search_dfs
 
 
 function replacer.patterns.search_positions(params)
@@ -236,7 +237,7 @@ function replacer.patterns.search_positions(params)
 		return true
 	end
 	search_dfs(go, startpos, vector.add, moves)
-	if n_founds < max_positions or 0 >= replacer.radius_factor then
+	if n_founds < max_positions or 0 >= r.radius_factor then
 		return founds, n_founds, visiteds
 	end
 
@@ -266,5 +267,5 @@ function replacer.patterns.search_positions(params)
 	end
 	search_dfs(go, startpos, vector.add, moves)
 	return founds, n_founds, visiteds
-end
+end -- search_positions
 
