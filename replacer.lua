@@ -541,6 +541,11 @@ function replacer.on_place(itemstack, player, pt)
 	local node, mode = r.get_data(itemstack)
 	node = core_get_node_or_nil(pt.under) or node
 
+	-- don't allow setting replacer to denied nodes
+	if r.deny_list[node.name] then
+		r.inform(name, rb.deny_listed:format(node.name))
+		return
+	end
 
 	if not modes_are_available then
 		mode = { major = 1, minor = 1 }
