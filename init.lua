@@ -43,24 +43,24 @@ replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 
 local path = minetest.get_modpath('replacer') .. '/'
 -- strings for translation
-dofile(path .. 'replacer_blabla.lua')
+dofile(path .. 'replacer/blabla.lua')
 -- utilities
 dofile(path .. 'utils.lua')
 -- unifiedddyes support functions
-dofile(path .. 'unifieddyes.lua')
-replacer.datastructures = dofile(path .. 'datastructures.lua')
+dofile(path .. 'compat/unifieddyes.lua')
+replacer.datastructures = dofile(path .. 'replacer/datastructures.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
-dofile(path .. 'replacer_constrain.lua')
-dofile(path .. 'replacer_formspecs.lua')
-dofile(path .. 'replacer_history.lua')
-dofile(path .. 'replacer_patterns.lua')
-dofile(path .. 'replacer.lua')
+dofile(path .. 'replacer/constrain.lua')
+dofile(path .. 'replacer/formspecs.lua')
+dofile(path .. 'replacer/history.lua')
+dofile(path .. 'replacer/patterns.lua')
+dofile(path .. 'replacer/replacer.lua')
 dofile(path .. 'crafts.lua')
 dofile(path .. 'chat_commands.lua')
 -- add cable plate exceptions
 if replacer.has_technic_mod then
-	dofile(path .. 'compat_technic.lua')
+	dofile(path .. 'compat/technic.lua')
 end
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
