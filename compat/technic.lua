@@ -1,3 +1,6 @@
+-- skip if technic isn't loaded at all
+if not replacer.has_technic_mod then retun end
+
 -- adds exceptions for technic cable plates
 local lTiers = { 'lv', 'mv', 'hv' }
 local lPlates = { '_digi_cable_plate_', '_cable_plate_' }

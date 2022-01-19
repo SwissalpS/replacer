@@ -59,10 +59,9 @@ dofile(path .. 'replacer/patterns.lua')
 dofile(path .. 'replacer/replacer.lua')
 dofile(path .. 'crafts.lua')
 dofile(path .. 'chat_commands.lua')
--- add cable plate exceptions
-if replacer.has_technic_mod then
-	dofile(path .. 'compat/technic.lua')
-end
+-- add cable plate exceptions (uses replacer/constrain.lua)
+dofile(path .. 'compat/technic.lua')
+
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 print('[replacer] loaded')
