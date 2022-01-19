@@ -1,46 +1,47 @@
 # textdomain: replacer
-History=
-Choose mode=
-Both=
-Node=
-Rotation=
-Replace node and apply orientation.=
-Replace node without changing orientation.=
-Apply orientation without changing node type.=
-Single=
-Field=
-Crust=
-Replace single node.=
+History=Histórico
+Choose mode=Escolha o modo
+Both=Ambos
+Node=Nó
+Rotation=Rotação
+Replace node and apply orientation.=Substitua o nó e aplique a orientação.
+Replace node without changing orientation.=Substitua o nó sem alterar a orientação.
+Apply orientation without changing node type.=Aplique a orientação sem alterar o tipo de nó.
+Single=Único
+Field=Campo
+Crust=Crosta
+Replace single node.=Substitua um único nó.
 
-Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=
+Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=Clique com o botão esquerdo: Substitui o campo de nós de um tipo onde um nó translúcido está na frente dele.@@Clique com o botão direito: Substitui o campo de ar onde nenhum nó translúcido está atrás do ar.
 
-Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=
+Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=Clique com o botão esquerdo: Substitui os nós que tocam em outro de seu tipo e um nó translúcido, por exemplo air.@@Clique com o botão direito: Substitua os nós de ar que tocam a crosta.
 
-Protected at %s=
-Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=
-You have no further "%s". Replacement failed.=
-Unknown node: "%s"=
-Unknown node to place: "%s"=
-Could not dig "%s" properly.=
-Could not place "%s".=
-Error: "%s" is not a node.=
-Target node not yet loaded. Please wait a moment for the server to catch up.=
-Nothing to replace.=
-Not enough charge to use this mode.=
-Aborted, too many nodes detected.=
-Need %s charge to replace %s nodes.=
-%s nodes replaced.=
-Mode changed to %s: %s=
-Error: No node selected.=
-Item not in creative inventory: "%s".=
-Item not in your inventory: "%s".=
-Node replacement tool set to:@n%s.=
-Node replacement tool=
-Node replacement tool (technic)=
-Time-limit reached.=
+Protected at %s=Protegido em %s
+Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=A substituição de nós do tipo "%s" não é permitida neste servidor. Falha na substituição.
+You have no further "%s". Replacement failed.=Você não tem mais "%s". Falha na substituição.
+Unknown node: "%s"=Nó desconhecido: "%s"
+Unknown node to place: "%s"=Nó desconhecido para colocar: "%s"
+Could not dig "%s" properly.=Não foi possível cavar "%s" corretamente.
+Could not place "%s".=Não foi possível colocar "%s".
+Error: "%s" is not a node.=Erro: "%s" não é um nó.
+Target node not yet loaded. Please wait a moment for the server to catch up.=O nó de destino ainda não foi carregado. Aguarde um momento para o servidor recuperar o atraso.
+Nothing to replace.=Nada para substituir.
+Not enough charge to use this mode.=Carga insuficiente para usar este modo.
+Aborted, too many nodes detected.=Abortado, muitos nós detectados.
+Need %s charge to replace %s nodes.=Precisa de %s carga para substituir %s nós.
+%s nodes replaced.=%s nós substituídos.
+Mode changed to %s: %s=Modo alterado para %s: %s
+Error: No node selected.=Erro: Nenhum nó selecionado.
+Item not in creative inventory: "%s".=Item não no inventário do criativo: "%s".
+Item not in your inventory: "%s".=Item que não está em seu inventário: "%s".
+Node replacement tool set to:@n%s.=Ferramenta de substituição de nó definida como:@n%s.
+Node replacement tool=Ferramenta de substituição de nós
+Node replacement tool (technic)=Ferramenta de substituição de nós (técnica)
+Time-limit reached.=Limite de tempo atingido.
 
-Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=
+Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=Alterna a verbosidade.@nQuando ativado, as mensagens são postadas no bate-papo. Quando desligado, o substituto fica silencioso.
 
-Valid parameter is either "%s" or "%s"=
-on=
-off=
+Valid parameter is either "%s" or "%s"=O parâmetro válido é "%s" ou "%s"
+on=em
+off=não
+
