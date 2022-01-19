@@ -1,3 +1,4 @@
+20220119 * SwissalpS added first draft of de,es,fi,fr,it,pt,ru locales.
 20220118 * SwissalpS cleaned up more code, giving more discriptive variable names and
            cleaning out ugly modes table that had both number and string indexes
          * Don't allow replacer to be set to deny_list nodes
