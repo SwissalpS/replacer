@@ -15,8 +15,8 @@ function replacer.inform(name, message)
 	local meta = player:get_meta() if not meta then return end
 
 	if 0 < meta:get_int('replacer_mute') then return end
-	chat_send_player(name, message)
 
+	chat_send_player(name, message)
 end -- inform
 
 function replacer.nice_pos_string(pos)
