@@ -1,46 +1,47 @@
 # textdomain: replacer
-History=
-Choose mode=
-Both=
-Node=
-Rotation=
-Replace node and apply orientation.=
-Replace node without changing orientation.=
-Apply orientation without changing node type.=
-Single=
-Field=
-Crust=
-Replace single node.=
+History=История
+Choose mode=Выберите режим
+Both=Оба
+Node=Узел
+Rotation=Вращение
+Replace node and apply orientation.=Замените узел и примените ориентацию.
+Replace node without changing orientation.=Заменить узел без изменения ориентации.
+Apply orientation without changing node type.=Применить ориентацию без изменения типа узла.
+Single=Один
+Field=Поле
+Crust=Корка
+Replace single node.=Заменить один узел.
 
-Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=
+Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=Щелчок левой кнопкой мыши: заменить поле узлов такого типа, перед которым находится полупрозрачный узел. Щелчок правой кнопкой мыши: заменить поле воздуха там, где за воздухом не находится полупрозрачный узел.
 
-Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=
+Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=Щелкните левой кнопкой мыши: замените узлы, которые соприкасаются с другим в своем роде и полупрозрачным узлом, например. воздух.@@Щелкните правой кнопкой мыши: замените воздушные узлы, которые касаются корки.
 
-Protected at %s=
-Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=
-You have no further "%s". Replacement failed.=
-Unknown node: "%s"=
-Unknown node to place: "%s"=
-Could not dig "%s" properly.=
-Could not place "%s".=
-Error: "%s" is not a node.=
-Target node not yet loaded. Please wait a moment for the server to catch up.=
-Nothing to replace.=
-Not enough charge to use this mode.=
-Aborted, too many nodes detected.=
-Need %s charge to replace %s nodes.=
-%s nodes replaced.=
-Mode changed to %s: %s=
-Error: No node selected.=
-Item not in creative inventory: "%s".=
-Item not in your inventory: "%s".=
-Node replacement tool set to:@n%s.=
-Node replacement tool=
-Node replacement tool (technic)=
-Time-limit reached.=
+Protected at %s=Защищено в %s
+Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=Замена узлов типа "%s" на этом сервере запрещена. Замена не удалась.
+You have no further "%s". Replacement failed.=У вас больше нет "%s". Замена не удалась.
+Unknown node: "%s"=Неизвестный узел: "%s"
+Unknown node to place: "%s"=Неизвестный узел для размещения: "%s"
+Could not dig "%s" properly.=Не удалось правильно раскопать "%s".
+Could not place "%s".=Не удалось разместить "%s".
+Error: "%s" is not a node.=Ошибка: "%s" не является узлом.
+Target node not yet loaded. Please wait a moment for the server to catch up.=Целевой узел еще не загружен. Пожалуйста, подождите, пока сервер наверстает упущенное.
+Nothing to replace.=Нечем заменить.
+Not enough charge to use this mode.=Недостаточно заряда для использования этого режима.
+Aborted, too many nodes detected.=Прервано, обнаружено слишком много узлов.
+Need %s charge to replace %s nodes.=Требуется заряд %s для замены узлов %s.
+%s nodes replaced.=Заменено узлов: %s.
+Mode changed to %s: %s=Режим изменен на %s: %s
+Error: No node selected.=Ошибка: узел не выбран.
+Item not in creative inventory: "%s".=Предмета нет в творческом инвентаре: "%s".
+Item not in your inventory: "%s".=Предмета нет в вашем инвентаре: "%s".
+Node replacement tool set to:@n%s.=Инструмент замены узлов установлен на:@n%s.
+Node replacement tool=Инструмент замены узлов
+Node replacement tool (technic)=Инструмент замены узла (техника)
+Time-limit reached.=Достигнут лимит времени.
 
-Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=
+Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=Включает многословие. @nКогда включено, сообщения отправляются в чат. Когда выключено, заменитель молчит.
 
-Valid parameter is either "%s" or "%s"=
-on=
-off=
+Valid parameter is either "%s" or "%s"=Допустимый параметр: "%s" или "%s"
+on=да
+off=нет
+
