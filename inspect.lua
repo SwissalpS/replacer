@@ -244,30 +244,9 @@ replacer.image_button_link = function(stack_string)
 end
 
 replacer.add_circular_saw_recipe = function(node_name, recipes)
-	if not node_name
-		or not replacer.has_circular_saw
-		or 'moreblocks:circular_saw' == node_name
-	then
-		return
-	end
-	local help = node_name:split(':')
-	if not help or 2 ~= #help or 'stairs' == help[1] then
-		return
-	end
-	local help2 = help[2]:split('_')
-	if not help2 or 2 > #help2
-		or ('micro' ~= help2[1] and 'panel' ~= help2[1] and 'stair' ~= help2[1]
-			and 'slab' ~= help2[1])
-	then
-		return
-	end
---	for i,v in ipairs(circular_saw.names) do
---		modname..":"..v[1].."_"..material..v[2]
+	local basic_node_name = replacer.is_saw_output(node_name)
+	if not basic_node_name then return end
 
--- TODO: write better and more correct method of getting the names of the materials
--- TODO: make sure only nodes produced by the saw are listed here
-	help[1] = 'default'
-	local basic_node_name = help[1] .. ':' .. help2[2]
 	-- node found that fits into the saw
 	recipes[#recipes + 1] = {
 		method = 'saw',
@@ -276,7 +255,7 @@ replacer.add_circular_saw_recipe = function(node_name, recipes)
 		output = node_name
 	}
 	return recipes
-end
+end -- add_circular_saw_recipe
 
 
 replacer.add_colormachine_recipe = function(node_name, recipes)
