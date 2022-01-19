@@ -48,10 +48,10 @@ dofile(path .. 'replacer/blabla.lua')
 dofile(path .. 'utils.lua')
 -- unifiedddyes support functions
 dofile(path .. 'compat/unifieddyes.lua')
-replacer.datastructures = dofile(path .. 'replacer/datastructures.lua')
 dofile(path .. 'compat/moreblocks.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
+replacer.datastructures = dofile(path .. 'replacer/datastructures.lua')
 dofile(path .. 'replacer/constrain.lua')
 dofile(path .. 'replacer/formspecs.lua')
 dofile(path .. 'replacer/history.lua')
