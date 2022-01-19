@@ -552,9 +552,11 @@ function replacer.on_place(itemstack, player, pt)
 	end
 
 	local inv = player:get_inventory()
-	if (not (creative_enabled and has_give)) and
-		(not inv:contains_item('main', node.name)) and
-		(not r.exception_map[node.name])
+	if (not (creative_enabled and has_give))
+		and (not inv:contains_item('main', node.name))
+		and (not r.exception_map[node.name])
+		and (not r.is_beacon_beam_or_base(node.name))
+		and (not r.is_saw_output(node.name))
 	then
 		-- not in inv and not (creative and give)
 		local found_item = false

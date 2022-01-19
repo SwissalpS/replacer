@@ -46,9 +46,12 @@ local path = minetest.get_modpath('replacer') .. '/'
 dofile(path .. 'replacer/blabla.lua')
 -- utilities
 dofile(path .. 'utils.lua')
+-- beacon beam support
+dofile(path .. 'compat/beacon.lua')
+-- circular saw support
+dofile(path .. 'compat/moreblocks.lua')
 -- unifiedddyes support functions
 dofile(path .. 'compat/unifieddyes.lua')
-dofile(path .. 'compat/moreblocks.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
 replacer.datastructures = dofile(path .. 'replacer/datastructures.lua')
