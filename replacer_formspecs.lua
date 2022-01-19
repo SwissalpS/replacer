@@ -15,13 +15,25 @@ function replacer.get_form_modes_4(player, mode)
 	local major, minor = mode.major, mode.minor
 	local name = player:get_player_name()
 	local has_history_priv = check_player_privs(name, r.history_priv)
-	local form_height = has_history_priv and '4.39' or '3'
+	local form_dimensions = '5.375,4.25'
+	local button_height = '1'
+	local button_single_dimensions = '.33,.77;2,'
+	local button_field_dimensions = '2.9,.77;2,'
+	local button_crust_dimensions = '1.44,2.1;2,'
+	local minor_dimensions = '.38,3.42;4.5,.55'
+	if has_history_priv then
+		form_dimensions = '8.375,4.39'
+		button_single_dimensions = '0.33,0.77;2.3,'
+		button_field_dimensions = '3.04,0.77;2.3,'
+		button_crust_dimensions = '5.75,0.77;2.3,'
+		minor_dimensions = '1.88,2.12;4.5,0.60'
+	end
 	local tmp_name = '_'
 	local formspec = 'formspec_version[4]'
-		.. 'size[5.375,' .. form_height
+		.. 'size[' .. form_dimensions
 		.. ']padding[0.375,0.375]'
 		.. 'label[0.33,0.44;' .. mfe(rb.choose_mode)
-		.. ']button_exit[0.33,0.77;2,0.5;'
+		.. ']button_exit[' .. button_single_dimensions .. button_height .. ';'
 	if 1 == major then
 		formspec = formspec .. '_;< ' .. mfe(rb.mode_single) .. ' >'
 	else
@@ -29,7 +41,8 @@ function replacer.get_form_modes_4(player, mode)
 		formspec = formspec .. 'mode1;' .. mfe(rb.mode_single)
 	end
 	formspec = formspec .. ']tooltip[' .. tmp_name .. ';'
-		.. mfe(rb.mode_single_tooltip) .. ']button_exit[2.9,0.77;2,0.5;'
+		.. mfe(rb.mode_single_tooltip) .. ']button_exit['
+		.. button_field_dimensions .. button_height .. ';'
 	if 2 == major then
 		tmp_name = '_'
 		formspec = formspec .. '_;< ' .. mfe(rb.mode_field) .. ' >'
@@ -38,7 +51,8 @@ function replacer.get_form_modes_4(player, mode)
 		formspec = formspec .. 'mode2;' .. mfe(rb.mode_field)
 	end
 	formspec = formspec .. ']tooltip[' .. tmp_name .. ';'
-		.. mfe(rb.mode_field_tooltip) .. ']button_exit[1.44,1.55;2,0.5;'
+		.. mfe(rb.mode_field_tooltip) .. ']button_exit['
+		.. button_crust_dimensions .. button_height .. ';'
 	if 3 == major then
 		tmp_name = '_'
 		formspec = formspec .. '_;< ' .. mfe(rb.mode_crust) .. ' >'
@@ -46,7 +60,6 @@ function replacer.get_form_modes_4(player, mode)
 		tmp_name = 'mode3'
 		formspec = formspec .. 'mode3;' .. mfe(rb.mode_crust)
 	end
-	local minor_dimensions = '0.38,2.22;4.5,0.55'
 	formspec = formspec .. ']tooltip[' .. tmp_name .. ';'
 		.. mfe(rb.mode_crust_tooltip) .. ']dropdown[' .. minor_dimensions .. ';minor;'
 		.. mfe(rb.mode_minor1) .. ',' .. mfe(rb.mode_minor2) .. ',' .. mfe(rb.mode_minor3)
@@ -57,7 +70,7 @@ function replacer.get_form_modes_4(player, mode)
 	if not has_history_priv then return formspec end
 
 	formspec = formspec .. 'label[0.33,3.22;' .. mfe(rb.choose_history)
-		.. ']dropdown[0.38,3.55;4.5,0.55;history;'
+		.. ']dropdown[0.38,3.55;7.5,0.6;history;'
 	local db = r.history.get_player_table(player)
 	for i, data in ipairs(db) do
 		if r.history_include_mode then
