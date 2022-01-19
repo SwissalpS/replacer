@@ -3,8 +3,8 @@ local rb = replacer.blabla
 
 -- let's hope there isn't a yes that means no in another language :/
 -- TODO: better option would be to simply toggle (see postool)
-local lOn = { 'on', 'yes', 'an', 'ja', 'si', 'sí', 'да', 'oui', 'joo', 'juu', 'kyllä', 'sim', 'em' }
-local lOff = { 'off', 'no', 'aus', 'nein', 'non', 'нет', 'ei', 'fora', 'não', 'desligado' }
+local lOn = { '1', 'on', 'yes', 'an', 'ja', 'si', 'sí', 'да', 'oui', 'joo', 'juu', 'kyllä', 'sim', 'em' }
+local lOff = { '0', 'off', 'no', 'aus', 'nein', 'non', 'нет', 'ei', 'fora', 'não', 'desligado' }
 local tOn, tOff = {}, {}
 for _, s in ipairs(lOn) do tOn[s] = true end
 for _, s in ipairs(lOff) do tOff[s] = true end

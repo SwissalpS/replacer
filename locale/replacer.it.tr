@@ -1,46 +1,47 @@
 # textdomain: replacer
-History=
-Choose mode=
-Both=
-Node=
-Rotation=
-Replace node and apply orientation.=
-Replace node without changing orientation.=
-Apply orientation without changing node type.=
-Single=
-Field=
-Crust=
-Replace single node.=
+History=Storia
+Choose mode=Scegli modalità
+Both=Entrambi
+Node=Nodo
+Rotation=Rotazione
+Replace node and apply orientation.=Sostituisci il nodo e applica l'orientamento.
+Replace node without changing orientation.=Sostituisci il nodo senza modificare l'orientamento.
+Apply orientation without changing node type.=Applicare l'orientamento senza modificare il tipo di nodo.
+Single=Singolo
+Field=Campo
+Crust=Crosta
+Replace single node.=Sostituisci singolo nodo.
 
-Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=
+Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=Clic sinistro: Sostituisci il campo di nodi di un tipo in cui un nodo traslucido è davanti ad esso.@@Clic destro: Sostituisci il campo d'aria dove nessun nodo traslucido è dietro l'aria.
 
-Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=
+Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=Clic sinistro: Sostituisci i nodi che toccano un altro del suo genere e un nodo traslucido, ad es. air.@@Clic destro: Sostituisci i nodi d'aria che toccano la crosta.
 
-Protected at %s=
-Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=
-You have no further "%s". Replacement failed.=
-Unknown node: "%s"=
-Unknown node to place: "%s"=
-Could not dig "%s" properly.=
-Could not place "%s".=
-Error: "%s" is not a node.=
-Target node not yet loaded. Please wait a moment for the server to catch up.=
-Nothing to replace.=
-Not enough charge to use this mode.=
-Aborted, too many nodes detected.=
-Need %s charge to replace %s nodes.=
-%s nodes replaced.=
-Mode changed to %s: %s=
-Error: No node selected.=
-Item not in creative inventory: "%s".=
-Item not in your inventory: "%s".=
-Node replacement tool set to:@n%s.=
-Node replacement tool=
-Node replacement tool (technic)=
-Time-limit reached.=
+Protected at %s=Protetto a %s
+Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=La sostituzione dei nodi di tipo "%s" non è consentita su questo server. Sostituzione non riuscita.
+You have no further "%s". Replacement failed.=Non hai più "%s". Sostituzione non riuscita.
+Unknown node: "%s"=Nodo sconosciuto: "%s"
+Unknown node to place: "%s"=Nodo sconosciuto da posizionare: "%s"
+Could not dig "%s" properly.=Impossibile scavare correttamente "%s".
+Could not place "%s".=Impossibile posizionare "%s".
+Error: "%s" is not a node.=Errore: "%s" non è un nodo.
+Target node not yet loaded. Please wait a moment for the server to catch up.=Nodo di destinazione non ancora caricato. Si prega di attendere un momento affinché il server raggiunga.
+Nothing to replace.=Niente da sostituire.
+Not enough charge to use this mode.=Carica insufficiente per utilizzare questa modalità.
+Aborted, too many nodes detected.=Interrotto, troppi nodi rilevati.
+Need %s charge to replace %s nodes.=Sono necessari %s addebito per sostituire %s nodi.
+%s nodes replaced.=%s nodi sostituiti.
+Mode changed to %s: %s=Modalità modificata in %s: %s
+Error: No node selected.=Errore: nessun nodo selezionato.
+Item not in creative inventory: "%s".=Articolo non nell'inventario della creatività: "%s".
+Item not in your inventory: "%s".=Articolo non nel tuo inventario: "%s".
+Node replacement tool set to:@n%s.=Strumento di sostituzione del nodo impostato su:@n%s.
+Node replacement tool=Strumento di sostituzione del nodo
+Node replacement tool (technic)=Strumento di sostituzione del nodo (tecnico)
+Time-limit reached.=Tempo limite raggiunto.
 
-Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=
+Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=Attiva o disattiva la verbosità.@nQuando è attiva, i messaggi vengono inviati alla chat. Quando è spento, il sostituto è silenzioso.
 
-Valid parameter is either "%s" or "%s"=
-on=
-off=
+Valid parameter is either "%s" or "%s"=Il parametro valido è "%s" o "%s"
+on=1
+off=0
+
