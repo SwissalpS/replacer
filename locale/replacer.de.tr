@@ -15,6 +15,7 @@ Replace single node.=Ersetze einzelnen Node
 Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=Links Klick: Ersetzt ein Feld gleichartiger Node welche durchsichtige Nachbarnode haben.@@Rechts Klick: Ersetzt die Luft vor dem Feld undurchsichtiger Node.
 
 Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=Links Klick: Ersetzt benachbarte, gleichartige Node welche gleichzeitig durchsichtige (nicht feste) Node berühren.@@Rechts Klick: Ersetzt Luft an der Kruste.
+
 Protected at %s=Geschützt bei %s
 Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=Node des Typs „%s“ dürfen auf diesem Server nicht ersetzt werden. Versuch fehlgeschlagen.
 You have no further "%s". Replacement failed.=Du hast keine weitere „%s“. Ersetzung fehlgeschlagen.
