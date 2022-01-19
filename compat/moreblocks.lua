@@ -6,11 +6,15 @@ end
 
 local core_registered_nodes = minetest.registered_nodes
 local shapes_list_sorted = nil
+local confirmed_saw_items = {}
 
 function replacer.is_saw_output(node_name)
 	if not node_name or 'moreblocks:circular_saw' == node_name then
 		return nil
 	end
+	-- if we already confirmed this item, let's take the shortcut
+	if confirmed_saw_items[node_name] then return confirmed_saw_items[node_name] end
+
 	-- first time this function is called
 	-- make a copy and sort so longest postfixes are used first
 	if nil == shapes_list_sorted then
@@ -56,6 +60,8 @@ function replacer.is_saw_output(node_name)
 		return nil
 	end
 
+	-- cache to speed up next call
+	confirmed_saw_items[node_name] = basic_node_name
 	return basic_node_name
 end -- is_saw_output
 
