@@ -1,46 +1,47 @@
 # textdomain: replacer
-History=
-Choose mode=
-Both=
-Node=
-Rotation=
-Replace node and apply orientation.=
-Replace node without changing orientation.=
-Apply orientation without changing node type.=
-Single=
-Field=
-Crust=
-Replace single node.=
+History=Historia
+Choose mode=Elegir modo
+Both=Ambos
+Node=Nodo
+Rotation=Rotación
+Replace node and apply orientation.=Reemplazar nodo y aplicar orientación.
+Replace node without changing orientation.=Reemplazar nodo sin cambiar la orientación.
+Apply orientation without changing node type.=Aplicar orientación sin cambiar el tipo de nodo.
+Single=Único
+Field=Campo
+Crust=Corteza
+Replace single node.=Reemplazar nodo único.
 
-Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=
+Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=Clic izquierdo: Reemplazar campo de nodos de un tipo donde hay un nodo translúcido frente a él.@@ Clic derecho: Reemplazar campo de aire donde no hay un nodo translúcido detrás del aire.
 
-Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=
+Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=Clic izquierdo: reemplaza los nodos que tocan otro de su tipo y un nodo translúcido, p. aire.@@Clic derecho: Reemplazar los nodos de aire que tocan la corteza.
 
-Protected at %s=
-Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=
-You have no further "%s". Replacement failed.=
-Unknown node: "%s"=
-Unknown node to place: "%s"=
-Could not dig "%s" properly.=
-Could not place "%s".=
-Error: "%s" is not a node.=
-Target node not yet loaded. Please wait a moment for the server to catch up.=
-Nothing to replace.=
-Not enough charge to use this mode.=
-Aborted, too many nodes detected.=
-Need %s charge to replace %s nodes.=
-%s nodes replaced.=
-Mode changed to %s: %s=
-Error: No node selected.=
-Item not in creative inventory: "%s".=
-Item not in your inventory: "%s".=
-Node replacement tool set to:@n%s.=
-Node replacement tool=
-Node replacement tool (technic)=
-Time-limit reached.=
+Protected at %s=Protegido en %s
+Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=No se permite reemplazar nodos de tipo "%s" en este servidor. Reemplazo fallido.
+You have no further "%s". Replacement failed.=No tienes más "%s". Reemplazo fallido.
+Unknown node: "%s"=Nodo desconocido: "%s"
+Unknown node to place: "%s"=Nodo desconocido a colocar: "%s"
+Could not dig "%s" properly.=No se pudo excavar "%s" correctamente.
+Could not place "%s".=No se pudo colocar "%s".
+Error: "%s" is not a node.=Error: "%s" no es un nodo.
+Target node not yet loaded. Please wait a moment for the server to catch up.=Nodo de destino aún no cargado. Espere un momento a que el servidor se ponga al día.
+Nothing to replace.=Nada para reemplazar.
+Not enough charge to use this mode.=No hay suficiente carga para usar este modo.
+Aborted, too many nodes detected.=Anulado, demasiados nodos detectados.
+Need %s charge to replace %s nodes.=Necesita %s carga para reemplazar %s nodos.
+%s nodes replaced.=%s nodos reemplazados.
+Mode changed to %s: %s=Modo cambiado a %s: %s
+Error: No node selected.=Error: No se seleccionó ningún nodo.
+Item not in creative inventory: "%s".=Artículo no está en el inventario creativo: "%s".
+Item not in your inventory: "%s".=Artículo no está en su inventario: "%s".
+Node replacement tool set to:@n%s.=Intercambiador establecida en:@n%s.
+Node replacement tool=Intercambiador
+Node replacement tool (technic)=Intercambiador (técnica)
+Time-limit reached.=Límite de tiempo alcanzado.
 
-Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=
+Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=Alterna verbosidad.@nCuando está activado, los mensajes se publican en el chat. Cuando está apagado, el intercambiador está en silencio.
 
-Valid parameter is either "%s" or "%s"=
-on=
-off=
+Valid parameter is either "%s" or "%s"=El parámetro válido es "%s" o "%s"
+on=1
+off=0
+
