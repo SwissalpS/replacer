@@ -2,6 +2,8 @@ local rb = replacer.blabla
 local chat_send_player = minetest.chat_send_player
 local get_player_by_name = minetest.get_player_by_name
 local log = minetest.log
+local floor = math.floor
+local pos_to_string = minetest.pos_to_string
 
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
@@ -16,6 +18,15 @@ function replacer.inform(name, message)
 	chat_send_player(name, message)
 
 end -- inform
+
+function replacer.nice_pos_string(pos)
+	local no_info = '<no positional information>'
+	if 'table' ~= type(pos) then return no_info end
+	if not (pos.x and pos.y and pos.z) then return no_info end
+
+	pos = { x = floor(pos.x + .5), y = floor(pos.y + .5), z = floor(pos.z + .5) }
+	return pos_to_string(pos)
+end -- nice_pos_string
 
 -- from: http://lua-users.org/wiki/StringRecipes
 function replacer.titleCase(str)
