@@ -1,46 +1,47 @@
 # textdomain: replacer
-History=
-Choose mode=
-Both=
-Node=
-Rotation=
-Replace node and apply orientation.=
-Replace node without changing orientation.=
-Apply orientation without changing node type.=
-Single=
-Field=
-Crust=
-Replace single node.=
+History=Historia
+Choose mode=Valitse tila
+Both=Molemmat
+Node=Solmu
+Rotation=Kierto
+Replace node and apply orientation.=Korvaa solmu ja käytä suuntaa.
+Replace node without changing orientation.=Vaihda solmu suuntaa muuttamatta.
+Apply orientation without changing node type.=Käytä suuntaa muuttamatta solmun tyyppiä.
+Single=Single
+Field=Kenttä
+Crust=Kuori
+Replace single node.=Korvaa yksi solmu.
 
-Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=
+Left click: Replace field of nodes of a kind where a translucent node is in front of it.@@Right click: Replace field of air where no translucent node is behind the air.=Vasen napsautus: Korvaa sellaisten solmujen kenttä, joissa läpikuultava solmu on sen edessä.@@Oikea napsautus: Korvaa ilmakenttä, jossa ilman takana ei ole läpikuultavaa solmua.
 
-Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=
+Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=Vasen napsautus: Vaihda solmut, jotka koskettavat toista laatuaan ja läpikuultavaa solmua, esim. air.@@Kakkosnapsautus: Vaihda kuorta koskettavat ilmasolmut.
 
-Protected at %s=
-Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=
-You have no further "%s". Replacement failed.=
-Unknown node: "%s"=
-Unknown node to place: "%s"=
-Could not dig "%s" properly.=
-Could not place "%s".=
-Error: "%s" is not a node.=
-Target node not yet loaded. Please wait a moment for the server to catch up.=
-Nothing to replace.=
-Not enough charge to use this mode.=
-Aborted, too many nodes detected.=
-Need %s charge to replace %s nodes.=
-%s nodes replaced.=
-Mode changed to %s: %s=
-Error: No node selected.=
-Item not in creative inventory: "%s".=
-Item not in your inventory: "%s".=
-Node replacement tool set to:@n%s.=
-Node replacement tool=
-Node replacement tool (technic)=
-Time-limit reached.=
+Protected at %s=Suojattu %s
+Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=Tyypin "%s" solmujen korvaaminen ei ole sallittua tässä palvelimessa. Vaihto epäonnistui.
+You have no further "%s". Replacement failed.=Sinulla ei ole enempää "%s". Vaihto epäonnistui.
+Unknown node: "%s"=Tuntematon solmu: "%s"
+Unknown node to place: "%s"=Tuntematon sijoitettava solmu: "%s"
+Could not dig "%s" properly.=Ei voitu kaivaa "%s" oikein.
+Could not place "%s".=Ei voitu sijoittaa "%s".
+Error: "%s" is not a node.=Virhe: "%s" ei ole solmu.
+Target node not yet loaded. Please wait a moment for the server to catch up.=Kohdesolmua ei ole vielä ladattu. Odota hetki, että palvelin ottaa kiinni.
+Nothing to replace.=Ei mitään korvattavaa.
+Not enough charge to use this mode.=Lataus ei riitä tämän tilan käyttämiseen.
+Aborted, too many nodes detected.=Keskeytetty, liian monta solmua havaittu.
+Need %s charge to replace %s nodes.=Tarvitset %s-latauksen korvataksesi %s solmun.
+%s nodes replaced.=%s solmua vaihdettu.
+Mode changed to %s: %s=Tila muutettu tilaksi %s: %s
+Error: No node selected.=Virhe: solmua ei ole valittu.
+Item not in creative inventory: "%s".=Kohde ei ole mainosjakaumassa: "%s".
+Item not in your inventory: "%s".=Tuote, joka ei ole varastossa: "%s".
+Node replacement tool set to:@n%s.=Solmun korvaustyökalu asetettu arvoon:@n%s.
+Node replacement tool=Solmun vaihtotyökalu
+Node replacement tool (technic)=Solmun vaihtotyökalu (tekninen)
+Time-limit reached.=Aikaraja saavutettu.
 
-Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=
+Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=Vaihtaa verbosity.@nKun käytössä, viestit lähetetään chattiin. Kun se on pois päältä, korvaaja on äänetön.
 
-Valid parameter is either "%s" or "%s"=
-on=
-off=
+Valid parameter is either "%s" or "%s"=Kelvollinen parametri on joko "%s" tai "%s"
+on=kyllä
+off=fora
+
