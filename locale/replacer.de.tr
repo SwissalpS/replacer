@@ -34,9 +34,9 @@ Mode changed to %s: %s=Modus gewechselt auf: %s
 Error: No node selected.=Fehler: Kein Knoten ausgwählt.
 Item not in creative inventory: "%s".=Artikel befindet sich nicht im Kreativ-Inventar: „%s“.
 Item not in your inventory: "%s".=Artikel befindet sich nicht in deinem Inventar: „%s“.
-Node replacement tool set to:@n%s.=Nodeersetzer konfiguriert auf:@n%s.
-Node replacement tool=Nodeersetzer
-Node replacement tool (technic)=Knotenersetzer (Technik)
+Node replacement tool set to:@n%s.=Ersetzer konfiguriert auf:@n%s.
+Node replacement tool=Ersetzer
+Node replacement tool (technic)=Ersetzer (Technik)
 Time-limit reached.=Zeitbegrenzung erreicht.
 
 Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=Schaltet die Ausführlichkeit um.@nWenn diese Option aktiviert ist, werden Nachrichten im Chat ausgegeben. Im ausgeschalteten Zustand ist der Ersetzer stumm.
