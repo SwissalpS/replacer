@@ -48,18 +48,26 @@ replacer.image_replacements = {}
 local path = minetest.get_modpath('replacer') .. '/'
 -- strings for translation (r)
 dofile(path .. 'replacer/blabla.lua')
+-- more settings and functions
+dofile(path .. 'replacer/constrain.lua')
 -- utilities (i+r)
 dofile(path .. 'utils.lua')
+
+-- TODO: just loop through compat dir
 -- bakedclay support (i)
 dofile(path .. 'compat/bakedclay.lua')
 -- beacon beam support (r)
 dofile(path .. 'compat/beacon.lua')
 -- default & basic dyes support (i)
 dofile(path .. 'compat/default.lua')
+-- cobweb (r)
+dofile(path .. 'compat/mobs.lua')
 -- circular saw support (i+r)
 dofile(path .. 'compat/moreblocks.lua')
 -- RealTest overrides (i)
 dofile(path .. 'compat/realTest.lua')
+-- add cable plate exceptions (r)
+dofile(path .. 'compat/technic.lua')
 -- unifiedddyes support functions (i+r)
 dofile(path .. 'compat/unifieddyes.lua')
 -- vines group support (i)
@@ -68,19 +76,12 @@ dofile(path .. 'compat/vines.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
 replacer.datastructures = dofile(path .. 'replacer/datastructures.lua')
-dofile(path .. 'replacer/constrain.lua')
 dofile(path .. 'replacer/formspecs.lua')
 dofile(path .. 'replacer/history.lua')
 dofile(path .. 'replacer/patterns.lua')
 dofile(path .. 'replacer/replacer.lua')
 dofile(path .. 'crafts.lua')
 dofile(path .. 'chat_commands.lua')
--- these use replacer/constrain.lua
--- cobweb (r)
-dofile(path .. 'compat/mobs.lua')
--- add cable plate exceptions (r)
-dofile(path .. 'compat/technic.lua')
-
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 print('[replacer] loaded')
