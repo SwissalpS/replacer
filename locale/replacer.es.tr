@@ -80,4 +80,5 @@ May drop on dig:=Puede caer en excavación:
 Alternate %s/%s=alternativo %s/%s
 This can be used as a fuel.=Esto se puede usar como combustible.
 Error: Unkown recipe.=Error: Receta desconocida.
+Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Herramienta de inspección@nUsar para inspeccionar el nodo o la entidad de destino.@nColocar para inspeccionar el nodo adyacente.
 
