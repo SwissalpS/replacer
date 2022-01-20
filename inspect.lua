@@ -179,7 +179,7 @@ replacer.group_placeholder['group:wool'] = 'wool:white'
 
 -- add default game dyes
 for _, color in pairs(dye.dyes) do
-	replacer.group_placeholder['group:dye,color_' .. color[1]] = 'dye:' .. color[1]
+	replacer.group_placeholder['group:dye,color_' .. color[1] ] = 'dye:' .. color[1]
 end
 
 -- add default game flowers
