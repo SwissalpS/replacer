@@ -5,7 +5,8 @@
 -- when placing (rc), info about the node to the side that was clicked is
 -- presented. Mostly air.
 minetest.register_tool('replacer:inspect', {
-	description = 'Node inspection tool',
+	description = 'Node Inspection Tool\nUse to inspect target node.\n'
+		.. 'Place to inspect the adjacent node.',
 	groups = {},
 	inventory_image = 'replacer_inspect.png',
 	wield_image = '',
