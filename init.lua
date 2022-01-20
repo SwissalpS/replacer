@@ -50,6 +50,8 @@ local path = minetest.get_modpath('replacer') .. '/'
 dofile(path .. 'replacer/blabla.lua')
 -- utilities (i+r)
 dofile(path .. 'utils.lua')
+-- bakedclay support (i)
+dofile(path .. 'compat/bakedclay.lua')
 -- beacon beam support (r)
 dofile(path .. 'compat/beacon.lua')
 -- default support (i)
