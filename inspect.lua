@@ -1,4 +1,9 @@
-
+-- a crafting guide wanabe. Better than nothing for servers without
+-- unified_inventory installed.
+-- most useful feature is probably light measuring.
+-- when punching (lc), info about the node that was punched is presented
+-- when placing (rc), info about the node to the side that was clicked is
+-- presented. Mostly air.
 minetest.register_tool('replacer:inspect', {
 	description = 'Node inspection tool',
 	groups = {},
@@ -12,13 +17,13 @@ minetest.register_tool('replacer:inspect', {
 	end,
 
 	on_place = function(itemstack, placer, pointed_thing)
-		return replacer.inspect(itemstack, placer, pointed_thing)
+		return replacer.inspect(itemstack, placer, pointed_thing, true)
 	end,
 })
 
 local nice_pos_string = replacer.nice_pos_string
 
-function replacer.inspect(_, user, pointed_thing, mode)
+function replacer.inspect(_, user, pointed_thing, right_clicked)
 	if nil == user or nil == pointed_thing then
 		return nil
 	end
@@ -113,7 +118,7 @@ function replacer.inspect(_, user, pointed_thing, mode)
 		return nil
 	end
 
-	local pos  = minetest.get_pointed_thing_position(pointed_thing, mode)
+	local pos  = minetest.get_pointed_thing_position(pointed_thing, right_clicked)
 	local node = minetest.get_node_or_nil(pos)
 
 	if not node then
@@ -131,9 +136,6 @@ function replacer.inspect(_, user, pointed_thing, mode)
 
 		-- get light of the node at the current time
 	local light = minetest.get_node_light(pos, nil)
-	if 0 == light then
-		light = minetest.get_node_light({ x = pos.x, y = pos.y + 1, z = pos.z })
-	end
 	-- the fields part is used here to provide additional
 	-- information about the node
 	replacer.inspect_show_crafting(name, node.name, {
