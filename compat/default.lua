@@ -44,3 +44,6 @@ if replacer.has_basic_dyes then
 	end
 end
 
+-- can be crafted, so let it be placed
+replacer.register_exception('default:dirt_with_grass', 'default:dirt_with_grass')
+

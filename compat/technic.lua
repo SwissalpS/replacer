@@ -15,3 +15,6 @@ for _, sTier in ipairs(lTiers) do
 	end
 end
 
+-- can be frozen, so let it be placed
+replacer.register_exception('default:dirt_with_snow', 'default:dirt_with_snow')
+
