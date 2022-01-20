@@ -46,17 +46,17 @@ replacer.group_placeholder = {}
 replacer.image_replacements = {}
 
 local path = minetest.get_modpath('replacer') .. '/'
--- strings for translation
+-- strings for translation (r)
 dofile(path .. 'replacer/blabla.lua')
--- utilities
+-- utilities (i+r)
 dofile(path .. 'utils.lua')
--- beacon beam support
+-- beacon beam support (r)
 dofile(path .. 'compat/beacon.lua')
--- circular saw support
+-- circular saw support (i+r)
 dofile(path .. 'compat/moreblocks.lua')
--- unifiedddyes support functions
 -- RealTest overrides (i)
 dofile(path .. 'compat/realTest.lua')
+-- unifiedddyes support functions (i+r)
 dofile(path .. 'compat/unifieddyes.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
@@ -69,8 +69,9 @@ dofile(path .. 'replacer/replacer.lua')
 dofile(path .. 'crafts.lua')
 dofile(path .. 'chat_commands.lua')
 -- these use replacer/constrain.lua
+-- cobweb (r)
 dofile(path .. 'compat/mobs.lua')
--- add cable plate exceptions
+-- add cable plate exceptions (r)
 dofile(path .. 'compat/technic.lua')
 
 --------------------------------------------------------------------------------

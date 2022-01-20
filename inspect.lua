@@ -4,7 +4,7 @@ minetest.register_tool('replacer:inspect', {
 	groups = {},
 	inventory_image = 'replacer_inspect.png',
 	wield_image = '',
-	wield_scale = { x = 1,y = 1,z = 1 },
+	wield_scale = { x = 1, y = 1, z = 1 },
 	liquids_pointable = true, -- it is ok to request information about liquids
 
 	on_use = function(itemstack, user, pointed_thing)
