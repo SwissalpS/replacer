@@ -45,3 +45,39 @@ Valid parameter is either "%s" or "%s"=O parâmetro válido é "%s" ou "%s"
 on=em
 off=não
 
+Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Ferramenta de Inspeção@nUse para inspecionar o nó ou entidade de destino.@nPlace para inspecionar o nó adjacente.
+
+This is a broken object. We have no further information about it. It is located=Este é um objeto quebrado. Não temos mais informações a respeito. está localizado
+This is your fellow player "%s"=Este é seu colega jogador "%s"
+This is an entity "%s"=Esta é uma entidade "%s"
+, dropped %s minutes ago=, caiu %s minutos atrás
+owned, protected and locked=possuído, protegido e bloqueado
+owned and protected=possuído e protegido
+owned and locked=possuído e bloqueado
+by "%s"=por "%s"
+with order to %s=com ordem para %s
+Has %s different types of items,=Tem %s tipos diferentes de itens,
+total of %s items in inventory.=total de %s itens no inventário.
+This is an object "%s"=Este é um objeto "%s"
+This is an object=Este é um objeto
+at %s=em %s
+Sorry, this is an unkown something of type "%s". No information available.=Desculpe, isso é algo desconhecido do tipo "%s". Nenhuma informação disponível.
+
+WARNING: You can't dig this node. It is protected.=AVISO: você não pode cavar este nó. Está protegido.
+INFO: You can dig this node, others can't.=INFO: Você pode cavar este nó, mas outros não podem.
+~ no description provided ~=~ nenhuma descrição fornecida ~
+~ no node description provided ~=~ nenhuma descrição do nó fornecida ~
+~ no item description provided ~=~ nenhuma descrição do item fornecida ~
+Located at %s=Localizado em %s
+with param2 of %s=com param2 de %s
+and receiving %s light=e recebendo %s luz
+prev=anterior
+next=próximo
+No recipes.=Sem receitas.
+Drops on dig:=Gotas na escavação:
+nothing=nada
+May drop on dig:=Pode cair na escavação:
+Alternate %s/%s=alternativo %s/%s
+This can be used as a fuel.=Isso pode ser usado como combustível.
+Error: Unkown recipe.=Erro: receita desconhecida.
+
