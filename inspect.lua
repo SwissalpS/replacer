@@ -144,7 +144,6 @@ replacer.inspect = function(_, user, pointed_thing, mode)
 end
 
 -- some common groups
-replacer.group_placeholder = {}
 replacer.group_placeholder['group:coal'] = 'default:coal_lump'
 replacer.group_placeholder['group:leaves'] = 'default:leaves'
 replacer.group_placeholder['group:sand'] = 'default:sand'
