@@ -1,0 +1,21 @@
+-- known incompat replacer ------------------------
+most of the coloured nodes work, just not setting without
+at least one in inventory
+these should be solve-able with a general lookup similar to what
+inspect already does, but return an itemstring for correct
+consumption node
+-- framed steel obsidian glass tinted
+-- new glass
+-- unified bricks bricks and clay (coloured)
+-- sci-fi plastic coloured
+-- stained glass coloured (normal and trap)
+
+-- telemosaic extenders (coloured) probably will need a compat like beacon beams
+-- default clay (baked works)
+
+-- doors in general (low priority)
+-- elphabet:xx (lowest priority)
+---------- known incompat inspect -----------
+-- soundblock recipe does not correctly show mesecon wires
+-- same for fpga and delayer (works with gates though also eeprom and some others)
+
