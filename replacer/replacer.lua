@@ -553,9 +553,9 @@ function replacer.on_place(itemstack, player, pt)
 
 	local inv = player:get_inventory()
 
-	if (not creative_enabled) and r.reverse_exception_map[node.name] then
+	if (not creative_enabled) and r.alias_map[node.name] then
 		-- apply reverse exception (alias) if not a creatvie user
-		node.name = r.reverse_exception_map[node.name]
+		node.name = r.alias_map[node.name]
 	elseif (not (creative_enabled and has_give))
 		and (not inv:contains_item('main', node.name))
 		and (not r.exception_map[node.name])
