@@ -18,7 +18,7 @@ minetest.register_tool('replacer:inspect', {
 
 local nice_pos_string = replacer.nice_pos_string
 
-replacer.inspect = function(_, user, pointed_thing, mode)
+function replacer.inspect(_, user, pointed_thing, mode)
 	if nil == user or nil == pointed_thing then
 		return nil
 	end
@@ -141,7 +141,7 @@ replacer.inspect = function(_, user, pointed_thing, mode)
 		protected_info = protected_info })
 
 	return nil -- no item shall be removed from inventory
-end
+end -- replacer.inspect
 
 -- add bakedclay items
 if replacer.has_bakedclay then
