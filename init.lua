@@ -70,7 +70,7 @@ dofile(path .. 'compat/realTest.lua')
 dofile(path .. 'compat/technic.lua')
 -- unifiedddyes support functions (i+r)
 dofile(path .. 'compat/unifieddyes.lua')
--- vines group support (i)
+-- vines group support (i+r)
 dofile(path .. 'compat/vines.lua')
 
 -- adds a tool for inspecting nodes and entities
