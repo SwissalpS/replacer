@@ -152,7 +152,6 @@ replacer.group_placeholder['group:stick'] = 'default:stick'
 -- 'default:stone' point people to the cheaper cobble
 replacer.group_placeholder['group:stone'] = 'default:cobble'
 replacer.group_placeholder['group:tree'] = 'default:tree'
-replacer.group_placeholder['group:vines'] = 'vines:vines'
 replacer.group_placeholder['group:wood'] = 'default:wood'
 replacer.group_placeholder['group:wood_slab'] = 'stairs:slab_wood'
 replacer.group_placeholder['group:wool'] = 'wool:white'

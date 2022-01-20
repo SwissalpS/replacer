@@ -58,6 +58,9 @@ dofile(path .. 'compat/moreblocks.lua')
 dofile(path .. 'compat/realTest.lua')
 -- unifiedddyes support functions (i+r)
 dofile(path .. 'compat/unifieddyes.lua')
+-- vines group support (i)
+dofile(path .. 'compat/vines.lua')
+
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
 replacer.datastructures = dofile(path .. 'replacer/datastructures.lua')
