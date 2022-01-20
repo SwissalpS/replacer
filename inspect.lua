@@ -317,9 +317,14 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		then
 			local drop = minetest.registered_nodes[node_name].drop
 			if 'string' == type(drop) and drop ~= node_name then
-				formspec = formspec .. 'label[2,1.6;Drops on dig:]'
-					.. 'item_image_button[2,2;1.0,1.0;'
-					.. replacer.image_button_link(drop) .. ']'
+				formspec = formspec .. 'label[2,1.6;Drops on dig:'
+				if '' == drop then
+					formspec = formspec .. 'nothing]'
+				else
+					formspec = formspec
+						.. ']item_image_button[2,2;1.0,1.0;'
+						.. replacer.image_button_link(drop) .. ']'
+				end
 			elseif 'table' == type(drop) and drop.items then
 				local droplist = {}
 				for _, drops in ipairs(drop.items) do
