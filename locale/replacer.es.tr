@@ -45,7 +45,7 @@ Valid parameter is either "%s" or "%s"=El parámetro válido es "%s" o "%s"
 on=1
 off=0
 
-Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Herramienta de inspección@nUsar para inspeccionar el nodo o la entidad de destino.@Colocar para inspeccionar el nodo adyacente.
+Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Herramienta de inspección@nUsar para inspeccionar el nodo o la entidad de destino.@nColocar para inspeccionar el nodo adyacente.
 
 This is a broken object. We have no further information about it. It is located=Este es un objeto roto. No tenemos más información al respecto. se encuentra
 This is your fellow player "%s"=Este es tu compañero de juego "%s"
@@ -80,5 +80,4 @@ May drop on dig:=Puede caer en excavación:
 Alternate %s/%s=alternativo %s/%s
 This can be used as a fuel.=Esto se puede usar como combustible.
 Error: Unkown recipe.=Error: Receta desconocida.
-Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Herramienta de inspección@nUsar para inspeccionar el nodo o la entidad de destino.@nColocar para inspeccionar el nodo adyacente.
 
