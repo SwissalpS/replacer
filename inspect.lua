@@ -1,12 +1,20 @@
 -- a crafting guide wanabe. Better than nothing for servers without
 -- unified_inventory installed.
 -- most useful feature is probably light measuring.
--- when punching (lc), info about the node that was punched is presented
--- when placing (rc), info about the node to the side that was clicked is
+-- when using (lc), info about the node that was punched is presented
+-- when placing (rc), info about the adjacent node that was clicked is
 -- presented. Mostly air.
+
+local r = replacer
+local rb = replacer.blabla
+local rbi = replacer.blabla.inspect
+local nice_pos_string = replacer.nice_pos_string
+local floor = math.floor
+local chat = minetest.chat_send_player
+local mfe = minetest.formspec_escape
+
 minetest.register_tool('replacer:inspect', {
-	description = 'Node Inspection Tool\nUse to inspect target node.\n'
-		.. 'Place to inspect the adjacent node.',
+	description = rbi.description,
 	groups = {},
 	inventory_image = 'replacer_inspect.png',
 	wield_image = '',
@@ -22,7 +30,6 @@ minetest.register_tool('replacer:inspect', {
 	end,
 })
 
-local nice_pos_string = replacer.nice_pos_string
 
 function replacer.inspect(_, user, pointed_thing, right_clicked)
 	if nil == user or nil == pointed_thing then
@@ -33,17 +40,16 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 
 	if 'object' == pointed_thing.type then
 		local inventory_text = nil
-		local text = 'This is '
+		local text = ''
 		local ref = pointed_thing.ref
 		if not ref then
-			text = text .. 'a broken object. We have no further information '
-				.. 'about it. It is located'
+			text = rbi.broken_object
 		elseif ref:is_player() then
-			text = text .. 'your fellow player "' .. ref:get_player_name() .. '"'
+			text = rbi.this_is_player:format(ref:get_player_name())
 		else
 			local luaob = ref:get_luaentity()
 			if luaob and luaob.get_staticdata then
-				text = text .. 'an entity "' .. luaob.name .. '"'
+				text = rbi.this_is_entity:format(luaob.name)
 				local sdata = luaob:get_staticdata()
 				if 0 < #sdata then
 					sdata = minetest.deserialize(sdata) or {}
@@ -52,34 +58,32 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 						if show_recipe then
 							-- the fields part is used here to provide
 							-- additional information about the entity
-							replacer.inspect_show_crafting(
+							r.inspect_show_crafting(
 											name,
 											sdata.itemstring,
 											{ luaob = luaob })
 						end
 					end
 					if sdata.age then
-						text = text .. ', dropped '
-							.. tostring(math.floor(sdata.age / 60))
-							.. ' minutes ago'
+						text = text .. rbi.dropped_ago:format(
+							tostring(floor((sdata.age / 60) + .5)))
 					end
 					if sdata.owner then
-						text = text .. ' owned'
 						if true == sdata.protected then
 							if true == sdata.locked then
-								text = text .. ', protected and locked'
+								text = text .. ' ' .. rbi.owned_protected_locked
 							else
-								text = text .. ' and protected'
+								text = text .. ' ' .. rbi.owned_protected
 							end
 						else
 							if true == sdata.locked then
-								text = text .. ' and locked'
+								text = text .. ' ' .. rbi.owned_locked
 							end
 						end
-						text = text .. ' by ' .. sdata.owner
+						text = text .. ' ' .. rbi.by_owner:format(sdata.owner)
 					end
 					if 'string' == type(sdata.order) then
-						text = text .. ' with order to ' .. sdata.order
+						text = text .. ' ' .. rbi.with_order_to:format(sdata.order)
 					end
 					if 'table' == type(sdata.inv) then
 						local item_count = 0
@@ -89,33 +93,31 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 							item_count = item_count + v
 						end
 						if 0 < type_count then
-							inventory_text = '\nHas '
+							inventory_text = '\n'
 							if 1 < type_count then
-								inventory_text = inventory_text .. type_count
-										.. ' different types of items, '
+								inventory_text = inventory_text
+									.. rbi.has_x_types:format(tostring(type_count)) .. ' '
 							end
-							inventory_text = inventory_text .. 'total of '
-									.. item_count .. ' items in inventory.'
+							inventory_text = inventory_text
+								.. rbi.total_in_inv:format(tostring(item_count))
 						end
 					end
 				end
 			elseif luaob then
-				text = text .. 'an object "' .. luaob.name .. '"'
+				text = rbi.this_is_object_type:format(luaob.name)
 			else
-				text = text .. 'an object'
+				text = rbi.this_is_object
 			end
 
 		end
 		if ref then
-			text = text .. ' at ' .. nice_pos_string(ref:getpos())
+			text = text .. ' ' .. rbi.at:format(nice_pos_string(ref:getpos()))
 		end
 		if inventory_text then text = text .. inventory_text end
-		minetest.chat_send_player(name, text)
+		chat(name, text)
 		return nil
 	elseif 'node' ~= pointed_thing.type then
-		minetest.chat_send_player(name, 'Sorry, this is an unkown something '
-			.. 'of type "' .. pointed_thing.type .. '". '
-			.. 'No information available.')
+		chat(name, rbi.sorry_no_info:format(pointed_thing.type))
 		return nil
 	end
 
@@ -123,23 +125,22 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 	local node = minetest.get_node_or_nil(pos)
 
 	if not node then
-		minetest.chat_send_player(name, 'Error: Target node not yet loaded. '
-			.. 'Please wait a moment for the server to catch up.')
+		chat(name, rb.wait_for_load)
 		return nil
 	end
 
 	local protected_info = ''
 	if minetest.is_protected(pos, name) then
-		protected_info = 'WARNING: You can\'t dig this node. It is protected.'
+		protected_info = rbi.is_protected
 	elseif minetest.is_protected(pos, '_THIS_NAME_DOES_NOT_EXIST_') then
-		protected_info = 'INFO: You can dig this node, but others can\'t.'
+		protected_info = rbi.you_can_dig
 	end
 
 		-- get light of the node at the current time
 	local light = minetest.get_node_light(pos, nil)
 	-- the fields part is used here to provide additional
 	-- information about the node
-	replacer.inspect_show_crafting(name, node.name, {
+	r.inspect_show_crafting(name, node.name, {
 		pos = pos, param2 = node.param2, light = light,
 		protected_info = protected_info })
 
@@ -148,11 +149,11 @@ end -- replacer.inspect
 
 function replacer.image_button_link(stack_string)
 	local group = ''
-	if replacer.image_replacements[stack_string] then
-		stack_string = replacer.image_replacements[stack_string]
+	if r.image_replacements[stack_string] then
+		stack_string = r.image_replacements[stack_string]
 	end
-	if replacer.group_placeholder[stack_string] then
-		stack_string = replacer.group_placeholder[stack_string]
+	if r.group_placeholder[stack_string] then
+		stack_string = r.group_placeholder[stack_string]
 		group = 'G'
 	end
 -- TODO: show information about other groups not handled above
@@ -162,8 +163,8 @@ function replacer.image_button_link(stack_string)
 end -- image_button_link
 
 
-replacer.add_circular_saw_recipe = function(node_name, recipes)
-	local basic_node_name = replacer.is_saw_output(node_name)
+function replacer.add_circular_saw_recipe(node_name, recipes)
+	local basic_node_name = r.is_saw_output(node_name)
 	if not basic_node_name then return end
 
 	-- node found that fits into the saw
@@ -178,7 +179,7 @@ end -- add_circular_saw_recipe
 
 
 function replacer.add_colormachine_recipe(node_name, recipes)
-	if not replacer.has_colormachine_mod then
+	if not r.has_colormachine_mod then
 		return
 	end
 	local res = colormachine.get_node_name_painted(node_name, '')
@@ -236,9 +237,9 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	--
 
 	-- add special recipes for nodes created by machines
-	replacer.add_circular_saw_recipe(node_name, res)
-	replacer.add_colormachine_recipe(node_name, res)
-	replacer.unifieddyes.add_recipe(fields.param2, node_name, res)
+	r.add_circular_saw_recipe(node_name, res)
+	r.add_colormachine_recipe(node_name, res)
+	r.unifieddyes.add_recipe(fields.param2, node_name, res)
 
 	-- offer all alternate creafting recipes thrugh prev/next buttons
 	if fields and fields.prev_recipe and 1 < recipe_nr then
@@ -247,7 +248,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		recipe_nr = recipe_nr + 1
 	end
 
-	local desc = ' - no description provided - '
+	local desc = ' ' .. rbi.no_desc .. ' '
 	if minetest.registered_nodes[node_name] then
 		if minetest.registered_nodes[node_name].description
 			and '' ~= minetest.registered_nodes[node_name].description
@@ -256,7 +257,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		elseif minetest.registered_nodes[node_name].name then
 			desc = minetest.registered_nodes[node_name].name
 		else
-			desc = ' - no node description provided - '
+			desc = ' ' .. rbi.no_node_desc .. ' '
 		end
 	elseif minetest.registered_items[node_name] then
 		if minetest.registered_items[node_name].description
@@ -266,15 +267,15 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		elseif minetest.registered_items[node_name].name then
 			desc = minetest.registered_items[node_name].name
 		else
-			desc = ' - no item description provided - '
+			desc = ' ' .. rbi.no_item_desc .. ' '
 		end
 	end
 
 	local formspec = 'size[6,6]'
 		.. 'label[0,0;Name: ' .. node_name .. ']'
 		.. 'item_image_button[5,2;1.0,1.0;' .. node_name .. ';normal;]'
-		.. 'button_exit[5.0,4.3;1,0.5;quit;Exit]'
-		.. 'label[0,5.5;This is: ' .. minetest.formspec_escape(desc) .. ']'
+		.. 'button_exit[5.0,4.3;1,0.5;quit;' .. mfe('Exit') .. ']'
+		.. 'label[0,5.5;This is: ' .. mfe(desc) .. ']'
 		 -- invisible field for passing on information
 		.. 'field[20,20;0.1,0.1;node_name;node_name;' .. node_name .. ']'
 		-- another invisible field
@@ -284,70 +285,72 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	-- that has been inspected
 	formspec = formspec .. 'label[0.0,0.3;'
 	if fields.pos then
-		formspec = formspec .. 'Located at '
-			.. minetest.formspec_escape(minetest.pos_to_string(fields.pos))
+		formspec = formspec .. mfe(rbi.located_at:format(nice_pos_string(fields.pos)))
 	end
 	if fields.param2 then
-		formspec = formspec .. ' with param2 of ' .. tostring(fields.param2)
+		formspec = formspec .. ' '
+			.. mfe(rbi.with_param2:format(tostring(fields.param2)))
 	end
 	formspec = formspec .. ']'
 	if fields.light then
-		formspec = formspec .. 'label[0.0,0.6;and receiving '
-			.. tostring(fields.light) .. ' light]'
+		formspec = formspec .. 'label[0.0,0.6;'
+			.. mfe(rbi.and_light:format(tostring(fields.light))) .. ']'
 	end
 
 	-- show information about protection
 	if fields.protected_info and '' ~= fields.protected_info then
 		formspec = formspec .. 'label[0.0,4.5;'
-			.. minetest.formspec_escape(fields.protected_info) .. ']'
+			.. mfe(fields.protected_info) .. ']'
 	end
 
 	if #res < recipe_nr or 1 > recipe_nr then
 		recipe_nr = 1
 	end
 	if 1 < recipe_nr then
-		formspec = formspec .. 'button[3.8,5;1,0.5;prev_recipe;prev]'
+		formspec = formspec .. 'button[3.8,5;1,0.5;prev_recipe;'
+			.. mfe(rbi.prev) .. ']'
 	end
 	if #res > recipe_nr then
-		formspec = formspec .. 'button[5.0,5.0;1,0.5;next_recipe;next]'
+		formspec = formspec .. 'button[5.0,5.0;1,0.5;next_recipe;'
+			.. mfe(rbi.next) .. ']'
 	end
 	if 1 > #res then
-		formspec = formspec .. 'label[3,1;No recipes.]'
+		formspec = formspec .. 'label[3,1;' .. mfe(rbi.no_recipes) .. ']'
 		if minetest.registered_nodes[node_name]
 			and minetest.registered_nodes[node_name].drop
 		then
 			local drop = minetest.registered_nodes[node_name].drop
 			if 'string' == type(drop) and drop ~= node_name then
-				formspec = formspec .. 'label[2,1.6;Drops on dig:'
+				formspec = formspec .. 'label[2,1.6;' .. mfe(rbi.drops_on_dig) .. ' '
 				if '' == drop then
-					formspec = formspec .. 'nothing]'
+					formspec = formspec .. mfe(rbi.nothing) .. ']'
 				else
 					formspec = formspec
 						.. ']item_image_button[2,2;1.0,1.0;'
-						.. replacer.image_button_link(drop) .. ']'
+						.. r.image_button_link(drop) .. ']'
 				end
 			elseif 'table' == type(drop) and drop.items then
 				local droplist = {}
 				for _, drops in ipairs(drop.items) do
-					for _,item in ipairs(drops.items) do
-						-- avoid duplicates; but include the item itshelf
+					for _, item in ipairs(drops.items) do
+						-- avoid duplicates; but include the item itself
 						droplist[item] = 1
 					end
 				end
 				local i = 1
-				formspec = formspec .. 'label[2,1.6;May drop on dig:]'
+				formspec = formspec .. 'label[2,1.6;' .. mfe(rbi.may_drop_on_dig) .. ']'
 				for k, v in pairs(droplist) do
 					formspec = formspec .. 'item_image_button['
 						.. (((i - 1) % 3) + 1) .. ','
-						.. tostring(math.floor(((i - 1) / 3) + 2))
-						.. ';1.0,1.0;' .. replacer.image_button_link(k) .. ']'
+						.. tostring(floor(((i - 1) / 3) + 2))
+						.. ';1.0,1.0;' .. r.image_button_link(k) .. ']'
 					i = i + 1
 				end
 			end
 		end
 	else
-		formspec = formspec .. 'label[1,5;Alternate ' .. tostring(recipe_nr)
-			.. '/' .. tostring(#res) .. ']'
+		formspec = formspec .. 'label[1,5;'
+			.. mfe(rbi.alternate_x_of_y:format(tostring(recipe_nr), tostring(#res))) .. ']'
 		-- reverse order; default recipes (and thus the most intresting ones)
 		-- are usually the oldest
 		local recipe = res[#res + 1 - recipe_nr]
@@ -361,9 +364,9 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 				if recipe.items[i] then
 					formspec = formspec .. 'item_image_button['
 						.. (((i - 1) % width) + 1) .. ','
-						.. tostring(math.floor((i - 1) / width) + 1)
+						.. tostring(floor((i - 1) / width) + 1)
 						.. ';1.0,1.0;'
-						.. replacer.image_button_link(recipe.items[i]) .. ']'
+						.. r.image_button_link(recipe.items[i]) .. ']'
 				end
 			end
 		elseif 'cooking' == recipe.type
@@ -372,37 +375,37 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			and '' == recipe.output
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. replacer.image_button_link('default:furnace_active') .. ']'
+				.. r.image_button_link('default:furnace_active') .. ']'
 				.. 'item_image_button[2.9,2.7;1.0,1.0;'
-				.. replacer.image_button_link(recipe.items[1]) .. ']'
+				.. r.image_button_link(recipe.items[1]) .. ']'
 				.. 'label[1.0,0;' .. tostring(recipe.items[1]) .. ']'
-				.. 'label[0,0.5;This can be used as a fuel.' .. ']'
+				.. 'label[0,0.5;' .. mfe(rbi.can_be_fuel) .. ']'
 		elseif 'cooking' == recipe.type
 			and recipe.items
 			and 1 == #recipe.items
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. replacer.image_button_link('default:furnace') .. ']'
+				.. r.image_button_link('default:furnace') .. ']'
 				.. 'item_image_button[2.9,2.7;1.0,1.0;'
-				.. replacer.image_button_link(recipe.items[1]) .. ']'
+				.. r.image_button_link(recipe.items[1]) .. ']'
 		elseif 'colormachine' == recipe.type
 			and recipe.items
 			and 1 == #recipe.items
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. replacer.image_button_link('colormachine:colormachine') .. ']'
+				.. r.image_button_link('colormachine:colormachine') .. ']'
 				.. 'item_image_button[2,2;1.0,1.0;'
-				.. replacer.image_button_link(recipe.items[1]) .. ']'
+				.. r.image_button_link(recipe.items[1]) .. ']'
 		elseif 'saw' == recipe.type
 			and recipe.items
 			and 1 == #recipe.items
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. replacer.image_button_link('moreblocks:circular_saw') .. ']'
+				.. r.image_button_link('moreblocks:circular_saw') .. ']'
 				.. 'item_image_button[2,0.6;1.0,1.0;'
-				.. replacer.image_button_link(recipe.items[1]) .. ']'
+				.. r.image_button_link(recipe.items[1]) .. ']'
 		else
-			formspec = formspec .. 'label[3,1;Error: Unkown recipe.]'
+			formspec = formspec .. 'label[3,1;' .. mfe(rbi.unkown_recipe) .. ']'
 		end
 		-- show how many of the items the recipe will yield
 		local outstack = ItemStack(recipe.output)
@@ -420,7 +423,7 @@ function replacer.form_input_handler(player, formname, fields)
 	if formname and 'replacer:crafting' == formname
 		and player and not fields.quit
 	then
-		replacer.inspect_show_crafting(player:get_player_name(), nil, fields)
+		r.inspect_show_crafting(player:get_player_name(), nil, fields)
 		return
 	end
 end

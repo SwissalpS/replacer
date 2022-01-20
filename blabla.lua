@@ -18,7 +18,10 @@ end -- backward compatibility
 local S = minetest.get_translator('replacer')
 
 replacer.blabla = {}
+replacer.blabla.inspect = {}
 local rb = replacer.blabla
+local rbi = replacer.blabla.inspect
+
 rb.log_messages = '[replacer] %s: %s'
 rb.choose_history = S('History')
 rb.choose_mode = S('Choose mode')
@@ -84,4 +87,40 @@ rb.log_reg_alias_override = '[replacer] register_non_creative_alias: '
 rb.log_reg_alias = '[replacer] registered alias for "%s" to "%s"'
 rb.formspec_error = '[replacer] formspec error, user "%s" attempting to change history. Fields: %s'
 rb.formspec_hacker = '[replacer] formspec forge? By user "%s" Fields: %s'
+
+----------------- replacer:inspect -----------------
+rbi.description = S('Inspection Tool\nUse to inspect target node or entity.\n'
+		.. 'Place to inspect the adjacent node.')
+rbi.broken_object = S('This is a broken object. We have no further information about it. It is located')
+rbi.this_is_player = S('This is your fellow player "%s"')
+rbi.this_is_entity = S('This is an entity "%s"')
+rbi.dropped_ago = S(', dropped %s minutes ago')
+rbi.owned_protected_locked = S('owned, protected and locked')
+rbi.owned_protected = S('owned and protected')
+rbi.owned_locked = S('owned and locked')
+rbi.by_owner = S('by "%s"')
+rbi.with_order_to = S('with order to %s')
+rbi.has_x_types = S('Has %s different types of items,')
+rbi.total_in_inv = S('total of %s items in inventory.')
+rbi.this_is_object_type = S('This is an object "%s"')
+rbi.this_is_object = S('This is an object')
+rbi.at = S('at %s')
+rbi.sorry_no_info = S('Sorry, this is an unkown something of type "%s". No information available.')
+rbi.is_protected = S('WARNING: You can\'t dig this node. It is protected.')
+rbi.you_can_dig = S('INFO: You can dig this node, but others can\'t.')
+rbi.no_desc = S('~ no description provided ~')
+rbi.no_node_desc = S('~ no node description provided ~')
+rbi.no_item_desc = S('~ no item description provided ~')
+rbi.located_at = S('Located at %s')
+rbi.with_param2 = S('with param2 of %s')
+rbi.and_light = S('and receiving %s light')
+rbi.prev = S('prev')
+rbi.next = S('next')
+rbi.no_recipes = S('No recipes.')
+rbi.drops_on_dig = S('Drops on dig:')
+rbi.nothing = S('nothing')
+rbi.may_drop_on_dig = S('May drop on dig:')
+rbi.alternate_x_of_y = S('Alternate %s/%s')
+rbi.can_be_fuel = S('This can be used as a fuel.')
+rbi.unkown_recipe = S('Error: Unkown recipe.')
 
