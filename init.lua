@@ -41,6 +41,7 @@ replacer.has_technic_mod = minetest.get_modpath('technic')
 replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 								and minetest.global_exists('unifieddyes')
 
+replacer.image_replacements = {}
 local path = minetest.get_modpath('replacer') .. '/'
 -- strings for translation
 dofile(path .. 'replacer/blabla.lua')
@@ -51,6 +52,8 @@ dofile(path .. 'compat/beacon.lua')
 -- circular saw support
 dofile(path .. 'compat/moreblocks.lua')
 -- unifiedddyes support functions
+-- RealTest overrides (i)
+dofile(path .. 'compat/realTest.lua')
 dofile(path .. 'compat/unifieddyes.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
