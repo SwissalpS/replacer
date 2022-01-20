@@ -143,8 +143,7 @@ function replacer.inspect(_, user, pointed_thing, mode)
 	return nil -- no item shall be removed from inventory
 end -- replacer.inspect
 
-
-replacer.image_button_link = function(stack_string)
+function replacer.image_button_link(stack_string)
 	local group = ''
 	if replacer.image_replacements[stack_string] then
 		stack_string = replacer.image_replacements[stack_string]
@@ -157,7 +156,8 @@ replacer.image_button_link = function(stack_string)
 	local stack = ItemStack(stack_string)
 	local new_node_name = stack:get_name()
 	return stack_string .. ';' .. new_node_name .. ';' .. group
-end
+end -- image_button_link
+
 
 replacer.add_circular_saw_recipe = function(node_name, recipes)
 	local basic_node_name = replacer.is_saw_output(node_name)
@@ -174,7 +174,7 @@ replacer.add_circular_saw_recipe = function(node_name, recipes)
 end -- add_circular_saw_recipe
 
 
-replacer.add_colormachine_recipe = function(node_name, recipes)
+function replacer.add_colormachine_recipe(node_name, recipes)
 	if not replacer.has_colormachine_mod then
 		return
 	end
@@ -191,10 +191,10 @@ replacer.add_colormachine_recipe = function(node_name, recipes)
 		output = node_name
 	}
 	return recipes
-end
+end -- add_colormachine_recipe
 
 
-replacer.inspect_show_crafting = function(player_name, node_name, fields)
+function replacer.inspect_show_crafting(player_name, node_name, fields)
 	if not player_name then
 		return
 	end
@@ -404,10 +404,11 @@ replacer.inspect_show_crafting = function(player_name, node_name, fields)
 		end
 	end
 	minetest.show_formspec(player_name, 'replacer:crafting', formspec)
-end
+end -- inspect_show_crafting
+
 
 -- translate general formspec calls back to specific calls
-replacer.form_input_handler = function(player, formname, fields)
+function replacer.form_input_handler(player, formname, fields)
 	if formname and 'replacer:crafting' == formname
 		and player and not fields.quit
 	then
