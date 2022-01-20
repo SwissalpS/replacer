@@ -45,3 +45,39 @@ Valid parameter is either "%s" or "%s"=Il parametro valido è "%s" o "%s"
 on=1
 off=0
 
+Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Strumento di ispezione@nUtilizzare per ispezionare il nodo o l'entità di destinazione.@nPosizionare per ispezionare il nodo adiacente.
+
+This is a broken object. We have no further information about it. It is located=Questo è un oggetto rotto. Non abbiamo ulteriori informazioni a riguardo. Si trova
+This is your fellow player "%s"=Questo è il tuo compagno di gioco "%s"
+This is an entity "%s"=Questa è un'entità "%s"
+, dropped %s minutes ago=, caduto %s minuti fa
+owned, protected and locked=posseduto, protetto e bloccato
+owned and protected=posseduto e protetto
+owned and locked=posseduto e bloccato
+by "%s"=per "%s"
+with order to %s=con ordine a %s
+Has %s different types of items,=Ha %s diversi tipi di elementi,
+total of %s items in inventory.=totale di %s articoli nell'inventario.
+This is an object "%s"=Questo è un oggetto "%s"
+This is an object=Questo è un oggetto
+at %s=alle %s
+Sorry, this is an unkown something of type "%s". No information available.=Siamo spiacenti, questo è un qualcosa sconosciuto di tipo "%s". Nessuna informazione disponibile.
+
+WARNING: You can't dig this node. It is protected.=ATTENZIONE: non puoi scavare questo nodo. È protetto.
+INFO: You can dig this node, others can't.=INFO: puoi scavare questo nodo, ma altri no.
+~ no description provided ~=~ nessuna descrizione fornita ~
+~ no node description provided ~=~ nessuna descrizione del nodo fornita ~
+~ no item description provided ~=~ nessuna descrizione dell'oggetto fornita ~
+Located at %s=Situato a %s
+with param2 of %s=con param2 di %s
+and receiving %s light=e ricevendo %s luce
+prev=precedente
+next=successivo
+No recipes.=Nessuna ricetta.
+Drops on dig:=Gocce allo scavo:
+nothing=niente
+May drop on dig:=Può cadere durante lo scavo:
+Alternate %s/%s=%s/%s= alternativo
+This can be used as a fuel.=Questo può essere usato come carburante.
+Error: Unkown recipe.=Errore: ricetta sconosciuta.
+
