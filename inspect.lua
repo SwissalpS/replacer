@@ -164,18 +164,18 @@ end
 
 -- some common groups
 replacer.group_placeholder = {}
-replacer.group_placeholder['group:wood'] = 'default:wood'
-replacer.group_placeholder['group:tree'] = 'default:tree'
+replacer.group_placeholder['group:coal'] = 'default:coal_lump'
+replacer.group_placeholder['group:leaves'] = 'default:leaves'
+replacer.group_placeholder['group:sand'] = 'default:sand'
 replacer.group_placeholder['group:sapling']= 'default:sapling'
 replacer.group_placeholder['group:stick'] = 'default:stick'
 -- 'default:stone' point people to the cheaper cobble
 replacer.group_placeholder['group:stone'] = 'default:cobble'
-replacer.group_placeholder['group:sand'] = 'default:sand'
-replacer.group_placeholder['group:leaves'] = 'default:leaves'
+replacer.group_placeholder['group:tree'] = 'default:tree'
 replacer.group_placeholder['group:vines'] = 'vines:vines'
+replacer.group_placeholder['group:wood'] = 'default:wood'
 replacer.group_placeholder['group:wood_slab'] = 'stairs:slab_wood'
 replacer.group_placeholder['group:wool'] = 'wool:white'
-replacer.group_placeholder['group:coal'] = 'default:coal_lump'
 
 -- add default game dyes
 for _, color in pairs(dye.dyes) do
