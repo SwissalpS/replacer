@@ -75,10 +75,13 @@ rb.ccm_player_meta_error = 'Player meta not existant'
 rb.ccm_hint = S('Valid parameter is either "%s" or "%s"')
 rb.on_yes = S('on')
 rb.off_no = S('off')
-rb.log_reg_exception_override = '[replacer] register_rotation_exception '
-	.. 'for "%s" already exists.'
+rb.log_reg_exception_override = '[replacer] register_exception: '
+	.. 'exception for "%s" already exists.'
 rb.log_reg_exception = '[replacer] registered exception for "%s" to "%s"'
 rb.log_reg_exception_callback = '[replacer] registered after on_place callback for "%s"'
+rb.log_reg_alias_override = '[replacer] register_non_creative_alias: '
+	.. ' alias for "%s" already exists.'
+rb.log_reg_alias = '[replacer] registered alias for "%s" to "%s"'
 rb.formspec_error = '[replacer] formspec error, user "%s" attempting to change history. Fields: %s'
 rb.formspec_hacker = '[replacer] formspec forge? By user "%s" Fields: %s'
 

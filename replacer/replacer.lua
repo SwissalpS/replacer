@@ -552,7 +552,11 @@ function replacer.on_place(itemstack, player, pt)
 	end
 
 	local inv = player:get_inventory()
-	if (not (creative_enabled and has_give))
+
+	if (not creative_enabled) and r.reverse_exception_map[node.name] then
+		-- apply reverse exception (alias) if not a creatvie user
+		node.name = r.reverse_exception_map[node.name]
+	elseif (not (creative_enabled and has_give))
 		and (not inv:contains_item('main', node.name))
 		and (not r.exception_map[node.name])
 		and (not r.is_beacon_beam_or_base(node.name))
@@ -617,9 +621,11 @@ function replacer.on_place(itemstack, player, pt)
 		end
 	end
 
+	-- set the params to tool
 	local short_description = r.set_data(itemstack, node, mode)
+	-- add to history
 	r.history.add_item(player, mode, node, short_description)
-
+	-- inform player about successful setting
 	r.inform(name, rb.set_to:format(short_description))
 
 	return itemstack --data changed
