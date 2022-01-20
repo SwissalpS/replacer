@@ -45,3 +45,39 @@ Valid parameter is either "%s" or "%s"=El parámetro válido es "%s" o "%s"
 on=1
 off=0
 
+Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Herramienta de inspección@nUsar para inspeccionar el nodo o la entidad de destino.@Colocar para inspeccionar el nodo adyacente.
+
+This is a broken object. We have no further information about it. It is located=Este es un objeto roto. No tenemos más información al respecto. se encuentra
+This is your fellow player "%s"=Este es tu compañero de juego "%s"
+This is an entity "%s"=Esta es una entidad "%s"
+, dropped %s minutes ago=, caído hace %s minutos
+owned, protected and locked=propietario, protegido y cerrado
+owned and protected=propietario y protegido
+owned and locked=propietario y bloqueado
+by "%s"=por "%s"
+with order to %s=con pedido a "%s"
+Has %s different types of items,=Tiene %s tipos diferentes de artículos,
+total of %s items in inventory.=total de %s artículos en inventario.
+This is an object "%s"=Este es un objeto "%s"
+This is an object=Este es un objeto
+at %s=en %s
+Sorry, this is an unkown something of type "%s". No information available.=Lo sentimos, esto es algo desconocido de tipo "%s". No hay información disponible.
+
+WARNING: You can't dig this node. It is protected.=ADVERTENCIA: No puedes excavar este nodo. Está protegido.
+INFO: You can dig this node, others can't.=INFO: Puedes excavar este nodo, pero otros no.
+~ no description provided ~=~ no se proporciona descripción ~
+~ no node description provided ~=~ no se proporcionó una descripción del nodo ~
+~ no item description provided ~=~ no se proporciona descripción del artículo ~
+Located at %s=Ubicado en %s
+with param2 of %s=con param2 de %s
+and receiving %s light=y recibiendo %s luz
+prev=anterior
+next=siguiente
+No recipes.=Sin recetas.
+Drops on dig:=Cae en excavación:
+nothing=nada
+May drop on dig:=Puede caer en excavación:
+Alternate %s/%s=alternativo %s/%s
+This can be used as a fuel.=Esto se puede usar como combustible.
+Error: Unkown recipe.=Error: Receta desconocida.
+
