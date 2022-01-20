@@ -45,3 +45,39 @@ Valid parameter is either "%s" or "%s"=Le paramètre valide est "%s" ou "%s"
 on=1
 off=0
 
+Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Outil d'inspection@nUtiliser pour inspecter le nœud ou l'entité cible.@nPlacer pour inspecter le nœud adjacent.
+
+This is a broken object. We have no further information about it. It is located=Ceci est un objet cassé. Nous n'avons pas d'autres informations à ce sujet. Il est situé
+This is your fellow player "%s"=C'est votre coéquipier "%s"
+This is an entity "%s"=Ceci est une entité "%s"
+, dropped %s minutes ago=, déposé il y a %s minutes
+owned, protected and locked=possédé, protégé et verrouillé
+owned and protected=possédé et protégé
+owned and locked=possédé et verrouillé
+by "%s"=par "%s"
+with order to %s=avec l'ordre de "%s"
+Has %s different types of items,=A %s différents types d'éléments,
+total of %s items in inventory.=total de %s articles dans l'inventaire.
+This is an object "%s"=Ceci est un objet "%s"
+This is an object=Ceci est un objet
+at %s=à %s
+Sorry, this is an unkown something of type "%s". No information available.=Désolé, c'est quelque chose d'inconnu de type "%s". Aucune information disponible.
+
+WARNING: You can't dig this node. It is protected.=AVERTISSEMENT: Tu ne peux pas creuser ce nœud. Il est protégé.
+INFO: You can dig this node, others can't.=INFO: Tu peux creuser ce nœud, mais les autres ne le peuvent pas.
+~ no description provided ~=~ aucune description fournie ~
+~ no node description provided ~=~ aucune description de nœud fournie ~
+~ no item description provided ~=~ aucune description d'article fournie ~
+Located at %s=Situé à %s
+with param2 of %s=avec param2 de %s
+and receiving %s light=et recevant %s lumière
+prev=préc
+next=suivant
+No recipes.=Aucune recette.
+Drops on dig:=Gouttes sur creuser:
+nothing=rien
+May drop on dig:=Peut tomber en creusant:
+Alternate %s/%s=Autre %s/%s
+This can be used as a fuel.=Cela peut être utilisé comme carburant.
+Error: Unkown recipe.=Erreur : recette inconnue.
+
