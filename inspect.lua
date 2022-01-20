@@ -143,20 +143,6 @@ function replacer.inspect(_, user, pointed_thing, mode)
 	return nil -- no item shall be removed from inventory
 end -- replacer.inspect
 
--- handle the standard dye color groups
-if replacer.has_basic_dyes then
-	for i, color in ipairs(dye.basecolors) do
-		local def = minetest.registered_items['dye:' .. color]
-		if def and def.groups then
-			for k, v in pairs(def.groups) do
-				if 'dye' ~= k then
-					replacer.group_placeholder['group:dye,' .. k] = 'dye:' .. color
-				end
-			end
-			replacer.group_placeholder['group:flower,color_' .. color] = 'dye:' .. color
-		end
-	end
-end
 
 replacer.image_button_link = function(stack_string)
 	local group = ''
