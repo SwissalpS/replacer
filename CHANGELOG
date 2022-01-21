@@ -1,6 +1,8 @@
 20220120 * SwissalpS made folder structure to create easier overview.
          * Improved circular saw item detection for inspect and replacer.
          * Added beacon beam and base support (no longer needed to be in inv when setting).
+         * Inspection tool now inspects light correctly and respects right-click.
+         * Added locale for inspection tool.
 20220119 * SwissalpS added first draft of de,es,fi,fr,it,pt,ru locales.
 20220118 * SwissalpS cleaned up more code, giving more discriptive variable names and
            cleaning out ugly modes table that had both number and string indexes
