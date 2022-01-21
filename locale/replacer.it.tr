@@ -16,68 +16,68 @@ Left click: Replace field of nodes of a kind where a translucent node is in fron
 
 Left click: Replace nodes which touch another one of its kind and a translucent node, e.g. air.@@Right click: Replace air nodes which touch the crust.=Clic sinistro: Sostituisci i nodi che toccano un altro del suo genere e un nodo traslucido, ad es. air.@@Clic destro: Sostituisci i nodi d'aria che toccano la crosta.
 
-Protected at %s=Protetto a %s
-Replacing nodes of type "%s" is not allowed on this server. Replacement failed.=La sostituzione dei nodi di tipo "%s" non è consentita su questo server. Sostituzione non riuscita.
-You have no further "%s". Replacement failed.=Non hai più "%s". Sostituzione non riuscita.
-Unknown node: "%s"=Nodo sconosciuto: "%s"
-Unknown node to place: "%s"=Nodo sconosciuto da posizionare: "%s"
-Could not dig "%s" properly.=Impossibile scavare correttamente "%s".
-Could not place "%s".=Impossibile posizionare "%s".
-Error: "%s" is not a node.=Errore: "%s" non è un nodo.
 Target node not yet loaded. Please wait a moment for the server to catch up.=Nodo di destinazione non ancora caricato. Si prega di attendere un momento affinché il server raggiunga.
 Nothing to replace.=Niente da sostituire.
 Not enough charge to use this mode.=Carica insufficiente per utilizzare questa modalità.
 Aborted, too many nodes detected.=Interrotto, troppi nodi rilevati.
-Need %s charge to replace %s nodes.=Sono necessari %s addebito per sostituire %s nodi.
-%s nodes replaced.=%s nodi sostituiti.
-Mode changed to %s: %s=Modalità modificata in %s: %s
 Error: No node selected.=Errore: nessun nodo selezionato.
-Item not in creative inventory: "%s".=Articolo non nell'inventario della creatività: "%s".
-Item not in your inventory: "%s".=Articolo non nel tuo inventario: "%s".
-Node replacement tool set to:@n%s.=Strumento di sostituzione del nodo impostato su:@n%s.
 Node replacement tool=Strumento di sostituzione del nodo
 Node replacement tool (technic)=Strumento di sostituzione del nodo (tecnico)
 Time-limit reached.=Tempo limite raggiunto.
 
 Toggles verbosity.@nWhen on, messages are posted to chat. When off, replacer is silent.=Attiva o disattiva la verbosità.@nQuando è attiva, i messaggi vengono inviati alla chat. Quando è spento, il sostituto è silenzioso.
 
-Valid parameter is either "%s" or "%s"=Il parametro valido è "%s" o "%s"
 on=1
 off=0
 
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Strumento di ispezione@nUtilizzare per ispezionare il nodo o l'entità di destinazione.@nPosizionare per ispezionare il nodo adiacente.
 
 This is a broken object. We have no further information about it. It is located=Questo è un oggetto rotto. Non abbiamo ulteriori informazioni a riguardo. Si trova
-This is your fellow player "%s"=Questo è il tuo compagno di gioco "%s"
-This is an entity "%s"=Questa è un'entità "%s"
-, dropped %s minutes ago=, caduto %s minuti fa
 owned, protected and locked=posseduto, protetto e bloccato
 owned and protected=posseduto e protetto
 owned and locked=posseduto e bloccato
-by "%s"=per "%s"
-with order to %s=con ordine a "%s"
-Has %s different types of items,=Ha %s diversi tipi di elementi,
-total of %s items in inventory.=totale di %s articoli nell'inventario.
-This is an object "%s"=Questo è un oggetto "%s"
 This is an object=Questo è un oggetto
-at %s=alle %s
-Sorry, this is an unkown something of type "%s". No information available.=Siamo spiacenti, questo è un qualcosa sconosciuto di tipo "%s". Nessuna informazione disponibile.
-
 WARNING: You can't dig this node. It is protected.=ATTENZIONE: non puoi scavare questo nodo. È protetto.
 INFO: You can dig this node, others can't.=INFO: puoi scavare questo nodo, ma altri no.
 ~ no description provided ~=~ nessuna descrizione fornita ~
 ~ no node description provided ~=~ nessuna descrizione del nodo fornita ~
 ~ no item description provided ~=~ nessuna descrizione dell'oggetto fornita ~
-Located at %s=Situato a %s
-with param2 of %s=con param2 di %s
-and receiving %s light=e ricevendo %s luce
+Name:=Nome:
+Exit=Uscita
+This is:=Questo è:
 prev=pre.
 next=suc.
 No recipes.=Nessuna ricetta.
 Drops on dig:=Gocce allo scavo:
 nothing=niente
 May drop on dig:=Può cadere durante lo scavo:
-Alternate %s/%s=%s/%s= alternativo
 This can be used as a fuel.=Questo può essere usato come carburante.
 Error: Unkown recipe.=Errore: ricetta sconosciuta.
-
+Valid parameter is either "@1" or "@2"=Il parametro valido è "@1" o "@2"
+Protected at @1=Protetto a @1
+This is your fellow player "@1"=Questo è il tuo compagno di gioco "@1"
+This is an entity "@1"=Questa è un'entità "@1"
+, dropped @1 minutes ago=, caduto @1 minuti fa
+by "@1"=per "@1"
+with order to @1=con ordine a "@1"
+Has @1 different types of items,=Ha @1 diversi tipi di elementi,
+total of @1 items in inventory.=totale di @1 articoli nell'inventario.
+This is an object "@1"=Questo è un oggetto "@1"
+at @1=alle @1
+Sorry, this is an unkown something of type "@1". No information available.=Siamo spiacenti, questo è un qualcosa sconosciuto di tipo "@1". Nessuna informazione disponibile.
+Located at @1=Situato a @1
+with param2 of @1=con param2 di @1
+and receiving @1 light=e ricevendo @1 luce
+Alternate @1/@2=Alternativo @1/@2
+You have no further "@1". Replacement failed.=Non hai più "@1". Sostituzione non riuscita.
+Unknown node: "@1"=Nodo sconosciuto: "@1"
+Unknown node to place: "@1"=Nodo sconosciuto da posizionare: "@1"
+Could not dig "@1" properly.=Impossibile scavare correttamente "@1".
+Could not place "@1".=Impossibile posizionare "@1".
+Error: "@1" is not a node.=Errore: "@1" non è un nodo.
+@1 nodes replaced.=@1 nodi sostituiti.
+Mode changed to @1: @2=Modalità modificata in @1: @2
+Replacing nodes of type "@1" is not allowed on this server. Replacement failed.=La sostituzione dei nodi di tipo "@1" non è consentita su questo server. Sostituzione non riuscita.
+Item not in creative inventory: "@1".=Articolo non nell'inventario della creatività: "@1".
+Item not in your inventory: "@1".=Articolo non nel tuo inventario: "@1".
+Node replacement tool set to:@n@1.=Strumento di sostituzione del nodo impostato su:@n@1.

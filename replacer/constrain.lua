@@ -1,5 +1,6 @@
 local r = replacer
 local rb = replacer.blabla
+local S = replacer.S
 local is_protected = minetest.is_protected
 local pos_to_string = minetest.pos_to_string
 
@@ -98,7 +99,7 @@ function replacer.permit_replace(pos, old_node_def, new_node_def,
 	end
 
 	if is_protected(pos, player_name) then
-		return false, rb.protected_at:format(pos_to_string(pos))
+		return false, S('Protected at @1', pos_to_string(pos))
 	end
 
 	return true

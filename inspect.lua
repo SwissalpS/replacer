@@ -9,6 +9,7 @@ local r = replacer
 local rb = replacer.blabla
 local rbi = replacer.blabla.inspect
 local nice_pos_string = replacer.nice_pos_string
+local S = replacer.S
 local floor = math.floor
 local chat = minetest.chat_send_player
 local mfe = minetest.formspec_escape
@@ -45,11 +46,11 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 		if not ref then
 			text = rbi.broken_object
 		elseif ref:is_player() then
-			text = rbi.this_is_player:format(ref:get_player_name())
+			text = S('This is your fellow player "@1"', ref:get_player_name())
 		else
 			local luaob = ref:get_luaentity()
 			if luaob and luaob.get_staticdata then
-				text = rbi.this_is_entity:format(luaob.name)
+				text = S('This is an entity "@1"', luaob.name)
 				local sdata = luaob:get_staticdata()
 				if 0 < #sdata then
 					sdata = minetest.deserialize(sdata) or {}
@@ -65,7 +66,7 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 						end
 					end
 					if sdata.age then
-						text = text .. rbi.dropped_ago:format(
+						text = text .. S(', dropped @1 minutes ago',
 							tostring(floor((sdata.age / 60) + .5)))
 					end
 					if sdata.owner then
@@ -80,10 +81,10 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 								text = text .. ' ' .. rbi.owned_locked
 							end
 						end
-						text = text .. ' ' .. rbi.by_owner:format(sdata.owner)
+						text = text .. ' ' .. S('by "@1"', sdata.owner)
 					end
 					if 'string' == type(sdata.order) then
-						text = text .. ' ' .. rbi.with_order_to:format(sdata.order)
+						text = text .. ' ' .. S('with order to @1', sdata.order)
 					end
 					if 'table' == type(sdata.inv) then
 						local item_count = 0
@@ -96,28 +97,31 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 							inventory_text = '\n'
 							if 1 < type_count then
 								inventory_text = inventory_text
-									.. rbi.has_x_types:format(tostring(type_count)) .. ' '
+									.. S('Has @1 different types of items,',
+										tostring(type_count)) .. ' '
 							end
 							inventory_text = inventory_text
-								.. rbi.total_in_inv:format(tostring(item_count))
+								.. S('total of @1 items in inventory.',
+									tostring(item_count))
 						end
 					end
 				end
 			elseif luaob then
-				text = rbi.this_is_object_type:format(luaob.name)
+				text = S('This is an object "@1"', luaob.name)
 			else
 				text = rbi.this_is_object
 			end
 
 		end
 		if ref then
-			text = text .. ' ' .. rbi.at:format(nice_pos_string(ref:getpos()))
+			text = text .. ' ' .. S('at @1', nice_pos_string(ref:getpos()))
 		end
 		if inventory_text then text = text .. inventory_text end
 		chat(name, text)
 		return nil
 	elseif 'node' ~= pointed_thing.type then
-		chat(name, rbi.sorry_no_info:format(pointed_thing.type))
+		chat(name, S('Sorry, this is an unkown something of type "@1". '
+			.. 'No information available.', pointed_thing.type))
 		return nil
 	end
 
@@ -272,10 +276,10 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	local formspec = 'size[6,6]'
-		.. 'label[0,0;Name: ' .. node_name .. ']'
+		.. 'label[0,0;' .. mfe(rbi.name) .. ' ' .. node_name .. ']'
 		.. 'item_image_button[5,2;1.0,1.0;' .. node_name .. ';normal;]'
-		.. 'button_exit[5.0,4.3;1,0.5;quit;' .. mfe('Exit') .. ']'
-		.. 'label[0,5.5;This is: ' .. mfe(desc) .. ']'
+		.. 'button_exit[5.0,4.3;1,0.5;quit;' .. mfe(rbi.exit) .. ']'
+		.. 'label[0,5.5;' .. mfe(rbi.this_is) .. ' ' .. mfe(desc) .. ']'
 		 -- invisible field for passing on information
 		.. 'field[20,20;0.1,0.1;node_name;node_name;' .. node_name .. ']'
 		-- another invisible field
@@ -285,16 +289,16 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	-- that has been inspected
 	formspec = formspec .. 'label[0.0,0.3;'
 	if fields.pos then
-		formspec = formspec .. mfe(rbi.located_at:format(nice_pos_string(fields.pos)))
+		formspec = formspec .. mfe(S('Located at @1', nice_pos_string(fields.pos)))
 	end
 	if fields.param2 then
 		formspec = formspec .. ' '
-			.. mfe(rbi.with_param2:format(tostring(fields.param2)))
+			.. mfe(S('with param2 of @1', tostring(fields.param2)))
 	end
 	formspec = formspec .. ']'
 	if fields.light then
 		formspec = formspec .. 'label[0.0,0.6;'
-			.. mfe(rbi.and_light:format(tostring(fields.light))) .. ']'
+			.. mfe(S('and receiving @1 light', tostring(fields.light))) .. ']'
 	end
 
 	-- show information about protection
@@ -307,11 +311,11 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		recipe_nr = 1
 	end
 	if 1 < recipe_nr then
-		formspec = formspec .. 'button[3.8,5;1,0.5;prev_recipe;'
+		formspec = formspec .. 'button[3.8,5;1,0.75;prev_recipe;'
 			.. mfe(rbi.prev) .. ']'
 	end
 	if #res > recipe_nr then
-		formspec = formspec .. 'button[5.0,5.0;1,0.5;next_recipe;'
+		formspec = formspec .. 'button[5.0,5.0;1,0.75;next_recipe;'
 			.. mfe(rbi.next) .. ']'
 	end
 	if 1 > #res then
@@ -350,7 +354,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		end
 	else
 		formspec = formspec .. 'label[1,5;'
-			.. mfe(rbi.alternate_x_of_y:format(tostring(recipe_nr), tostring(#res))) .. ']'
+			.. mfe(S('Alternate @1/@2', tostring(recipe_nr), tostring(#res))) .. ']'
 		-- reverse order; default recipes (and thus the most intresting ones)
 		-- are usually the oldest
 		local recipe = res[#res + 1 - recipe_nr]

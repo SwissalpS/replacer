@@ -1,5 +1,6 @@
 
 local rb = replacer.blabla
+local S = replacer.S
 
 -- let's hope there isn't a yes that means no in another language :/
 -- TODO: better option would be to simply toggle (see postool)
@@ -29,7 +30,7 @@ replacer.chatcommand_mute = {
 		elseif tOn[lower] then
 			meta:set_int('replacer_mute', 0)
 		else
-			return false, rb.ccm_hint:format(rb.on_yes, rb.off_no)
+			return false, S('Valid parameter is either "@1" or "@2"', rb.on_yes, rb.off_no)
 		end
 
 		return true, ''

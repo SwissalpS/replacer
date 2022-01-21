@@ -7,6 +7,7 @@ local r = replacer
 local rb = replacer.blabla
 local rp = replacer.patterns
 local rud = replacer.unifieddyes
+local S = replacer.S
 -- math
 local max, min, floor = math.max, math.min, math.floor
 local core_check_player_privs = minetest.check_player_privs
@@ -163,16 +164,17 @@ function replacer.replace_single_node(pos, node_old, node_new, player,
 	local inv_name = r.exception_map[node_new.name] or node_new.name
 	-- does the player carry at least one of the desired nodes with him?
 	if (not creative) and (not inv:contains_item('main', inv_name)) then
-		return false, rb.run_out:format(node_new.name or '?')
+		return false, S('You have no further "@1". Replacement failed.',
+			node_new.name or '?')
 	end
 
 	local node_old_def = core_registered_nodes[node_old.name]
 	if not node_old_def then
-		return false, rb.attempt_unknown_replace:format(node_old.name)
+		return false, S('Unknown node: "@1"', node_old.name)
 	end
 	local node_new_def = core_registered_nodes[node_new.name]
 	if not node_new_def then
-		return false, rb.attempt_unknown_place:format(node_new.name)
+		return false, S('Unknown node to place: "@1"', node_new.name)
 	end
 
 	-- dig the current node if needed
@@ -183,7 +185,7 @@ function replacer.replace_single_node(pos, node_old, node_new, player,
 		local dug_node = core_get_node_or_nil(pos)
 		if (not dug_node) or
 			(not core_registered_nodes[dug_node.name].buildable_to) then
-			return false, rb.can_not_dig:format(node_old.name)
+			return false, S('Could not dig "@1" properly.', node_old.name)
 		end
 	end
 
@@ -196,7 +198,7 @@ function replacer.replace_single_node(pos, node_old, node_new, player,
 	-- this allows users to dig nodes, I don't see reason to stop that
 	-- as long as no crash occurs - SwissalpS
 	if (false == succ) or (nil == new_item) then
-		return false, rb.can_not_place:format(node_new.name)
+		return false, S('Could not place "@1".', node_new.name)
 	end
 
 	-- update inventory in survival mode
@@ -262,7 +264,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	end
 
 	if 'node' ~= pt.type then
-		r.inform(name, rb.not_a_node:format(pt.type))
+		r.inform(name, S('Error: "@1" is not a node.', pt.type))
 		return
 	end
 
@@ -480,7 +482,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 
 	r.discharge(itemstack, charge, actual_node_count, has_creative_or_give)
 	if has_creative_or_give then
-		r.inform(name, rb.count_replaced:format(actual_node_count))
+		r.inform(name, S('@1 nodes replaced.', actual_node_count))
 	end
 	return itemstack
 end -- on_use
@@ -512,13 +514,13 @@ function replacer.on_place(itemstack, player, pt)
 			-- increment and roll-over minor mode
 			mode.minor = mode.minor % 3 + 1
 			-- spam chat
-			r.inform(name, rb.mode_changed:format(
+			r.inform(name, S('Mode changed to @1: @2',
 				r.mode_minor_names[mode.minor], r.mode_minor_infos[mode.minor]))
 		else
 			-- increment and roll-over major mode
 			mode.major = mode.major % 3 + 1
 			-- spam chat
-			r.inform(name, rb.mode_changed:format(
+			r.inform(name, S('Mode changed to @1: @2',
 				r.mode_major_names[mode.major], r.mode_major_infos[mode.major]))
 		end
 		-- update tool
@@ -543,7 +545,8 @@ function replacer.on_place(itemstack, player, pt)
 
 	-- don't allow setting replacer to denied nodes
 	if r.deny_list[node.name] then
-		r.inform(name, rb.deny_listed:format(node.name))
+		r.inform(name, S('Replacing nodes of type "@1" is not allowed on this server. '
+			.. 'Replacement failed.', node.name))
 		return
 	end
 
@@ -582,7 +585,7 @@ function replacer.on_place(itemstack, player, pt)
 					end
 				end
 				if not found_item then
-					r.inform(name, rb.not_in_creative:format(node.name))
+					r.inform(name, S('Item not in creative inventory: "@1".', node.name))
 					return
 				end
 			end
@@ -615,7 +618,7 @@ function replacer.on_place(itemstack, player, pt)
 				end
 			end
 			if (not found_item) and (not has_give) then
-				r.inform(name, rb.not_in_inventory:format(node.name))
+				r.inform(name, S('Item not in your inventory: "@1".', node.name))
 				return
 			end
 		end
@@ -626,7 +629,7 @@ function replacer.on_place(itemstack, player, pt)
 	-- add to history
 	r.history.add_item(player, mode, node, short_description)
 	-- inform player about successful setting
-	r.inform(name, rb.set_to:format(short_description))
+	r.inform(name, S('Node replacement tool set to:\n@1.', short_description))
 
 	return itemstack --data changed
 end -- on_place
