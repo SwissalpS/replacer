@@ -552,7 +552,16 @@ function replacer.on_place(itemstack, player, pt)
 	if not node then return end
 
 	-- don't allow setting replacer to denied nodes
-	if r.deny_list[node.name] then
+	-- helper function for valid()
+	local function denied_group(name)
+		for _, group in ipairs(r.deny_groups) do
+			if 0 < core_get_item_group(name, group) then
+				return true
+			end
+		end
+		return false
+	end
+	if r.deny_list[node.name] or denied_group(node.name) then
 		r.inform(name, S('Placing nodes of type "@1" is not '
 			.. 'allowed on this server.', node.name))
 		return
@@ -563,17 +572,11 @@ function replacer.on_place(itemstack, player, pt)
 		mode = { major = 1, minor = 1 }
 	end
 	local inv = player:get_inventory()
-
-	-- helper function for valid()
-	local function denied_group(name)
-		for _, group in ipairs(r.deny_groups) do
-			if 0 < core_get_item_group(name, group) then
-				return true
-			end
-		end
-		return false
+	-- helper functions for simpler mechanics
+	local function can_be_crafted(itemstring)
+		local input = get_craft_recipe(itemstring)
+		return input and input.items and true or false
 	end
-	-- helper function for simpler mechanics
 	local function valid()
 		-- user with give can get and place anything available
 		if has_give then return true end
@@ -590,10 +593,6 @@ function replacer.on_place(itemstack, player, pt)
 		-- and/or have an after_on_place callback registered
 		if r.exception_map[node.name] then return true end
 
-		local function can_be_crafted(itemstring)
-			local input = get_craft_recipe(itemstring)
-			return input and input.items and true or false
-		end
 		-- if it can be crafted, it's ok to use (includes cooking etc.)
 		if can_be_crafted(node.name) then return true end
 
