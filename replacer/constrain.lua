@@ -7,6 +7,9 @@ local pos_to_string = replacer.nice_pos_string
 -- limit by node, use replacer.register_limit(sName, iMax)
 replacer.limit_list = {}
 
+-- don't allow items of these groups for setting replacer to
+replacer.deny_groups = {}
+replacer.deny_groups['seed'] = true
 
 -- don't allow these at all, neither for placing nor replacing
 -- example: r.deny_list['tnt:boom'] = true

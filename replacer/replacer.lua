@@ -19,6 +19,7 @@ local core_registered_items = minetest.registered_items
 local core_registered_nodes = minetest.registered_nodes
 local core_swap_node = minetest.swap_node
 local deserialize = minetest.deserialize
+local get_craft_recipe = minetest.get_craft_recipe
 local has_creative = creative.is_enabled_for
 local serialize = minetest.serialize
 local us_time = minetest.get_us_time
@@ -540,8 +541,8 @@ function replacer.on_place(itemstack, player, pt)
 		return
 	end
 
-	local node, mode = r.get_data(itemstack)
-	node = core_get_node_or_nil(pt.under) or node
+	node = core_get_node_or_nil(pt.under)
+	if not node then return end
 
 	-- don't allow setting replacer to denied nodes
 	if r.deny_list[node.name] then
@@ -550,78 +551,103 @@ function replacer.on_place(itemstack, player, pt)
 		return
 	end
 
+	local _, mode = r.get_data(itemstack)
 	if not modes_are_available then
 		mode = { major = 1, minor = 1 }
 	end
 
 	local inv = player:get_inventory()
 
-	if (not creative_enabled) and r.alias_map[node.name] then
-		-- apply reverse exception (alias) if not a creatvie user
-		node.name = r.alias_map[node.name]
-	elseif (not (creative_enabled and has_give))
-		and (not inv:contains_item('main', node.name))
-		and (not r.exception_map[node.name])
-		and (not r.is_beacon_beam_or_base(node.name))
-		and (not r.is_saw_output(node.name))
-	then
-		-- not in inv and not (creative and give)
-		local found_item = false
-		local drops = core_get_node_drops(node.name)
-		if has_creative_or_give then
-			if 0 < core_get_item_group(node.name,
-					'not_in_creative_inventory')
-			then
-				-- search for a drop available in creative inventory
-				for i = 1, #drops do
-					local name = drops[i]
-					if core_registered_nodes[name] and
-						0 == core_get_item_group(name,
-							'not_in_creative_inventory')
-					then
-						node.name = name
-						found_item = true
-						break
-					end
-				end
-				if not found_item then
-					r.inform(name, S('Item not in creative inventory: "@1".', node.name))
-					return
-				end
-			end
-		else
-			-- search for a drop that the player has if possible
-			for i = 1, #drops do
-				local name = drops[i]
-				if core_registered_nodes[name] and
-					inv:contains_item('main', name)
-				then
-					node.name = name
-					found_item = true
-					break
-				end
-			end
-			if not found_item then
-				-- search for a drop available in creative inventory
-				-- that first configuring the replacer,
-				-- then digging the nodes works
-				for i = 1, #drops do
-					local name = drops[i]
-					if core_registered_nodes[name] and
-						0 == core_get_item_group(name,
-							'not_in_creative_inventory')
-					then
-						node.name = name
-						found_item = true
-						break
-					end
-				end
-			end
-			if (not found_item) and (not has_give) then
-				r.inform(name, S('Item not in your inventory: "@1".', node.name))
-				return
+	-- helper function for valid()
+	local function denied_group(name)
+		for _, group in ipairs(r.deny_groups) do
+			if 0 < core_get_item_group(name, group) then
+				return true
 			end
 		end
+		return false
+	end
+	-- helper function for simpler mechanics
+	local function valid()
+		-- user with give can get and place anything available
+		if has_give then return true end
+
+		-- if user has it in inventory it must be ok
+		if inv:contains_item('main', node.name) then return true end
+
+		-- if there is an alias, apply and allow it
+		if (not creative_enabled) and r.alias_map[node.name] then
+			node.name = r.alias_map[node.name] return true
+		end
+
+		-- it's one of those nodes that consume an item with different name
+		-- and/or have an after_on_place callback registered
+		if r.exception_map[node.name] then return true end
+
+		local function can_be_crafted(itemstring)
+			local input = get_craft_recipe(itemstring)
+			return input and input.items and true or false
+		end
+		-- if it can be crafted, it's ok to use (includes cooking etc.)
+		if can_be_crafted(node.name) then return true end
+
+		-- give callbacks a chance to allow it
+		-- they can also manipulate the passed node-table
+		for _, f in ipairs(r.enable_set_callbacks) do
+			-- first callback to return something other than nil or false
+			-- permits to setting the replacer to node
+			if f(node, player, pt) then return true end
+		end
+
+		-- now we are scraping the bottom of the barrel
+		-- let's check if digging this would drop something use-able
+		-- TODO: check if this is list as defined or random factor incorporated already
+		--       SwissalpS has the suspicion that it is. When testing on grain crops
+		--       sometimes was set to seeds and sometimes attempted to set to the crop.
+		--       This could also be that the table isn't always returned with same sorting.
+		local drops = core_get_node_drops(node.name)
+		local drop_name
+	--	if 0 == core_get_item_group(node.name, 'not_in_creative_inventory') then
+			for i = 1, #drops do
+				drop_name = drops[i]
+				if core_registered_nodes[drop_name] -- it's a node not an item-drop
+					and (not denied_group(drop_name))
+					and (inv:contains_item('main', drop_name)
+						or (0 == core_get_item_group(drop_name,
+							'not_in_creative_inventory')))
+				then
+					-- example dirt_with_rainforest_litter can not be
+					-- crafted on all servers but drops dirt, so
+					-- replacer would be set to dirt
+					node.name = drop_name
+					return true
+				end
+			end -- loop drops
+	--	end -- node is in creative inventory
+
+		if not creative_enabled then return false end
+
+		-- creative users have access to more items
+		-- but it must be a dig-able node
+		for i = 1, #drops do
+			drop_name = drops[i]
+			if core_registered_nodes[drop_name] -- it's a node not an item-drop
+				and (not denied_group(drop_name))
+				and (0 == core_get_item_group(drop_name,
+					'not_in_creative_inventory'))
+			then
+				node.name = drop_name
+				return true
+			end
+		end -- loop drops
+
+		-- well, better luck next time
+		return false
+	end -- valid
+	if not valid() then
+		r.inform(name, S('Failed to set replacer to "@1". '
+			.. 'If you had one in your inventory, it could be set.', node.name))
+		return
 	end
 
 	-- set the params to tool
