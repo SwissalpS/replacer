@@ -46,6 +46,8 @@ replacer.group_placeholder = {}
 replacer.image_replacements = {}
 
 local path = minetest.get_modpath('replacer') .. '/'
+-- for developers
+dofile(path .. 'test.lua')
 -- strings for translation (i+r)
 dofile(path .. 'blabla.lua')
 -- utilities (i+r)
