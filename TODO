@@ -8,21 +8,18 @@
         unified_inventory.get_formspec(player, page)
     maybe we can use this on group buttons
 
--- inspection tool: add wrap-around for prev, next buttons
-
 -- inspection tool: add support for letter stencil and ehlphibet machines
                     also fermenting barrels and shears (both vines and wool)
-            elphabet blocks and stickers insert ehlphi block for block and paper for sicker
+            elphabet blocks and stickers insert ehlphi block for block and paper for sticker
 
 -- inspection tool: add input/output amounts for technic machine processes
-
--- inspection tool: put the translated texts of prev/next buttons into tooltips and show generic icon
-                    instead of abreviating texts.
 
 -- known incompat replacer ------------------------
 -- doors in general (low priority)
 -- punched letter
 -- elphabet:xx (lowest priority)
+
+------ replacer fixes --------
 
 ---------- known incompat inspect -----------
 -- no recipe for silicon lump
