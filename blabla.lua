@@ -70,6 +70,7 @@ rb.log_reg_exception_callback = '[replacer] registered after on_place callback f
 rb.log_reg_alias_override = '[replacer] register_non_creative_alias: '
 	.. ' alias for "%s" already exists.'
 rb.log_reg_alias = '[replacer] registered alias for "%s" to "%s"'
+rb.log_reg_set_callback_fail = '[replacer] register_set_enabler called without passing function.'
 rb.formspec_error = '[replacer] formspec error, user "%s" attempting to change history. Fields: %s'
 rb.formspec_hacker = '[replacer] formspec forge? By user "%s" Fields: %s'
 
@@ -97,4 +98,7 @@ rbi.nothing = S('nothing')
 rbi.may_drop_on_dig = S('May drop on dig:')
 rbi.can_be_fuel = S('This can be used as a fuel.')
 rbi.unkown_recipe = S('Error: Unkown recipe.')
+rbi.log_reg_craft_method_wrong_arguments = '[replacer] register_craft_method invalid arguments given.'
+rbi.log_reg_craft_method_overriding_method = '[replacer] register_craft_method overriding existing method '
+rbi.log_reg_craft_method_added = '[replacer] register_craft_method method added: %s %s'
 
