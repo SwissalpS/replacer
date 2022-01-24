@@ -287,13 +287,15 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	local formspec = 'size[6,6]'
 		.. 'label[0,0;' .. mfe(rbi.name) .. ' ' .. node_name .. ']'
 		.. 'item_image_button[5,2;1.0,1.0;' .. node_name .. ';normal;]'
-		.. 'button_exit[5.0,4.3;1,0.5;quit;' .. mfe(rbi.exit) .. ']'
+		.. 'button_exit[5.0,4.3;1,0.5;quit;X]'
+		.. 'tooltip[quit;'.. mfe(rbi.exit) .. ']'
 
 	if 1 < #res then
-		formspec = formspec .. 'button[3.8,5;1,0.75;prev_recipe;'
-			.. mfe(rbi.prev) .. ']'
-			.. 'button[5.0,5.0;1,0.75;next_recipe;'
-			.. mfe(rbi.next) .. ']'
+		formspec = formspec
+			.. 'button[3.8,5;1,0.75;prev_recipe;<-]'
+			.. 'tooltip[prev_recipe;'.. mfe(rbi.prev) .. ']'
+			.. 'button[5.0,5.0;1,0.75;next_recipe;->]'
+			.. 'tooltip[next_recipe;'.. mfe(rbi.next) .. ']'
 	end
 
 	formspec = formspec
