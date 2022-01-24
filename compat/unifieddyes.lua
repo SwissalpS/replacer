@@ -67,12 +67,13 @@ function replacer.unifieddyes.is_airbrushed(node_def)
 	if nil ~= node_def.name:find('_tinted$') then
 		return true
 	end
-	--[[ tried to fix scifi_nodes white2 ... _colored
-	didn't work this way even though airbrush was used to paint them
-	if nil ~= node_def.name:find('_colored$') then
-		return true
-	end
-	--]]
 	return not node_def.airbrush_replacement_node
 end -- is_airbrushed
+
+
+-- mostly for scifi_nodes plastic.
+replacer.register_set_enabler(function(node)
+	return node and node.name
+		and ud.is_airbrush_compatible(minetest.registered_nodes[node.name])
+end)
 
