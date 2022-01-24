@@ -288,6 +288,15 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		.. 'label[0,0;' .. mfe(rbi.name) .. ' ' .. node_name .. ']'
 		.. 'item_image_button[5,2;1.0,1.0;' .. node_name .. ';normal;]'
 		.. 'button_exit[5.0,4.3;1,0.5;quit;' .. mfe(rbi.exit) .. ']'
+
+	if 1 < #res then
+		formspec = formspec .. 'button[3.8,5;1,0.75;prev_recipe;'
+			.. mfe(rbi.prev) .. ']'
+			.. 'button[5.0,5.0;1,0.75;next_recipe;'
+			.. mfe(rbi.next) .. ']'
+	end
+
+	formspec = formspec
 		.. 'label[0,5.5;' .. mfe(rbi.this_is) .. ' ' .. mfe(desc) .. ']'
 		 -- invisible field for passing on information
 		.. 'field[20,20;0.1,0.1;node_name;node_name;' .. node_name .. ']'
@@ -316,12 +325,6 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			.. mfe(fields.protected_info) .. ']'
 	end
 
-	if 1 < #res then
-		formspec = formspec .. 'button[3.8,5;1,0.75;prev_recipe;'
-			.. mfe(rbi.prev) .. ']'
-			.. 'button[5.0,5.0;1,0.75;next_recipe;'
-			.. mfe(rbi.next) .. ']'
-	end
 	if 1 > #res then
 		formspec = formspec .. 'label[3,1;' .. mfe(rbi.no_recipes) .. ']'
 		if minetest.registered_nodes[node_name]
