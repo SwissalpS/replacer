@@ -188,6 +188,7 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 	return nil -- no item shall be removed from inventory
 end -- replacer.inspect
 
+
 function replacer.image_button_link(stack_string)
 	local group = ''
 	if r.image_replacements[stack_string] then

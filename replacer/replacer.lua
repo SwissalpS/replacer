@@ -44,6 +44,8 @@ replacer.mode_colours = {
 	{ '#38fb9a', '#21cc79', '#10bb68' },
 	{ '#f4b755', '#d29533', '#9F6200' }
 }
+
+
 function replacer.get_data(stack)
 	local meta = stack:get_meta()
 	local data = meta:get_string('replacer'):split(' ') or {}
@@ -57,6 +59,7 @@ function replacer.get_data(stack)
 	mode.minor = tonumber(mode_bare[2] or 1)
 	return node, mode
 end -- get_data
+
 
 function replacer.set_data(stack, node, mode)
 	node = 'table' == type(node) and node or {}
@@ -103,6 +106,7 @@ function replacer.set_data(stack, node, mode)
 	return short_description
 end -- set_data
 
+
 if r.has_technic_mod then
 	if technic.plus then
 		replacer.get_charge = technic.get_RE_charge
@@ -140,6 +144,7 @@ else
 	function replacer.discharge() end
 	function replacer.get_charge() return r.max_charge end
 end
+
 
 -- replaces one node with another one and returns if it was successful
 function replacer.replace_single_node(pos, node_old, node_new, player,
@@ -236,6 +241,7 @@ function replacer.replace_single_node(pos, node_old, node_new, player,
 
 	return true
 end -- replace_single_node
+
 
 -- the function which happens when the replacer is used
 -- also called by on_place if sneak isn't pressed
@@ -488,6 +494,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	return itemstack
 end -- on_use
 
+
 -- right-click with tool -> place set node
 -- special+right-click -> cycle major mode (if tool/privs permit)
 -- special+sneak+right-click -> cycle minor mode (if tool/privs permit)
@@ -505,7 +512,7 @@ function replacer.on_place(itemstack, player, pt)
 	local is_technic = itemstack:get_name() == r.tool_name_technic
 	local modes_are_available = is_technic or creative_enabled
 
-	-- is special-key held? (aka fast-key)
+	-- is special-key held? (aka fast-key) -> change mode
 	if keys.aux1 then
 		-- don't want anybody to think that special+rc = place
 		if not modes_are_available then return end
@@ -528,7 +535,7 @@ function replacer.on_place(itemstack, player, pt)
 		r.set_data(itemstack, node, mode)
 		-- return changed tool
 		return itemstack
-	end
+	end -- change mode
 
 	-- If not holding sneak key, place node(s)
 	if not keys.sneak then
@@ -555,7 +562,6 @@ function replacer.on_place(itemstack, player, pt)
 	if not modes_are_available then
 		mode = { major = 1, minor = 1 }
 	end
-
 	local inv = player:get_inventory()
 
 	-- helper function for valid()
@@ -660,6 +666,7 @@ function replacer.on_place(itemstack, player, pt)
 	return itemstack --data changed
 end -- on_place
 
+
 function replacer.tool_def_basic()
 	return {
 		description = rb.description_basic,
@@ -673,6 +680,7 @@ function replacer.tool_def_basic()
 		on_use = r.on_use
 	}
 end
+
 
 minetest.register_tool(r.tool_name_basic, r.tool_def_basic())
 
