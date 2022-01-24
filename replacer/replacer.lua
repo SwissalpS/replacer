@@ -553,9 +553,9 @@ function replacer.on_place(itemstack, player, pt)
 
 	-- don't allow setting replacer to denied nodes
 	-- helper function for valid()
-	local function denied_group(name)
-		for _, group in ipairs(r.deny_groups) do
-			if 0 < core_get_item_group(name, group) then
+	local function denied_group(item_name)
+		for group, val in pairs(r.deny_groups) do
+			if val and 0 < core_get_item_group(item_name, group) then
 				return true
 			end
 		end
