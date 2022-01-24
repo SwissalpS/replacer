@@ -62,7 +62,8 @@ function replacer.permit_replace(pos, old_node_def, new_node_def,
 		player_ref, player_name, player_inv, creative_or_give)
 
 	if r.deny_list[old_node_def.name] then
-		return false, rb.deny_listed:format(old_node_def.name)
+		return false, S('Replacing nodes of type "@1" is not allowed '
+			.. 'on this server. Replacement failed.', old_node_def.name)
 	end
 
 	if is_protected(pos, player_name) then

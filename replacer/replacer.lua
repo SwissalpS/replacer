@@ -553,8 +553,8 @@ function replacer.on_place(itemstack, player, pt)
 
 	-- don't allow setting replacer to denied nodes
 	if r.deny_list[node.name] then
-		r.inform(name, S('Replacing nodes of type "@1" is not allowed on this server. '
-			.. 'Replacement failed.', node.name))
+		r.inform(name, S('Placing nodes of type "@1" is not '
+			.. 'allowed on this server.', node.name))
 		return
 	end
 
