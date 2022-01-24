@@ -292,9 +292,9 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 
 	if 1 < #res then
 		formspec = formspec
-			.. 'button[3.8,5;1,0.75;prev_recipe;<-]'
+			.. 'button[4.1,5;1,0.75;prev_recipe;<-]'
 			.. 'tooltip[prev_recipe;'.. mfe(rbi.prev) .. ']'
-			.. 'button[5.0,5.0;1,0.75;next_recipe;->]'
+			.. 'button[5.0,5;1,0.75;next_recipe;->]'
 			.. 'tooltip[next_recipe;'.. mfe(rbi.next) .. ']'
 	end
 
@@ -351,7 +351,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 					end
 				end
 				local i = 1
-				formspec = formspec .. 'label[2,1.6;' .. mfe(rbi.may_drop_on_dig) .. ']'
+				formspec = formspec .. 'label[0,1.5;' .. mfe(rbi.may_drop_on_dig) .. ']'
 				for k, v in pairs(droplist) do
 					formspec = formspec .. 'item_image_button['
 						.. (((i - 1) % 3) + 1) .. ','
