@@ -13,4 +13,5 @@ rgp['group:food_peppercorn'] = 'farming:peppercorn'
 rgp['group:food_soy'] = 'farming:soy_beans'
 rgp['group:food_salt'] = 'farming:salt'
 rgp['group:food_juicer'] = 'farming:juicer'
+rgp['group:food_potato'] = 'farming:potato'
 
