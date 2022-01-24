@@ -7,30 +7,6 @@ local pos_to_string = minetest.pos_to_string
 -- limit by node, use replacer.register_limit(sName, iMax)
 replacer.limit_list = {}
 
--- some nodes don't rotate using param2. They can be added
--- using replacer.register_exception(node_name, inv_node_name[, callback_function])
--- where: node_name is the itemstring of node when placed in world
---		inv_node_name the itemstring of item in inventory to consume
---		callback_function is optional and will be called after node is placed.
---		  It must return true on success and false, error_message on fail.
---		  In order to register only a callback, pass two identical itemstrings.
---		  Generally the callback is not needed as on_place() is called on the placed node
---		  callback signature is: (pos, old_node_def, new_node_def, player_ref)
--- Examples:
--- 1) Technic cable plate 'technic:lv_cable_plate_4' needs to consume 'technic:lv_cable_plate_1'
---    r.register_exception('technic:lv_cable_plate_4', 'technic:lv_cable_plate_1')
--- 2) Cobwebs don't drop cobwebs, to enable setting replacer to them without having any in
---    user's inventory, register like so:
---    r.register_exception('mobs:cobweb', 'mobs:cobweb')
-replacer.exception_map = {}
-replacer.exception_callbacks = {}
--- sometimes you want a reverse exception, for that you use:
--- replacer.register_non_creative_alias(name_sibling, name_placed)
--- Example vines have middle and end parts. To enable setting replacer on middle part
--- to then place an end part in world (only when player does not have creative priv)
--- register like so:
--- replacer.register_non_creative_alias('vines:jungle_middle', 'vines:jungle_end')
-replacer.alias_map = {}
 
 -- don't allow these at all
 replacer.deny_list = {}
@@ -105,18 +81,6 @@ function replacer.permit_replace(pos, old_node_def, new_node_def,
 	return true
 end -- permit_replace
 
-function replacer.register_exception(node_name, drop_name, callback)
-	if r.exception_map[node_name] then
-		minetest.log('info', rb.log_reg_exception_override:format(node_name))
-	end
-	r.exception_map[node_name] = drop_name
-	minetest.log('info', rb.log_reg_exception:format(node_name, drop_name))
-
-	if 'function' ~= type(callback) then return end
-
-	r.exception_callbacks[node_name] = callback
-	minetest.log('info', rb.log_reg_exception_callback:format(node_name))
-end -- register_exception
 
 local function is_positive_int(value)
 	return (type(value) == 'number') and (math.floor(value) == value) and (0 <= value)
@@ -141,12 +105,4 @@ function replacer.register_limit(node_name, node_max)
 	r.limit_list[node_name] = node_max
 	minetest.log('info', rb.log_limit_insert:format(node_name, node_max))
 end -- register_limit
-
-function replacer.register_non_creative_alias(name_sibling, name_placed)
-	if r.alias_map[name_sibling] then
-		minetest.log('info', rb.log_reg_alias_override:format(name_sibling))
-	end
-	r.alias_map[name_sibling] = name_placed
-	minetest.log('info', rb.log_reg_alias:format(name_sibling, name_placed))
-end -- register_non_creative_alias
 

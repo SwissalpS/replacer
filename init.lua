@@ -48,10 +48,12 @@ replacer.image_replacements = {}
 local path = minetest.get_modpath('replacer') .. '/'
 -- strings for translation (i+r)
 dofile(path .. 'blabla.lua')
--- more settings and functions
-dofile(path .. 'replacer/constrain.lua')
 -- utilities (i+r)
 dofile(path .. 'utils.lua')
+-- more settings and functions
+dofile(path .. 'replacer/constrain.lua')
+-- register set enable functions
+dofile(path .. 'replacer/enable.lua')
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
 
