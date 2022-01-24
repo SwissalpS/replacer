@@ -2,7 +2,7 @@ local r = replacer
 local rb = replacer.blabla
 local S = replacer.S
 local is_protected = minetest.is_protected
-local pos_to_string = minetest.pos_to_string
+local pos_to_string = replacer.nice_pos_string
 
 -- limit by node, use replacer.register_limit(sName, iMax)
 replacer.limit_list = {}
