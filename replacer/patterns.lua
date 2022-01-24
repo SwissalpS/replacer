@@ -38,8 +38,9 @@ function replacer.patterns.replaceable(pos, node_name, player_name, param2)
 		-- TODO: add mechanism to register allowed types
 		-- some servers might have other nodes like mars-lights that should be allowed too
 		-- maybe dummy lights, on the other hand, it might be useful to be able to stop replacer with dummy lights
-		return (('air' == node.name) or ('vacuum:vacuum' == node.name))
-			and (not is_protected(pos, player_name))
+		return (('air' == node.name) or ('vacuum:vacuum' == node.name)
+			or 'planetoidgen:airlight' == node.name)
+				and (not is_protected(pos, player_name))
 	end
 	-- in field mode we also check that param2 is the same as the
 	-- initial node that was clicked on
