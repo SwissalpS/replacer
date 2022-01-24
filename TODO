@@ -9,8 +9,12 @@
     maybe we can use this on group buttons
 
 -- inspection tool: add support for letter stencil and ehlphibet machines
-                    also fermenting barrels and shears (both vines and wool)
             elphabet blocks and stickers insert ehlphi block for block and paper for sticker
+            add info for seeds and saplings about planting
+            add info for plants telling when they are ripe -> allowing user to click on the ripe
+                stage and see possible seed drop -> showing info about planting.
+                don't forget wine:blue_agave when doing that
+            add spawning, breading etc. info for mobs
 
 -- inspection tool: add input/output amounts for technic machine processes
 
