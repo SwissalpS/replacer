@@ -8,21 +8,9 @@ local pos_to_string = replacer.nice_pos_string
 replacer.limit_list = {}
 
 
--- don't allow these at all
+-- don't allow these at all, neither for placing nor replacing
+-- example: r.deny_list['tnt:boom'] = true
 replacer.deny_list = {}
-
--- playing with tnt and creative building are usually contradictory
--- (except when doing large-scale landscaping in singleplayer)
-replacer.deny_list['tnt:boom'] = true
-replacer.deny_list['tnt:gunpowder'] = true
-replacer.deny_list['tnt:gunpowder_burning'] = true
-replacer.deny_list['tnt:tnt'] = true
-
--- prevent accidental replacement of your protector
-replacer.deny_list['priv_protector:protector'] = true
-replacer.deny_list['protector:protect'] = true
-replacer.deny_list['protector:protect2'] = true
-replacer.deny_list['xp_redo:protector'] = true
 
 -- charge limits
 replacer.max_charge = 30000
