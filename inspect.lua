@@ -249,10 +249,16 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	-- offer all alternate crafting recipes through prev/next buttons
-	if fields and fields.prev_recipe and 1 < recipe_nr then
+	if fields and fields.prev_recipe then
 		recipe_nr = recipe_nr - 1
-	elseif fields and fields.next_recipe and recipe_nr < #res then
+	elseif fields and fields.next_recipe then
 		recipe_nr = recipe_nr + 1
+	end
+	-- wrap around
+	if #res < recipe_nr then
+		recipe_nr = 1
+	elseif 1 > recipe_nr then
+		recipe_nr = #res
 	end
 
 	local desc = ' ' .. rbi.no_desc .. ' '
@@ -310,15 +316,10 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			.. mfe(fields.protected_info) .. ']'
 	end
 
-	if #res < recipe_nr or 1 > recipe_nr then
-		recipe_nr = 1
-	end
-	if 1 < recipe_nr then
+	if 1 < #res then
 		formspec = formspec .. 'button[3.8,5;1,0.75;prev_recipe;'
 			.. mfe(rbi.prev) .. ']'
-	end
-	if #res > recipe_nr then
-		formspec = formspec .. 'button[5.0,5.0;1,0.75;next_recipe;'
+			.. 'button[5.0,5.0;1,0.75;next_recipe;'
 			.. mfe(rbi.next) .. ']'
 	end
 	if 1 > #res then
