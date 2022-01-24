@@ -52,35 +52,17 @@ dofile(path .. 'blabla.lua')
 dofile(path .. 'replacer/constrain.lua')
 -- utilities (i+r)
 dofile(path .. 'utils.lua')
-
--- TODO: just loop through compat dir
--- bakedclay support (i)
-dofile(path .. 'compat/bakedclay.lua')
--- beacon beam support (r)
-dofile(path .. 'compat/beacon.lua')
--- biofuel (r)
-dofile(path .. 'compat/biofuel.lua')
--- default & basic dyes support (i)
-dofile(path .. 'compat/default.lua')
--- cobweb (r)
-dofile(path .. 'compat/mobs.lua')
--- circular saw support (i+r)
-dofile(path .. 'compat/moreblocks.lua')
--- prefab (r)
-dofile(path .. 'compat/prefab.lua')
--- RealTest overrides (i)
-dofile(path .. 'compat/realTest.lua')
--- ropes support (r)
-dofile(path .. 'compat/ropes.lua')
--- add cable plate exceptions (r)
-dofile(path .. 'compat/technic.lua')
--- unifiedddyes support functions (i+r)
-dofile(path .. 'compat/unifieddyes.lua')
--- vines group support (i+r)
-dofile(path .. 'compat/vines.lua')
-
 -- adds a tool for inspecting nodes and entities
 dofile(path .. 'inspect.lua')
+
+-- loop through compat dir
+local path_compat = path .. 'compat/'
+for _, file in ipairs(minetest.get_dir_list(path_compat, false)) do
+	if file:find('^[^._].+[.]lua$') then
+		dofile(path_compat .. file)
+	end
+end
+
 replacer.datastructures = dofile(path .. 'replacer/datastructures.lua')
 dofile(path .. 'replacer/formspecs.lua')
 dofile(path .. 'replacer/history.lua')
