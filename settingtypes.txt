@@ -27,4 +27,6 @@ replacer.hide_recipe_basic (Hide basic recipe) bool false
 replacer.hide_recipe_technic_upgrade (Hide upgrade recipe) bool false
 # Hide the direct upgrade recipe. Only available if technic is installed.
 replacer.hide_recipe_technic_direct (Hide direct recipe) bool true
+# Enable developer mode
+replacer.dev_mode (Enable developer mode) bool false
 
