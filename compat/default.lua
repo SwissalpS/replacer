@@ -1,16 +1,26 @@
 -- replacer has default mod as hard dependancy, so no checking
+-- helpers for inspection tool
 -- some common groups
+replacer.group_placeholder['group:water_bucket'] = 'bucket:bucket_river_water'
 replacer.group_placeholder['group:coal'] = 'default:coal_lump'
+replacer.group_placeholder['group:fence'] = 'default:fence_wood'
 replacer.group_placeholder['group:leaves'] = 'default:leaves'
+replacer.group_placeholder['group:marble']= 'technic:marble' -- building_blocks:Marble
 replacer.group_placeholder['group:sand'] = 'default:sand'
 replacer.group_placeholder['group:sapling']= 'default:sapling'
 replacer.group_placeholder['group:stick'] = 'default:stick'
 -- 'default:stone' point people to the cheaper cobble
 replacer.group_placeholder['group:stone'] = 'default:cobble'
+replacer.group_placeholder['group:tar_block'] = 'building_blocks:Tar'
 replacer.group_placeholder['group:tree'] = 'default:tree'
+replacer.group_placeholder['group:vessel'] = 'fireflies:firefly_bottle'
 replacer.group_placeholder['group:wood'] = 'default:wood'
 replacer.group_placeholder['group:wood_slab'] = 'stairs:slab_wood'
 replacer.group_placeholder['group:wool'] = 'wool:white'
+-- pickaxes
+local picks = { 'diamond', 'bronze', 'mese', 'steel', 'stone', 'wood' }
+table.shuffle(picks)
+replacer.group_placeholder['group:pickaxe'] = 'default:pick_' .. picks[1]
 
 -- add default game dyes
 for _, color in pairs(dye.dyes) do
@@ -44,6 +54,8 @@ if replacer.has_basic_dyes then
 	end
 end
 
--- can be crafted, so let it be placed
-replacer.register_exception('default:dirt_with_grass', 'default:dirt_with_grass')
+-- fix dandelion
+replacer.image_replacements['flowers:dandelion'] = 'flowers:dandelion_white'
+-- fix pink
+replacer.group_placeholder['group:dye,unicolor_light_red'] = 'dye:pink'
 

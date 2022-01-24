@@ -14,6 +14,43 @@ local floor = math.floor
 local chat = minetest.chat_send_player
 local mfe = minetest.formspec_escape
 
+-- use r.register_craft_method() to populate
+replacer.recipe_adders = {}
+
+-- uid: unique identifier e.g. 'saw', 'compress', 'freeze'
+-- machine_itemstring: the itemstring that has registered icon texture,
+--     generally the machine used.
+-- func_inspect: function that manipulates recipes list with signature:
+--     f(node_name, param2, recipes)
+--     returns nothing, just adds recipes to recipes list
+-- func_formspec: optional function that returns extra formspec elements
+--     f(recipe)
+--     where recipe is the recipe table func_inspect added.
+--     returns a string, even if empty.
+function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
+	func_formspec)
+	if ('string' ~= type(uid) or '' == uid)
+		or ('string' ~= type(machine_itemstring)
+			or not minetest.registered_items[machine_itemstring])
+		or 'function' ~= type(func_inspect)
+	then
+		minetest.log('warning', rbi.log_reg_craft_method_wrong_arguments)
+		return
+	end
+
+	if r.recipe_adders[uid] then
+		minetest.log('warning', rbi.log_reg_craft_method_overriding_method .. uid)
+	end
+
+	r.recipe_adders[uid] = {
+		machine = machine_itemstring,
+		add_recipe = func_inspect,
+		formspec = ('function' == type(func_formspec) and func_formspec) or nil
+	}
+	minetest.log('info', rbi.log_reg_craft_method_added:format(uid, machine_itemstring))
+end -- register_craft_method
+
+
 minetest.register_tool('replacer:inspect', {
 	description = rbi.description,
 	groups = {},
@@ -167,41 +204,6 @@ function replacer.image_button_link(stack_string)
 end -- image_button_link
 
 
-function replacer.add_circular_saw_recipe(node_name, recipes)
-	local basic_node_name = r.is_saw_output(node_name)
-	if not basic_node_name then return end
-
-	-- node found that fits into the saw
-	recipes[#recipes + 1] = {
-		method = 'saw',
-		type = 'saw',
-		items = { basic_node_name },
-		output = node_name
-	}
-	return recipes
-end -- add_circular_saw_recipe
-
-
-function replacer.add_colormachine_recipe(node_name, recipes)
-	if not r.has_colormachine_mod then
-		return
-	end
-	local res = colormachine.get_node_name_painted(node_name, '')
-
-	if not res or not res.possible  or 1 > #res.possible then
-		return
-	end
-	-- paintable node found
-	recipes[#recipes + 1] = {
-		method = 'colormachine',
-		type = 'colormachine',
-		items = { res.possible[1] },
-		output = node_name
-	}
-	return recipes
-end -- add_colormachine_recipe
-
-
 function replacer.inspect_show_crafting(player_name, node_name, fields)
 	if not player_name then
 		return
@@ -241,11 +243,11 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	--
 
 	-- add special recipes for nodes created by machines
-	r.add_circular_saw_recipe(node_name, res)
-	r.add_colormachine_recipe(node_name, res)
-	r.unifieddyes.add_recipe(fields.param2, node_name, res)
+	for _, adder in pairs(r.recipe_adders) do
+		adder.add_recipe(node_name, fields.param2, res)
+	end
 
-	-- offer all alternate creafting recipes thrugh prev/next buttons
+	-- offer all alternate crafting recipes through prev/next buttons
 	if fields and fields.prev_recipe and 1 < recipe_nr then
 		recipe_nr = recipe_nr - 1
 	elseif fields and fields.next_recipe and recipe_nr < #res then
@@ -392,22 +394,16 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 				.. r.image_button_link('default:furnace') .. ']'
 				.. 'item_image_button[2.9,2.7;1.0,1.0;'
 				.. r.image_button_link(recipe.items[1]) .. ']'
-		elseif 'colormachine' == recipe.type
-			and recipe.items
-			and 1 == #recipe.items
+		elseif recipe.items
+			and 1 == #recipe.items -- TODO: investigate if this shouldn't be 0 < #recipe.items
+			and r.recipe_adders[recipe.type]
 		then
+			local handler = r.recipe_adders[recipe.type]
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. r.image_button_link('colormachine:colormachine') .. ']'
+				.. r.image_button_link(handler.machine) .. ']'
 				.. 'item_image_button[2,2;1.0,1.0;'
 				.. r.image_button_link(recipe.items[1]) .. ']'
-		elseif 'saw' == recipe.type
-			and recipe.items
-			and 1 == #recipe.items
-		then
-			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. r.image_button_link('moreblocks:circular_saw') .. ']'
-				.. 'item_image_button[2,0.6;1.0,1.0;'
-				.. r.image_button_link(recipe.items[1]) .. ']'
+				.. (handler.formspec and handler.formspec(recipe) or '')
 		else
 			formspec = formspec .. 'label[3,1;' .. mfe(rbi.unkown_recipe) .. ']'
 		end

@@ -1,7 +1,6 @@
--- for some reason cobwebs need this [mobs_monster]
--- probably because they drop string when dug and string
--- is only a craft item.
-if minetest.get_modpath('mobs_monster') then
-	replacer.register_exception('mobs:cobweb', 'mobs:cobweb')
-end
+if not minetest.get_modpath('mobs') then return end
+
+local rgp = replacer.group_placeholder
+if not rgp['group:food_cheese'] then rgp['group:food_cheese'] = 'mobs:cheese' end
+if not rgp['group:food_meat'] then rgp['group:food_meat'] = 'mobs:meat' end
 
