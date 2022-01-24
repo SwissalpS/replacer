@@ -1,21 +1,55 @@
+-- inspection tool: add button to open unified_inventory's formspec
+    this may no longer be as important and isn't that practical as there are
+    now so many buttons. It would be hard to keep clear which item will be shown.
+    <OgelGames@Discord> SwissalpS: by using player:set_inventory_formspec() unified_inventory
+        binds itself to the 'i'-key
+        https://github.com/minetest-mods/unified_inventory/blob/d6688872c84417d2f61d6f5e607aea39d78920aa/internal.lua#L302-L306
+    <OgelGames@Discord> I think you could open it by sending the formspec from
+        unified_inventory.get_formspec(player, page)
+    maybe we can use this on group buttons
+
+-- inspection tool: add wrap-around for prev, next buttons
+
+-- inspection tool: add support for letter stencil and ehlphibet machines
+                    also fermenting barrels and shears (both vines and wool)
+            elphabet blocks and stickers insert ehlphi block for block and paper for sicker
+    canned_.*_plus items could use a 'craft'-method
+
+-- inspection tool: add input/output amounts for technic machine processes
+
+-- inspection tool: put the translated texts of prev/next buttons into tooltips and show generic icon
+                    instead of abreviating texts.
+
 -- known incompat replacer ------------------------
-most of the coloured nodes work, just not setting without
-at least one in inventory
-these should be solve-able with a general lookup similar to what
-inspect already does, but return an itemstring for correct
-consumption node
--- framed steel obsidian glass tinted
--- new glass
--- unified bricks bricks and clay (coloured)
 -- sci-fi plastic coloured
--- stained glass coloured (normal and trap)
-
--- telemosaic extenders (coloured) probably will need a compat like beacon beams
--- default clay (baked works)
-
 -- doors in general (low priority)
+-- punched letter
 -- elphabet:xx (lowest priority)
+
 ---------- known incompat inspect -----------
--- soundblock recipe does not correctly show mesecon wires
--- same for fpga and delayer (works with gates though also eeprom and some others)
+-- no recipe for silicon lump
+
+---- missing icons ----
+-- fix in scifi_nodes
+flowers:dandelion --> dandelion_white and dandelion_yellow would exist (*scifi_nodes:plant10 also 9)
+
+-- fix in homedecor_kitchen
+homedecor:kitchen_cabinet --> homedecor:kitchen_cabinet_colorable *
+
+-- fix these in bridger mod
+bridger:corrugated_steelgreen --> bridger:corrugated_steel_green *
+bridger:corrugated_steelwhite
+bridger:corrugated_steelred
+bridger:corrugated_steelsteel
+bridger:corrugated_steelyellow
+
+-- has unknown items in recipe --
+-- stained_glass? which one?
+
+-- glowlight has trouble finding base recipe, also desk_lamp, ceiling lantern, ceiling lamp,
+   ground lantern, hanging lantern, kitchen cabinet coloured, latice lantern, table lamp,
+   standing lamp, rope light/on floor, plasma lamp, plasma ball, wall lamp,
+-- dvd_cd_cabinet, chains, wood_table_large_square have no recipe at all
+
+-- christmas presents say they don't drop anything
 
