@@ -5,6 +5,42 @@ local log = minetest.log
 local floor = math.floor
 local pos_to_string = minetest.pos_to_string
 
+function replacer.possible_node_drops(node_name, return_names_only)
+	if not minetest.registered_nodes[node_name]
+		or not minetest.registered_nodes[node_name].drop then return {} end
+
+	local drop = minetest.registered_nodes[node_name].drop
+	if 'string' == type(drop) then
+		if '' == drop then return {} end
+		if return_names_only then
+			return { drop:match('^([^ ]+)') }
+		end
+		return { drop }
+	end
+
+	if 'table' ~= type(drop) or not drop.items then return {} end
+
+	local droplist = {}
+	local checks = {}
+	for _, drops in ipairs(drop.items) do
+		for _, item in ipairs(drops.items) do
+			-- avoid duplicates; but include the item itself
+			-- these are itemstrings so same item can appear multiple times with
+			-- different amounts and/or rarity
+			if return_names_only then
+				item = item:match('^([^ ]+)')
+			end
+			if not checks[item] then
+				checks[item] = 1
+				table.insert(droplist, item)
+			end
+		end
+	end
+	checks = nil
+	return droplist
+end -- possible_node_drops
+
+
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 
@@ -19,6 +55,7 @@ function replacer.inform(name, message)
 	chat_send_player(name, message)
 end -- inform
 
+
 function replacer.nice_pos_string(pos)
 	local no_info = '<no positional information>'
 	if 'table' ~= type(pos) then return no_info end
@@ -27,6 +64,7 @@ function replacer.nice_pos_string(pos)
 	pos = { x = floor(pos.x + .5), y = floor(pos.y + .5), z = floor(pos.z + .5) }
 	return pos_to_string(pos)
 end -- nice_pos_string
+
 
 -- from: http://lua-users.org/wiki/StringRecipes
 function replacer.titleCase(str)

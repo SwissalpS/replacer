@@ -606,11 +606,7 @@ function replacer.on_place(itemstack, player, pt)
 
 		-- now we are scraping the bottom of the barrel
 		-- let's check if digging this would drop something use-able
-		-- TODO: check if this is list as defined or random factor incorporated already
-		--       SwissalpS has the suspicion that it is. When testing on grain crops
-		--       sometimes was set to seeds and sometimes attempted to set to the crop.
-		--       This could also be that the table isn't always returned with same sorting.
-		local drops = core_get_node_drops(node.name)
+		local drops = r.possible_node_drops(node.name, true)
 		local drop_name
 	--	if 0 == core_get_item_group(node.name, 'not_in_creative_inventory') then
 			for i = 1, #drops do
