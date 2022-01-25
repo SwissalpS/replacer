@@ -41,27 +41,22 @@ local function add_recipe_alloy(item_name, _, recipes)
 			and def.input and 'table' == type(def.input)
 		then
 			local l = {}
-			for k, v in pairs(def.input) do table.insert(l, k) end
+			for k, v in pairs(def.input) do
+				table.insert(l, k .. ' ' .. tostring(v))
+			end
 			local i1, i2 = l[1], l[2]
 			recipes[#recipes + 1] = {
-				method = 'alloy',
+				method = 'alloying',
 				type = 'technic:alloy',
-				items = { i1 },
-				output = item_name,
-				item2 = i2
+				items = { i1, i2 },
+				output = def.output
 			}
 		end
 	end
 end -- add_recipe_alloy
 
-local function add_formspec_alloy(recipe)
-	if not recipe.item2 then return '' end
-	return 'item_image_button[3,2;1.0,1.0;'
-		.. replacer.image_button_link(recipe.item2) .. ']'
-end
-
 replacer.register_craft_method(
-	'technic:alloy', 'technic:coal_alloy_furnace', add_recipe_alloy, add_formspec_alloy)
+	'technic:alloy', 'technic:coal_alloy_furnace', add_recipe_alloy)
 
 
 local function add_recipe_cnc(item_name, _, recipes)
@@ -69,11 +64,11 @@ local function add_recipe_cnc(item_name, _, recipes)
 	if not base_name then return end
 
 	recipes[#recipes + 1] = {
-		method = 'cnc',
+		method = 'CNC machining',
 		type = 'technic:cnc',
 		items = { base_name },
 		output = item_name,
-		program = program:gsub('_', ' ')
+		program = program --:gsub('_', ' ')
 	}
 end -- add_recipe_freeze
 
@@ -90,9 +85,9 @@ local function add_recipe_compress(item_name, _, recipes)
 	for input_name, def in pairs(technic.recipes['compressing']['recipes']) do
 		if def.output and def.output == item_name then
 			recipes[#recipes + 1] = {
-				method = 'compress',
+				method = 'compressing',
 				type = 'technic:compress',
-				items = { input_name },
+				items = { input_name .. ' ' .. tostring(def.input[input_name]) },
 				output = item_name
 			}
 		end
@@ -109,10 +104,10 @@ local function add_recipe_extract(item_name, _, recipes)
 			and def.output:find('^' .. item_name .. ' ?[0-9]*$')
 		then
 			recipes[#recipes + 1] = {
-				method = 'extract',
+				method = 'extracting',
 				type = 'technic:extract',
-				items = { input_name },
-				output = item_name
+				items = { input_name .. ' ' .. tostring(def.input[input_name]) },
+				output = def.output
 			}
 		end
 	end
@@ -122,36 +117,84 @@ replacer.register_craft_method('technic:extract', 'technic:lv_extractor', add_re
 
 
 local function add_recipe_freeze(item_name, _, recipes)
+--pd(technic.recipes['freezing'])
+	local def_out_type, outputs, main_output
 	for input_name, def in pairs(technic.recipes['freezing']['recipes']) do
-		if def.output
-			and (def.output == item_name
-				or ('table' == type(def.output)
-					and def.output[1] == item_name))
+		def_out_type = type(def.output)
+		if 'string' == def_out_type
+			and def.output:find('^' .. item_name .. ' ?[0-9]*$')
 		then
 			recipes[#recipes + 1] = {
-				method = 'freeze',
+				method = 'freezing',
 				type = 'technic:freeze',
 				items = { input_name },
-				output = item_name
+				output = def.output,
 			}
+
+		elseif 'table' == def_out_type then
+			outputs, main_output = {}, nil
+			for _, output_string in ipairs(def.output) do
+				if output_string:find('^' .. item_name .. ' ?[0-9]*$') then
+					main_output = output_string
+				else
+					table.insert(outputs, output_string)
+				end
+			end
+			if main_output then
+				recipes[#recipes + 1] = {
+					method = 'freezing',
+					type = 'technic:freeze',
+					items = { input_name .. ' '.. tostring(def.input[input_name]) },
+					output = main_output,
+					output_other = outputs,
+				}
+			end
 		end
 	end
 end -- add_recipe_freeze
 
-replacer.register_craft_method('technic:freeze', 'technic:mv_freezer', add_recipe_freeze)
+local function add_formspec_freeze(recipe)
+	if not recipe.output_other or 0 == #recipe.output_other then
+		return ''
+	end
+
+	local out = 'item_image_button[5,3;1.0,1.0;'
+		.. replacer.image_button_link(recipe.output_other[1]) .. ']'
+	if recipe.output_other[2] then
+		out = out .. 'item_image_button[5,1;1.0,1.0;'
+			.. replacer.image_button_link(recipe.output_other[2]) .. ']'
+	end
+	return out
+end -- add_formspec_freeze
+
+replacer.register_craft_method(
+	'technic:freeze', 'technic:mv_freezer', add_recipe_freeze, add_formspec_freeze)
 
 
 local function add_recipe_grind(item_name, _, recipes)
 --pd(technic.recipes['grinding'])
+	local inputs, input_type
 	for input_name, def in pairs(technic.recipes['grinding']['recipes']) do
-		if def.output and 'string' == type(def.output)
+		if 'string' == type(def.output)
 			and def.output:find('^' .. item_name .. ' ?[0-9]*$')
 		then
+			input_type = type(def.input)
+			if 'string' == input_type then
+				inputs = { def.input }
+			elseif 'table' == input_type then
+				inputs = {}
+				-- there is only one, but that's how lua works so we need to loop
+				for k, v in pairs(def.input) do
+					table.insert(inputs, k .. ' ' .. tostring(v))
+				end
+			else
+				inputs = {}
+			end
 			recipes[#recipes + 1] = {
-				method = 'grind',
+				method = 'grinding',
 				type = 'technic:grind',
-				items = { input_name },
-				output = item_name
+				items = inputs,
+				output = def.output
 			}
 		end
 	end
@@ -162,24 +205,31 @@ replacer.register_craft_method('technic:grind', 'technic:lv_grinder', add_recipe
 
 local function add_recipe_separate(item_name, _, recipes)
 --pd(technic.recipes['separating'])
+	local outputs, main_output, inputs
 	for input_name, def in pairs(technic.recipes['separating']['recipes']) do
-		if def.output and 'table' == type(def.output) then
-			local clean, cleaned, found = '', {}, false
-			for _, output in ipairs(def.output) do
-				clean = output:match('^([^ ]+)')
-				if clean == item_name then
-					found = true
+		if def.output and 'table' == type(def.output)
+			and def.input and 'table' == type(def.input)
+		then
+			outputs, main_output = {}, nil
+			for _, output_string in ipairs(def.output) do
+				if output_string:find('^' .. item_name .. ' ?[0-9]*$') then
+					main_output = output_string
 				else
-					table.insert(cleaned, clean)
+					table.insert(outputs, output_string)
 				end
 			end
-			if found then
+			if main_output then
+				inputs = {}
+				-- there is only one, but that's how lua works so we need to loop
+				for k, v in pairs(def.input) do
+					table.insert(inputs, k .. ' ' .. tostring(v))
+				end
 				recipes[#recipes + 1] = {
-					method = 'separate',
+					method = 'separating',
 					type = 'technic:separate',
-					items = { input_name },
-					output = item_name,
-					output_other = cleaned
+					items = inputs,
+					output = main_output,
+					output_other = outputs,
 				}
 			end -- if found
 		end -- if output is table
