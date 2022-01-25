@@ -73,9 +73,8 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 	if nil == user or nil == pointed_thing then
 		return nil
 	end
-	local name = user:get_player_name()
-	local keys = user:get_player_control()
 
+	local name = user:get_player_name()
 	if 'object' == pointed_thing.type then
 		local inventory_text = nil
 		local text = ''
@@ -430,6 +429,9 @@ function replacer.form_input_handler(player, formname, fields)
 	if formname and 'replacer:crafting' == formname
 		and player and not fields.quit
 	then
+		-- too bad keys are all false :/ could have implemented easy
+		-- switch to unified_inventory formspec
+		--local keys = player:get_player_control()
 		r.inspect_show_crafting(player:get_player_name(), nil, fields)
 		return
 	end
