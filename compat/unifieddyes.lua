@@ -22,6 +22,8 @@ local function add_recipe(node_name, param2, recipes)
 		for i, t in ipairs(recipes) do
 			first, last = t.output:find(needle)
 			if nil ~= first then
+				t.method = 'painting'
+				t.type = 'unifieddyes:airbrush'
 				recipes[#recipes + 1] = t
 				return
 			end
