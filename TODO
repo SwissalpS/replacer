@@ -8,20 +8,20 @@
         unified_inventory.get_formspec(player, page)
     maybe we can use this on group buttons
 
--- inspection tool: add support for letter stencil
+-- inspection tool:
             add info for seeds and saplings about planting
             add info for plants telling when they are ripe -> allowing user to click on the ripe
                 stage and see possible seed drop -> showing info about planting.
                 don't forget wine:blue_agave when doing that
             add spawning, breading etc. info for mobs
             add biofuel hints
-
--- inspection tool: add input/output amounts for technic machine processes
+            add input/output amounts for technic machine processes
 
 -- known incompat replacer ------------------------
 -- doors in general (low priority)
--- punched letter
--- elphabet: add human readable letter to shortstring mainly for history (lowest priority)
+ (lowest priority)
+-- elphabet: add human readable letter to shortstring mainly for history
+-- letters: similar to elphabet
 
 ------ replacer fixes --------
 
