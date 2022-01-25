@@ -9,7 +9,7 @@ local function is_saw_output(node_name)
 	if not node_name or 'moreblocks:circular_saw' == node_name then
 		return nil
 	end
-	
+
 	-- if we already confirmed this item, let's take the shortcut
 	if confirmed_saw_items[node_name] then return confirmed_saw_items[node_name] end
 
@@ -70,7 +70,7 @@ local function add_circular_saw_recipe(node_name, _, recipes)
 
 	-- node found that fits into the saw
 	recipes[#recipes + 1] = {
-		method = 'saw',
+		method = 'sawing',
 		type = 'saw',
 		items = { basic_node_name },
 		output = node_name

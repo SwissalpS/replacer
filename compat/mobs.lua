@@ -21,7 +21,7 @@ local function add_recipe(item_name, _, recipes)
 	if not output then return end
 
 	recipes[#recipes + 1] = {
-		method = 'cutting',
+		method = 'shearing',
 		type = 'sheep:cut',
 		items = { output }, -- tecnically input, but hey
 		output = item_name,
