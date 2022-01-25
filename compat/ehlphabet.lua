@@ -8,15 +8,18 @@ local exceptions = { '231140', '229140', '228184',
 local skip = {}
 for _, n in ipairs(exceptions) do skip[n] = true end
 
-local function add_recipe(item_name, _, recipes)
+local function ehlphabet_number_sticker(item_name)
 	if not item_name or not 'string' == type(item_name) then return end
 
-	local number = item_name:match('^ehlphabet:([0-9]+)')
+	return item_name:match('^ehlphabet:([0-9]+)'),
+		item_name:find('_sticker$') and true
+end
+
+local function add_recipe(item_name, _, recipes)
+	local number, sticker = ehlphabet_number_sticker(item_name)
 	if not number or skip[number] then return end
 
-	local sticker = item_name:find('_sticker$') and true
 	local input = sticker and 'default:paper' or 'ehlphabet:block'
-
 	recipes[#recipes + 1] = {
 		method = 'printing',
 		type = 'ehlphabet',
@@ -26,4 +29,10 @@ local function add_recipe(item_name, _, recipes)
 end -- add_recipe
 
 replacer.register_craft_method('ehlphabet', 'ehlphabet:machine', add_recipe)
+
+
+-- for replacer
+replacer.register_set_enabler(function(node)
+	return node and node.name and ehlphabet_number_sticker(node.name)
+end)
 
