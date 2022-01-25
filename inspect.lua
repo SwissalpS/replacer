@@ -11,6 +11,7 @@ local rbi = replacer.blabla.inspect
 local nice_pos_string = replacer.nice_pos_string
 local S = replacer.S
 local floor = math.floor
+local max, min = math.max, math.min
 local chat = minetest.chat_send_player
 local mfe = minetest.formspec_escape
 
@@ -233,6 +234,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		end
 	end
 
+	-- fetch recipes from core
 	local res = minetest.get_all_craft_recipes(node_name)
 	if not res then
 		res = {}
@@ -240,7 +242,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 --print(dump(res))
 	-- TODO: filter out invalid recipes with no items
 	--	   such as "group:flower,color_dark_grey"
-	--
+	--	also 'normal' recipe.type uranium*_dust recipes
 
 	-- add special recipes for nodes created by machines
 	for _, adder in pairs(r.recipe_adders) do
@@ -260,6 +262,8 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		recipe_nr = #res
 	end
 
+	-- fetch description
+	-- when clicking unknown nodes
 	local desc = ' ' .. rbi.no_desc .. ' '
 	if minetest.registered_nodes[node_name] then
 		if minetest.registered_nodes[node_name].description
@@ -283,12 +287,14 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		end
 	end
 
+	-- base info
 	local formspec = 'size[6,6]'
+		-- label on top
 		.. 'label[0,0;' .. mfe(rbi.name) .. ' ' .. node_name .. ']'
-		.. 'item_image_button[5,2;1.0,1.0;' .. node_name .. ';normal;]'
 		.. 'button_exit[5.0,4.3;1,0.5;quit;X]'
 		.. 'tooltip[quit;'.. mfe(rbi.exit) .. ']'
 
+	-- prev. and next buttons
 	if 1 < #res then
 		formspec = formspec
 			.. 'button[4.1,5;1,0.75;prev_recipe;<-]'
@@ -298,14 +304,14 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	formspec = formspec
-		.. 'label[0,5.5;' .. mfe(rbi.this_is) .. ' ' .. mfe(desc) .. ']'
+		-- description at bottom
+		.. 'label[0,5.7;' .. mfe(rbi.this_is) .. ' ' .. mfe(desc) .. ']'
 		 -- invisible field for passing on information
 		.. 'field[20,20;0.1,0.1;node_name;node_name;' .. node_name .. ']'
 		-- another invisible field
 		.. 'field[21,21;0.1,0.1;recipe_nr;recipe_nr;' .. tostring(recipe_nr) .. ']'
 
-	-- provide additional information regarding the node in particular
-	-- that has been inspected
+	-- location and param2
 	formspec = formspec .. 'label[0.0,0.3;'
 	if fields.pos then
 		formspec = formspec .. mfe(S('Located at @1', nice_pos_string(fields.pos)))
@@ -314,6 +320,8 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		formspec = formspec .. ' '
 			.. mfe(S('with param2 of @1', tostring(fields.param2)))
 	end
+
+	-- light
 	formspec = formspec .. ']'
 	if fields.light then
 		formspec = formspec .. 'label[0.0,0.6;'
@@ -326,43 +334,35 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			.. mfe(fields.protected_info) .. ']'
 	end
 
+	-- if no recipes, collect drops else show current recipe
 	if 1 > #res then
 		formspec = formspec .. 'label[3,1;' .. mfe(rbi.no_recipes) .. ']'
-		if minetest.registered_nodes[node_name]
-			and minetest.registered_nodes[node_name].drop
-		then
-			local drop = minetest.registered_nodes[node_name].drop
-			if 'string' == type(drop) and drop ~= node_name then
-				formspec = formspec .. 'label[2,1.6;' .. mfe(rbi.drops_on_dig) .. ' '
-				if '' == drop then
-					formspec = formspec .. mfe(rbi.nothing) .. ']'
-				else
-					formspec = formspec
-						.. ']item_image_button[2,2;1.0,1.0;'
-						.. r.image_button_link(drop) .. ']'
-				end
-			elseif 'table' == type(drop) and drop.items then
-				local droplist = {}
-				for _, drops in ipairs(drop.items) do
-					for _, item in ipairs(drops.items) do
-						-- avoid duplicates; but include the item itself
-						droplist[item] = 1
-					end
-				end
-				local i = 1
-				formspec = formspec .. 'label[0,1.5;' .. mfe(rbi.may_drop_on_dig) .. ']'
-				for k, v in pairs(droplist) do
-					formspec = formspec .. 'item_image_button['
-						.. (((i - 1) % 3) + 1) .. ','
-						.. tostring(floor(((i - 1) / 3) + 2))
-						.. ';1.0,1.0;' .. r.image_button_link(k) .. ']'
-					i = i + 1
-				end
-			end
+		-- always returns a table
+		local drops = r.possible_node_drops(node_name)
+		formspec = formspec .. 'label[0,1.5;'
+		if 0 == #drops then
+			formspec = formspec .. mfe(rbi.drops_on_dig) .. ' ' .. mfe(rbi.nothing) .. ']'
+		elseif 1 == #drops then
+			formspec = formspec .. mfe(rbi.drops_on_dig) .. ']'
+		else
+			formspec = formspec .. mfe(rbi.may_drop_on_dig) .. ']'
 		end
+		for i, n in ipairs(drops) do
+			formspec = formspec .. 'item_image_button['
+				.. (((i - 1) % 3) + 1) .. ','
+				.. tostring(floor(((i - 1) / 3) + 2))
+				.. ';1.0,1.0;' .. r.image_button_link(n) .. ']'
+			i = i + 1
+		end
+		-- output item on the right
+		formspec = formspec
+			.. 'item_image_button[5,2;1.0,1.0;' .. node_name .. ';normal;]'
+
 	else
-		formspec = formspec .. 'label[1,5;'
-			.. mfe(S('Alternate @1/@2', tostring(recipe_nr), tostring(#res))) .. ']'
+		if 1 < #res then
+			formspec = formspec .. 'label[1,5;'
+				.. mfe(S('Alternate @1/@2', tostring(recipe_nr), tostring(#res))) .. ']'
+		end
 		-- reverse order; default recipes (and thus the most intresting ones)
 		-- are usually the oldest
 		local recipe = res[#res + 1 - recipe_nr]
@@ -381,7 +381,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 						.. r.image_button_link(recipe.items[i]) .. ']'
 				end
 			end
-		elseif 'cooking' == recipe.type
+		elseif ('cooking' == recipe.type or 'fuel' == recipe.type)
 			and recipe.items
 			and 1 == #recipe.items
 			and '' == recipe.output
@@ -398,27 +398,36 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
 				.. r.image_button_link('default:furnace') .. ']'
-				.. 'item_image_button[2.9,2.7;1.0,1.0;'
+				.. 'item_image_button[2.2,2.2;1.0,1.0;'
 				.. r.image_button_link(recipe.items[1]) .. ']'
 		elseif recipe.items
-			and 1 == #recipe.items -- TODO: investigate if this shouldn't be 0 < #recipe.items
+			and 0 < #recipe.items
 			and r.recipe_adders[recipe.type]
 		then
 			local handler = r.recipe_adders[recipe.type]
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
 				.. r.image_button_link(handler.machine) .. ']'
-				.. 'item_image_button[2,2;1.0,1.0;'
-				.. r.image_button_link(recipe.items[1]) .. ']'
+				.. 'label[0.1,4.3;' .. mfe(S(recipe.method)) .. ']'
+			local width = recipe.width or #recipe.items
+			width = max(1, min(3, width))
+			local offsets = { 2.2, 1.7, 1.2 }
+			local offset = offsets[width]
+			for i = 1, 9 do
+				if not recipe.items[i] then break end
+				formspec = formspec .. 'item_image_button['
+					.. (((i - 1) % width) + offset) .. ','
+					.. tostring(floor((i - 1) / width) + offset)
+					.. ';1.0,1.0;'
+					.. r.image_button_link(recipe.items[i]) .. ']'
+			end
+			formspec = formspec
 				.. (handler.formspec and handler.formspec(recipe) or '')
 		else
 			formspec = formspec .. 'label[3,1;' .. mfe(rbi.unkown_recipe) .. ']'
 		end
-		-- show how many of the items the recipe will yield
-		local outstack = ItemStack(recipe.output)
-		local out_count = outstack:get_count()
-		if 1 < out_count then
-			formspec = formspec .. 'label[5.5,2.5;' .. tostring(out_count) .. ']'
-		end
+		-- output item on the right
+		formspec = formspec
+			.. 'item_image_button[5,2;1.0,1.0;' .. recipe.output .. ';normal;]'
 	end
 	minetest.show_formspec(player_name, 'replacer:crafting', formspec)
 end -- inspect_show_crafting
