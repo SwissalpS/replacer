@@ -59,8 +59,6 @@ homedecor:plasma_ball_off -> homedecor:plasma_ball_on -- meh
 homedecor:plasma_lamp_8|on -> 14
 homedecor:standing_lamp_8
 homedecor:table_lamp_12
-ilights:light_off -> on
-lavalamp:lavalamp_off -> lavalamp:lavalamp
 
 ------- need 'cable plate override' ---------
 homedecor:speaker_open -> homedecor:speaker (cable plate overrides)
@@ -69,7 +67,7 @@ homedecor:speaker_open -> homedecor:speaker (cable plate overrides)
 -- no recipe for silicon lump
 
 ---- missing icons ----
-cottages:wool;cottages:wool (used by homedecor:curtain_open)
+cottages:wool;cottages:wool (used by homedecor:curtain_open) -- meh, there is working recipe
 (homedecor:stained_glass) -- cottages:glass_pane_side
 
 -- fix in scifi_nodes
