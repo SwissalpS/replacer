@@ -11,6 +11,7 @@ local make_readable_color = unifieddyes.make_readable_color
 local colour_to_name = unifieddyes.color_to_name
 
 -- for inspection tool formspec
+local S = replacer.S
 local function add_recipe(node_name, param2, recipes)
 	if not param2 then return end
 
@@ -22,7 +23,7 @@ local function add_recipe(node_name, param2, recipes)
 		for i, t in ipairs(recipes) do
 			first, last = t.output:find(needle)
 			if nil ~= first then
-				t.method = 'painting'
+				t.method = S('painting')
 				t.type = 'unifieddyes:airbrush'
 				recipes[#recipes + 1] = t
 				return

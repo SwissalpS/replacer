@@ -1,6 +1,6 @@
-local function add_advtrains_aliases()
-	if not minetest.get_modpath('advtrains') then return end
+if not minetest.get_modpath('advtrains') then return end
 
+local function add_advtrains_aliases()
 	local core_get_node_drops = minetest.get_node_drops
 	local reg = replacer.register_non_creative_alias
 		-- these cause crashes

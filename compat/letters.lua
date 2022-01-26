@@ -1,6 +1,7 @@
 if not minetest.get_modpath('letters') then return end
 
 -- for inspection tool
+local S = replacer.S
 local function add_recipe_u(item_name, _, recipes)
 	if not item_name or not 'string' == type(item_name) then return end
 
@@ -8,7 +9,7 @@ local function add_recipe_u(item_name, _, recipes)
 	if not input then return end
 
 	recipes[#recipes + 1] = {
-		method = 'cutting',
+		method = S('cutting'),
 		type = 'letters:upper',
 		items = { input },
 		output = item_name,
@@ -26,7 +27,7 @@ local function add_recipe_l(item_name, _, recipes)
 	if not input then return end
 
 	recipes[#recipes + 1] = {
-		method = 'cutting',
+		method = S('cutting'),
 		type = 'letters:lower',
 		items = { input },
 		output = item_name,

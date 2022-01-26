@@ -32,6 +32,7 @@ end)
 --[[
 --"cooking" is probably not needed as that is a standard method
 ]]
+local S = replacer.S
 
 local function add_recipe_alloy(item_name, _, recipes)
 --pd(technic.recipes['alloy'])
@@ -46,7 +47,7 @@ local function add_recipe_alloy(item_name, _, recipes)
 			end
 			local i1, i2 = l[1], l[2]
 			recipes[#recipes + 1] = {
-				method = 'alloying',
+				method = S('alloying'),
 				type = 'technic:alloy',
 				items = { i1, i2 },
 				output = def.output
@@ -64,7 +65,7 @@ local function add_recipe_cnc(item_name, _, recipes)
 	if not base_name then return end
 
 	recipes[#recipes + 1] = {
-		method = 'CNC machining',
+		method = S('CNC machining'),
 		type = 'technic:cnc',
 		items = { base_name },
 		output = item_name,
@@ -85,7 +86,7 @@ local function add_recipe_compress(item_name, _, recipes)
 	for input_name, def in pairs(technic.recipes['compressing']['recipes']) do
 		if def.output and def.output == item_name then
 			recipes[#recipes + 1] = {
-				method = 'compressing',
+				method = S('compressing'),
 				type = 'technic:compress',
 				items = { input_name .. ' ' .. tostring(def.input[input_name]) },
 				output = item_name
@@ -104,7 +105,7 @@ local function add_recipe_extract(item_name, _, recipes)
 			and def.output:find('^' .. item_name .. ' ?[0-9]*$')
 		then
 			recipes[#recipes + 1] = {
-				method = 'extracting',
+				method = S('extracting'),
 				type = 'technic:extract',
 				items = { input_name .. ' ' .. tostring(def.input[input_name]) },
 				output = def.output
@@ -125,7 +126,7 @@ local function add_recipe_freeze(item_name, _, recipes)
 			and def.output:find('^' .. item_name .. ' ?[0-9]*$')
 		then
 			recipes[#recipes + 1] = {
-				method = 'freezing',
+				method = S('freezing'),
 				type = 'technic:freeze',
 				items = { input_name },
 				output = def.output,
@@ -191,7 +192,7 @@ local function add_recipe_grind(item_name, _, recipes)
 				inputs = {}
 			end
 			recipes[#recipes + 1] = {
-				method = 'grinding',
+				method = S('grinding'),
 				type = 'technic:grind',
 				items = inputs,
 				output = def.output
@@ -225,7 +226,7 @@ local function add_recipe_separate(item_name, _, recipes)
 					table.insert(inputs, k .. ' ' .. tostring(v))
 				end
 				recipes[#recipes + 1] = {
-					method = 'separating',
+					method = S('separating'),
 					type = 'technic:separate',
 					items = inputs,
 					output = main_output,

@@ -425,7 +425,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			local handler = r.recipe_adders[recipe.type]
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
 				.. r.image_button_link(handler.machine) .. ']'
-				.. 'label[0.1,4.3;' .. mfe(S(recipe.method)) .. ']'
+				.. 'label[0.1,4.3;' .. mfe(recipe.method) .. ']'
 			local width = recipe.width or #recipe.items
 			width = max(1, min(3, width))
 			local offsets = { 2.2, 1.7, 1.2 }

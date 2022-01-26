@@ -8,7 +8,7 @@ local function add_recipe(item_name, _, recipes)
 	if not base_name then return end
 
 	recipes[#recipes + 1] = {
-		method = 'fermenting/pickling',
+		method = S('fermenting/pickling'),
 		type = 'canned_food',
 		items = { base_name },
 		output = item_name,

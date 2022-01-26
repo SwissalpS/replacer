@@ -1,6 +1,7 @@
 if not minetest.get_modpath('ehlphabet') then return end
 
 -- for inspection tool
+local S = replacer.S
 replacer.group_placeholder['group:ehlphabet_block'] = 'ehlphabet:208164'
 
 local exceptions = { '231140', '229140', '228184',
@@ -21,7 +22,7 @@ local function add_recipe(item_name, _, recipes)
 
 	local input = sticker and 'default:paper' or 'ehlphabet:block'
 	recipes[#recipes + 1] = {
-		method = 'printing',
+		method = S('printing'),
 		type = 'ehlphabet',
 		items = { input },
 		output = item_name,

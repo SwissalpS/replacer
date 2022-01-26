@@ -63,14 +63,14 @@ local function is_saw_output(node_name)
 	return basic_node_name
 end -- is_saw_output
 
-
+local S = replacer.S
 local function add_circular_saw_recipe(node_name, _, recipes)
 	local basic_node_name = is_saw_output(node_name)
 	if not basic_node_name then return end
 
 	-- node found that fits into the saw
 	recipes[#recipes + 1] = {
-		method = 'sawing',
+		method = S('sawing'),
 		type = 'saw',
 		items = { basic_node_name },
 		output = node_name

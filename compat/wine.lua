@@ -29,7 +29,7 @@ local function add_recipe(item_name, _, recipes)
 	-- allow new items to show up using air as icon
 	local input = in_out[item_name] or 'air'
 	recipes[#recipes + 1] = {
-		method = 'fermenting',
+		method = S('fermenting'),
 		type = 'wine:ferment',
 		items = { input },
 		output = item_name,
