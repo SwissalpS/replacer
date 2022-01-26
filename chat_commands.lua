@@ -12,7 +12,7 @@ for _, s in ipairs(lOff) do tOff[s] = true end
 
 replacer.chatcommand_mute = {
 
-	params = rb.ccm_params:format(rb.on_yes, rb.off_no),
+	params = rb.ccm_params:format(rb.on_yes, rb.off_no),--(chat|audio) (%s|%s)
 	description = rb.ccm_description,
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
@@ -25,18 +25,34 @@ replacer.chatcommand_mute = {
 		end
 
 		local lower = string.lower(param)
-		if tOff[lower] then
-			meta:set_int('replacer_mute', 1)
-		elseif tOn[lower] then
-			meta:set_int('replacer_mute', 0)
+		local parts = lower:split(' ')
+		local usage = rb.ccm_params .. '\n'
+			.. rb.ccm_description
+		if 2 > #parts then return false, usage end
+
+		local command, value, key = parts[1], parts[2]
+		if 'chat' == command then
+			key = 'replacer_mute'
+		elseif 'audio' == command then
+			key = 'replacer_muteS'
+		elseif 'version' == command then
+			return true, tostring(replacer.version)
 		else
-			return false, S('Valid parameter is either "@1" or "@2"', rb.on_yes, rb.off_no)
+			return false, usage
 		end
 
-		return true, ''
+		if tOff[value] then
+			value = 1
+		elseif tOn[value] then
+			value = 0
+		else
+			return false, usage
+		end
 
+		meta:set_int(key, value)
+		return true, ''
 	end
 }
 
-minetest.register_chatcommand('replacer_mute', replacer.chatcommand_mute)
+minetest.register_chatcommand('replacer', replacer.chatcommand_mute)
 
