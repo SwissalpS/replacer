@@ -8,6 +8,7 @@
 local r = replacer
 local rb = replacer.blabla
 local rbi = replacer.blabla.inspect
+local ui = r.has_unified_inventory_mod and unified_inventory or false
 local nice_pos_string = replacer.nice_pos_string
 local S = replacer.S
 local floor = math.floor
@@ -170,6 +171,20 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 		return nil
 	end
 
+	-- EXPERIMENTAL: attempt to open unified_inventory's crafting guide
+	if ui then
+		local keys = user:get_player_control()
+		-- while testing let's use zoom until we either drop the idea
+		-- or get it to work
+		if keys.zoom then --aux1 then ---and keys.sneak then
+			ui.current_item[name] = node.name
+			ui.current_craft_direction[name] = 'recipe'
+			ui.current_searchbox[name] = node.name
+			ui.apply_filter(user, node.name, 'recipe')--'usage' --nochange')
+			minetest.show_formspec(name, '', ui.get_formspec(user, 'craftguide'))
+			return
+		end
+	end
 	local protected_info = ''
 	if minetest.is_protected(pos, name) then
 		protected_info = rbi.is_protected

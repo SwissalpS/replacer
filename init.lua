@@ -40,6 +40,8 @@ replacer.has_technic_mod = minetest.get_modpath('technic')
 								and minetest.global_exists('technic')
 replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 								and minetest.global_exists('unifieddyes')
+replacer.has_unified_inventory_mod = minetest.get_modpath('unified_inventory')
+								and true or false
 
 -- image mapping tables for replacer:inspect
 replacer.group_placeholder = {}
