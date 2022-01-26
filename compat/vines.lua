@@ -16,6 +16,8 @@ for _, name in ipairs(vines) do
 	replacer.register_exception(name_end, name_end)
 	replacer.register_non_creative_alias(name_middle, name_end)
 end
+replacer.register_non_creative_alias('vines:rope', 'vines:rope_block')
+replacer.register_non_creative_alias('vines:rope_end', 'vines:rope_block')
 
 
 -- for inspection tool
