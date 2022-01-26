@@ -656,7 +656,7 @@ function replacer.on_place(itemstack, player, pt)
 	if not valid() then
 		r.play_sound(name, true)
 		r.inform(name, S('Failed to set replacer to "@1". '
-			.. 'If you had one in your inventory, it could be set.', node.name))
+			.. 'If there was one in your inventory, then maybe.', node.name))
 		return
 	end
 

@@ -12,7 +12,7 @@ for _, s in ipairs(lOff) do tOff[s] = true end
 
 replacer.chatcommand_mute = {
 
-	params = rb.ccm_params:format(rb.on_yes, rb.off_no),--(chat|audio) (%s|%s)
+	params = rb.ccm_params,--(chat|audio) (0|1)
 	description = rb.ccm_description,
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)

@@ -56,13 +56,11 @@ rb.log_deny_list_insert = '[replacer] Added "%s" to deny list.'
 rb.timed_out = S('Time-limit reached.')
 rb.tool_short_description = '(%s %s%s) %s'
 rb.tool_long_description = '%s\n%s\n%s'
-rb.ccm_params = '(chat|audio) (%s|%s)'
+rb.ccm_params = '(chat|audio) (0|1)'
 rb.ccm_description = S('Toggles verbosity.\nchat: When on, '
 	.. 'messages are posted to chat.\naudio: When off, replacer is silent.')
 rb.ccm_player_not_found = 'Player not found'
 rb.ccm_player_meta_error = 'Player meta not existant'
-rb.on_yes = S('on')
-rb.off_no = S('off')
 rb.log_reg_exception_override = '[replacer] register_exception: '
 	.. 'exception for "%s" already exists.'
 rb.log_reg_exception = '[replacer] registered exception for "%s" to "%s"'
