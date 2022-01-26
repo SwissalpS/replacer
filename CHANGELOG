@@ -1,3 +1,13 @@
+20220125 * SwissalpS improved sytem for showing dynamicly added crafting methods
+           which allowed to improve the output of technic and saw methods.
+         * Better drop detection method.
+         * Added sound playback for setting replacer errors, mainly.
+         * Change /replacer_mute to /replacer and changed the arguments
+           so sound can be muted separately.
+         * Added tooltips so users have more chance of reading long lines. Adding
+           textarea to make itemstring selectable failed and is post-poned to when
+           new version of formspec is being used for inspection tool as well.
+         * Added experimental hold zoom+click with inspection tool to open unified_inventory.
 20220124 * SwissalpS added wrap around for recipes - yes, long due.
          * Bugfix, now replacer actually checks groups.
          * Compat for shears (wool & vines) also fermenting/pickling, advtrains and sci-fi plastic
