@@ -9,8 +9,13 @@
     maybe we can use this on group buttons
 
 -- inspection tool:
+            figure out how to make the itemstring selectable for copy -> do that with new formspec version
+            is the new drop detection hindering setting replacer to wine:blue_agave
             filter out 'normal' recipe.type uranium*_dust recipes given by core.get_all_craft_recipes()
+            add mixing method
             add bucket/cannister as method
+            add home_workshop_misc:beer_tap as method -> home_workshop_misc:beer_mug
+            add digging method for ores
             add info for seeds and saplings about planting
             add info for plants telling when they are ripe -> allowing user to click on the ripe
                 stage and see possible seed drop -> showing info about planting.
@@ -25,11 +30,52 @@
 -- letters: similar to elphabet
 
 ------ replacer fixes --------
+-- can't be set --> no recipe
+home_workshop_misc:beer_mug
+homedecor:glass_table_large_square
+homedecor:dvd_cd_cabinet
+homedecor:chains
+homedecor:wood_table_large_square
+scifi_nodes:junk
+scifi_nodes:engine
+scifi_nodes:doomengine
+scifi_nodes:crate
+scifi_nodes:capsule2
+scifi_nodes:capsule3
+scifi_nodes:builder
+
+-- can be set but can't be placed -- need alias for inspect tool too
+homedecor:desk_lamp_7 -> 14
+homedecor:ceiling_lantern_6 -> 14
+homedecor:ceiling_lamp_8|on -> 14
+homedecor:glowlight_half_8|on -> 14
+homedecor:glowlight_quarter_0|on -> 14
+homedecor:glowlight_small_cube_1|on -> 14
+homedecor:ground_lantern_0-13|on homedecor:ground_lantern_14
+homedecor:hanging_lantern_10|on -> 14
+homedecor:lattice_lantern_large_1|on -> 14
+homedecor:lattice_lantern_small_1
+homedecor:plasma_ball_off -> homedecor:plasma_ball_on -- meh
+homedecor:plasma_lamp_8|on -> 14
+homedecor:speaker_open -> homedecor:speaker (cable plate overrides)
+homedecor:standing_lamp_8
+homedecor:table_lamp_12
+ilights:light_off -> on
+lavalamp:lavalamp_off -> lavalamp:lavalamp
+ropes:ropeladder_bottom (didn't we add this?)
+vines:rope
+
+------- need 'cable plate override' ---------
+jumping:trampoline2-6 -> 1
+scifi_nodes:laptop_open -> scifi_nodes:laptop_closed
 
 ---------- known incompat inspect -----------
 -- no recipe for silicon lump
 
 ---- missing icons ----
+cottages:wool;cottages:wool (used by homedecor:curtain_open)
+(homedecor:stained_glass) -- cottages:glass_pane_side
+
 -- fix in scifi_nodes
 flowers:dandelion --> dandelion_white and dandelion_yellow would exist (*scifi_nodes:plant10 also 9)
 
@@ -42,9 +88,6 @@ bridger:corrugated_steelwhite
 bridger:corrugated_steelred
 bridger:corrugated_steelsteel
 bridger:corrugated_steelyellow
-
--- has unknown items in recipe --
--- stained_glass? which one?
 
 -- glowlight has trouble finding base recipe, also desk_lamp, ceiling lantern, ceiling lamp,
    ground lantern, hanging lantern, kitchen cabinet coloured, latice lantern, table lamp,

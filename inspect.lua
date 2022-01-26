@@ -178,7 +178,7 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 		-- or get it to work
 		if keys.zoom then --aux1 then ---and keys.sneak then
 			ui.current_item[name] = node.name
-			ui.current_craft_direction[name] = 'recipe'
+			ui.current_craft_direction[name] = 'recipe'-- keys.x and 'usage' or 'recipe'
 			ui.current_searchbox[name] = node.name
 			ui.apply_filter(user, node.name, 'recipe')--'usage' --nochange')
 			minetest.show_formspec(name, '', ui.get_formspec(user, 'craftguide'))
