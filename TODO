@@ -57,15 +57,14 @@ homedecor:lattice_lantern_large_1|on -> 14
 homedecor:lattice_lantern_small_1
 homedecor:plasma_ball_off -> homedecor:plasma_ball_on -- meh
 homedecor:plasma_lamp_8|on -> 14
-homedecor:speaker_open -> homedecor:speaker (cable plate overrides)
 homedecor:standing_lamp_8
 homedecor:table_lamp_12
 ilights:light_off -> on
 lavalamp:lavalamp_off -> lavalamp:lavalamp
 
 ------- need 'cable plate override' ---------
-jumping:trampoline2-6 -> 1
 scifi_nodes:laptop_open -> scifi_nodes:laptop_closed
+homedecor:speaker_open -> homedecor:speaker (cable plate overrides)
 
 ---------- known incompat inspect -----------
 -- no recipe for silicon lump
