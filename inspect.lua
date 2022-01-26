@@ -291,6 +291,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	local formspec = 'size[6,6]'
 		-- label on top
 		.. 'label[0,0;' .. mfe(rbi.name) .. ' ' .. node_name .. ']'
+		.. 'tooltip[-1,-1;7,2;' .. mfe(rbi.name) .. ' ' .. node_name .. ']'
 		.. 'button_exit[5.0,4.3;1,0.5;quit;X]'
 		.. 'tooltip[quit;'.. mfe(rbi.exit) .. ']'
 
@@ -306,6 +307,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	formspec = formspec
 		-- description at bottom
 		.. 'label[0,5.7;' .. mfe(rbi.this_is) .. ' ' .. mfe(desc) .. ']'
+		.. 'tooltip[-1,5.7;7,2;' .. mfe(rbi.this_is) .. ' ' .. mfe(desc) .. ']'
 		 -- invisible field for passing on information
 		.. 'field[20,20;0.1,0.1;node_name;node_name;' .. node_name .. ']'
 		-- another invisible field
