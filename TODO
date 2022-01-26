@@ -63,7 +63,6 @@ ilights:light_off -> on
 lavalamp:lavalamp_off -> lavalamp:lavalamp
 
 ------- need 'cable plate override' ---------
-scifi_nodes:laptop_open -> scifi_nodes:laptop_closed
 homedecor:speaker_open -> homedecor:speaker (cable plate overrides)
 
 ---------- known incompat inspect -----------
