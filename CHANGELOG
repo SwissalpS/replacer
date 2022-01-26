@@ -1,3 +1,6 @@
+20220126 * SwissalpS improved some compat items and redid translations.
+         * Documentation updated.
+         * Added LICENSE file.
 20220125 * SwissalpS improved sytem for showing dynamicly added crafting methods
            which allowed to improve the output of technic and saw methods.
          * Better drop detection method.
