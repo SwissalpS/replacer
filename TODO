@@ -62,7 +62,6 @@ homedecor:standing_lamp_8
 homedecor:table_lamp_12
 ilights:light_off -> on
 lavalamp:lavalamp_off -> lavalamp:lavalamp
-ropes:ropeladder_bottom (didn't we add this?)
 
 ------- need 'cable plate override' ---------
 jumping:trampoline2-6 -> 1
