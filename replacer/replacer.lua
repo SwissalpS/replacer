@@ -271,6 +271,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	end
 
 	if 'node' ~= pt.type then
+		r.play_sound(name, true)
 		r.inform(name, S('Error: "@1" is not a node.', pt.type))
 		return
 	end
@@ -279,6 +280,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	local node_old = core_get_node_or_nil(pos)
 
 	if not node_old then
+		r.play_sound(name, true)
 		r.inform(name, rb.wait_for_load)
 		return
 	end
@@ -329,6 +331,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	local charge = r.get_charge(itemstack)
 	if not has_creative_or_give then
 		if charge < r.charge_per_node then
+			r.play_sound(name, true)
 			r.inform(name, rb.need_more_charge)
 			--return
 		end
@@ -544,12 +547,16 @@ function replacer.on_place(itemstack, player, pt)
 
 	-- Select new node
 	if 'node' ~= pt.type then
+		r.play_sound(name, true)
 		r.inform(name, rb.none_selected)
 		return
 	end
 
 	node = core_get_node_or_nil(pt.under)
-	if not node then return end
+	if not node then
+		r.play_sound(name, true)
+		return
+	end
 
 	-- don't allow setting replacer to denied nodes
 	-- helper function for valid()
@@ -562,6 +569,7 @@ function replacer.on_place(itemstack, player, pt)
 		return false
 	end
 	if r.deny_list[node.name] or denied_group(node.name) then
+		r.play_sound(name, true)
 		r.inform(name, S('Placing nodes of type "@1" is not '
 			.. 'allowed on this server.', node.name))
 		return
@@ -646,6 +654,7 @@ function replacer.on_place(itemstack, player, pt)
 		return false
 	end -- valid
 	if not valid() then
+		r.play_sound(name, true)
 		r.inform(name, S('Failed to set replacer to "@1". '
 			.. 'If you had one in your inventory, it could be set.', node.name))
 		return
@@ -656,6 +665,7 @@ function replacer.on_place(itemstack, player, pt)
 	-- add to history
 	r.history.add_item(player, mode, node, short_description)
 	-- inform player about successful setting
+	r.play_sound(name)
 	r.inform(name, S('Node replacement tool set to:\n@1.', short_description))
 
 	return itemstack --data changed

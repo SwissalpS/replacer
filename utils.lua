@@ -1,9 +1,34 @@
+local r = replacer
 local rb = replacer.blabla
 local chat_send_player = minetest.chat_send_player
 local get_player_by_name = minetest.get_player_by_name
 local log = minetest.log
 local floor = math.floor
 local pos_to_string = minetest.pos_to_string
+local sound_fail = 'default_break_glass'
+local sound_success = 'default_item_smoke'
+local sound_gain = 0.5
+if r.has_technic_mod then
+	sound_fail = 'technic_prospector_miss'
+	--sound_success = 'technic_prospector_hit'
+	sound_gain = 0.1
+end
+
+
+function replacer.play_sound(player_name, fail)
+	local player = get_player_by_name(player_name)
+	if not player then return end
+
+	local meta = player:get_meta() if not meta then return end
+
+	if 0 < meta:get_int('replacer_muteS') then return end
+
+	minetest.sound_play(fail and sound_fail or sound_success, {
+		to_player = player_name,
+		max_hear_distance = 2,
+		gain = sound_gain }, true)
+end -- play_sound
+
 
 function replacer.possible_node_drops(node_name, return_names_only)
 	if not minetest.registered_nodes[node_name]
