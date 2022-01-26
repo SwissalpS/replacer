@@ -5,17 +5,22 @@ globals = {
 
 read_globals = {
 	-- Stdlib
-	string = {fields = {"split"}},
-	table = {fields = {"copy", "getn"}},
+	string = { fields = { "split", "match", "find", "lower" } },
+	table = { fields = { "copy", "getn", "insert", "shuffle", "sort" }},
 
 	-- Minetest
 	"vector", "ItemStack",
 	"dump", "VoxelArea",
 
 	-- deps
-	"technic",
-	"default",
-	"minetest",
+	"circular_saw",
+	"colormachine",
 	"creative",
-	"circular_saw"
+	"default",
+	"dye",
+	"minetest",
+	"moreblocks",
+	"technic",
+	"unifieddyes"
 }
+

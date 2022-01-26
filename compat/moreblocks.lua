@@ -1,5 +1,6 @@
 local r = replacer
 if not r.has_circular_saw then return end
+-- ?? TODO do we need to also check for stairsplus and add it to optional_depends ??
 
 local core_registered_nodes = minetest.registered_nodes
 local shapes_list_sorted = nil
