@@ -10,6 +10,7 @@ read_globals = {
 	table = { fields = { "copy", "getn", "insert", "shuffle", "sort" } },
 
 	-- Minetest
+	"minetest",
 	"vector", "ItemStack",
 	"dump", "VoxelArea",
 
