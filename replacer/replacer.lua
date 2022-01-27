@@ -13,7 +13,6 @@ local max, min, floor = math.max, math.min, math.floor
 local core_check_player_privs = minetest.check_player_privs
 local core_get_node = minetest.get_node
 local core_get_node_or_nil = minetest.get_node_or_nil
-local core_get_node_drops = minetest.get_node_drops
 local core_get_item_group = minetest.get_item_group
 local core_registered_items = minetest.registered_items
 local core_registered_nodes = minetest.registered_nodes
@@ -65,6 +64,7 @@ function replacer.set_data(stack, node, mode)
 	node = 'table' == type(node) and node or {}
 	-- allow passing nil mode -> when ignoring mode in history
 	if 'table' ~= type(mode) then
+		local _
 		_, mode = r.get_data(stack)
 	end
 	local tool_itemstring = stack:get_name()
@@ -121,8 +121,8 @@ if r.has_technic_mod then
 			return meta.charge
 		end
 
-		function replacer.set_charge(itemstack, charge, max)
-			technic.set_RE_wear(itemstack, charge, max)
+		function replacer.set_charge(itemstack, charge, maximum)
+			technic.set_RE_wear(itemstack, charge, maximum)
 			local meta = itemstack:get_meta()
 			local data = deserialize(meta:get_string(''))
 			if (not data) or (not data.charge) then
@@ -197,7 +197,8 @@ function replacer.replace_single_node(pos, node_old, node_new, player,
 
 	-- place the node similar to how a player does it
 	-- (other than the pointed_thing)
-	local new_item, succ = node_new_def.on_place(ItemStack(node_new.name), player,
+	local new_item
+	new_item, succ = node_new_def.on_place(ItemStack(node_new.name), player,
 		{ type = 'node', under = vector_new(pos), above = vector_new(pos) })
 	-- replacing with trellis set, succ is returned but new_item is nil
 	-- possible that other nodes react the same way.
@@ -234,8 +235,8 @@ function replacer.replace_single_node(pos, node_old, node_new, player,
 	if 'function' == type(r.exception_callbacks[node_new.name]) then
 		succ, error = r.exception_callbacks[node_new.name](
 			pos, node_old, node_new, player)
-		if (not succ) and error and ('' ~= sMsg) then
-			r.inform(name, rb.callback_error:format(sMsg))
+		if (not succ) and error and ('' ~= error) then
+			r.inform(name, rb.callback_error:format(error))
 		end
 	end
 
@@ -291,13 +292,13 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	end
 	-- utility function to adjust new node to mode.minor
 	-- returns true if adjustments make them equal
-	local function adjust_new_to_minor(minor, node_old, node_new)
+	local function adjust_new_to_minor()
 		-- minor mode overrides to node_new
-		if 2 == minor then
+		if 2 == mode.minor then
 			-- node only
 			node_new.param1 = node_old.param1
 			node_new.param2 = node_old.param2
-		elseif 3 == minor then
+		elseif 3 == mode.minor then
 			-- rotation only
 			node_new.name = node_old.name
 		end
@@ -309,7 +310,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 			return true
 		end
 	end -- adjust_new_to_minor
-	if adjust_new_to_minor(mode.minor, node_old, node_new) then
+	if adjust_new_to_minor() then
 		r.inform(name, rb.nothing_to_replace)
 		return
 	end
@@ -469,7 +470,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 		-- Take the position nearest to the start position
 		pos = found_positions:take()
 		node_old = core_get_node(pos)
-		adjust_new_to_minor(minor, node_old, node_new)
+		adjust_new_to_minor()
 		succ, error = r.replace_single_node(pos, node_old, node_new,
 			player, name, inv, has_creative_or_give)
 		if not succ then
@@ -511,16 +512,17 @@ function replacer.on_place(itemstack, player, pt)
 	local name = player:get_player_name()
 	local creative_enabled = has_creative(name)
 	local has_give = core_check_player_privs(name, 'give')
-	local has_creative_or_give = creative_enabled or has_give
+	--local has_creative_or_give = creative_enabled or has_give
 	local is_technic = itemstack:get_name() == r.tool_name_technic
 	local modes_are_available = is_technic or creative_enabled
+	local _, node, mode
 
 	-- is special-key held? (aka fast-key) -> change mode
 	if keys.aux1 then
 		-- don't want anybody to think that special+rc = place
 		if not modes_are_available then return end
 		-- fetch current mode
-		local node, mode = r.get_data(itemstack)
+		node, mode = r.get_data(itemstack)
 		if keys.sneak then
 			-- increment and roll-over minor mode
 			mode.minor = mode.minor % 3 + 1
@@ -575,7 +577,7 @@ function replacer.on_place(itemstack, player, pt)
 		return
 	end
 
-	local _, mode = r.get_data(itemstack)
+	_, mode = r.get_data(itemstack)
 	if not modes_are_available then
 		mode = { major = 1, minor = 1 }
 	end

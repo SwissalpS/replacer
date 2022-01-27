@@ -36,6 +36,7 @@ local function add_recipe(item_name, _, recipes)
 	}
 end -- add_recipe
 
+--luacheck: no unused args
 local function add_formspec(recipe)
 	return 'label[0.5,3.5;' .. S('Ferment in barrel.') .. ']'
 end

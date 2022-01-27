@@ -36,7 +36,7 @@ local S = replacer.S
 
 local function add_recipe_alloy(item_name, _, recipes)
 --pd(technic.recipes['alloy'])
-	for input_name, def in pairs(technic.recipes['alloy']['recipes']) do
+	for _, def in pairs(technic.recipes['alloy']['recipes']) do
 		if def.output and 'string' == type(def.output)
 			and def.output:find('^' .. item_name .. ' ?[0-9]*$')
 			and def.input and 'table' == type(def.input)
@@ -175,7 +175,7 @@ replacer.register_craft_method(
 local function add_recipe_grind(item_name, _, recipes)
 --pd(technic.recipes['grinding'])
 	local inputs, input_type
-	for input_name, def in pairs(technic.recipes['grinding']['recipes']) do
+	for _, def in pairs(technic.recipes['grinding']['recipes']) do
 		if 'string' == type(def.output)
 			and def.output:find('^' .. item_name .. ' ?[0-9]*$')
 		then
@@ -207,7 +207,7 @@ replacer.register_craft_method('technic:grind', 'technic:lv_grinder', add_recipe
 local function add_recipe_separate(item_name, _, recipes)
 --pd(technic.recipes['separating'])
 	local outputs, main_output, inputs
-	for input_name, def in pairs(technic.recipes['separating']['recipes']) do
+	for _, def in pairs(technic.recipes['separating']['recipes']) do
 		if def.output and 'table' == type(def.output)
 			and def.input and 'table' == type(def.input)
 		then

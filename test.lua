@@ -3,8 +3,7 @@ replacer.dev_mode =
 	minetest.settings:get_bool('replacer.dev_mode') or false
 if not replacer.dev_mode then return end
 
-function pd(m) print(dump(m)) end
-function i(m) replacer.inform('singleplayer', dump(m)) pd(m) end
+local function pd(m) print(dump(m)) end
 
 replacer.test = {}
 local r = replacer
@@ -63,20 +62,20 @@ function replacer.test.chatcommand_place_all(player_name, param)
 		return false, 'There is an active task in progress, try again later'
 	end
 	param = param or ''
-	local dry_run, skip_corium
+	local dry_run
 	local params = param:split(' ')
 	local patterns = {}
 	rt.no_support = false
 	rt.move_player = false
-	for _, param in ipairs(params) do
-		if 'dry-run' == param then
+	for _, param2 in ipairs(params) do
+		if 'dry-run' == param2 then
 			dry_run = true
-		elseif 'move_player' == param then
+		elseif 'move_player' == param2 then
 			rt.move_player = true
-		elseif 'no_support_node' == param then
+		elseif 'no_support_node' == param2 then
 			rt.no_support = true
 		else
-			table.insert(patterns, param)
+			table.insert(patterns, param2)
 		end
 	end
 	if 0 == #patterns then table.insert(patterns, '.*') end
@@ -84,8 +83,8 @@ function replacer.test.chatcommand_place_all(player_name, param)
 	rt.pos = rt.player:get_pos()--vector.add(player:get_pos(), vector.new(1, 0, 1))--
 	rt.selected = {}
 	rt.count = 0
-	local function has_match(name, patterns)
-		for _, pattern in ipairs(patterns) do
+	local function has_match(name, patterns_to_check)
+		for _, pattern in ipairs(patterns_to_check) do
 			if name:find(pattern) then return true end
 		end
 		return false
@@ -133,7 +132,7 @@ function replacer.test.step()
 		rt.player:set_look_vertical(math.rad(45))
 	end -- move_player
 
-	for i = 1, rt.nodes_per_step do
+	for _ = 1, rt.nodes_per_step do
 		name = rt.selected[rt.i]
 		node = minetest.registered_nodes[name]
 		pos_ = vector.add(rt.pos, vector.new(rt.x, 0, rt.z))
@@ -219,6 +218,7 @@ minetest.register_chatcommand('place_all', {
 local events = {} -- list of { minp, maxp, time }
 
 -- update last mapgen event time
+--luacheck: no unused args
 minetest.register_on_generated(function(minp, maxp, seed)
 	table.insert(events, {
 		minp = minp,

@@ -32,7 +32,7 @@ stack_mt = {
 			return self.n
 		end,
 		clone = function(self, copy_element)
-			local stack
+			local stack, n
 			if copy_element then
 				stack = { n = self.n, true }
 				for i = 1, self.n do

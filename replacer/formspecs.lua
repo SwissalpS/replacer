@@ -72,7 +72,7 @@ function replacer.get_form_modes_4(player, mode)
 	formspec = formspec .. 'label[0.33,3.22;' .. mfe(rb.choose_history)
 		.. ']dropdown[0.38,3.55;7.5,0.6;history;'
 	local db = r.history.get_player_table(player)
-	for i, data in ipairs(db) do
+	for _, data in ipairs(db) do
 		if r.history_include_mode then
 			formspec = formspec .. data.mode.major .. '.' .. data.mode.minor .. ' '
 		end

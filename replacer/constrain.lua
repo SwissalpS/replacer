@@ -58,6 +58,7 @@ end
 -- This is called before replacing the node/air and expects
 -- a boolean return and in the case of fail, an optional message
 -- that will be sent to player
+--luacheck: no unused args
 function replacer.permit_replace(pos, old_node_def, new_node_def,
 		player_ref, player_name, player_inv, creative_or_give)
 

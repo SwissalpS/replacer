@@ -1,6 +1,7 @@
 
 globals = {
 	"replacer",
+	"minetest",
 }
 
 read_globals = {
@@ -18,9 +19,11 @@ read_globals = {
 	"creative",
 	"default",
 	"dye",
-	"minetest",
+	"flowers",
 	"moreblocks",
+	"stairsplus",
 	"technic",
-	"unifieddyes"
+	"unified_inventory",
+	"unifieddyes",
 }
 

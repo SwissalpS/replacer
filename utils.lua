@@ -61,7 +61,6 @@ function replacer.possible_node_drops(node_name, return_names_only)
 			end
 		end
 	end
-	checks = nil
 	return droplist
 end -- possible_node_drops
 

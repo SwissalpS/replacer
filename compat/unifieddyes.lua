@@ -3,7 +3,7 @@ local ud = replacer.unifieddyes
 
 if not replacer.has_unifieddyes_mod then
 	-- replacer uses this
-	function ud.colour_name(param2, node_def) return '' end
+	function ud.colour_name() return '' end
 	return
 end
 
@@ -18,10 +18,10 @@ local function add_recipe(node_name, param2, recipes)
 	local node_def = minetest.registered_items[node_name]
 	if ud.is_airbrushed(node_def) then
 		-- find the correct recipe and append it to bottom of list
-		local first, last
+		local first
 		local needle = 'u0002' .. tostring(param2)
-		for i, t in ipairs(recipes) do
-			first, last = t.output:find(needle)
+		for _, t in ipairs(recipes) do
+			first = t.output:find(needle)
 			if nil ~= first then
 				t.method = S('painting')
 				t.type = 'unifieddyes:airbrush'

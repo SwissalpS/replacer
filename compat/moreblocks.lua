@@ -22,7 +22,7 @@ local function is_saw_output(node_name)
 	end
 	-- now iterate looking for match
 	local mod_name, material, found
-	for i, t in ipairs(shapes_list_sorted) do
+	for _, t in ipairs(shapes_list_sorted) do
 		mod_name, material = string.match(node_name,
 			'^([^:]+):' .. t[1] .. '(.*)' .. t[2] .. '$')
 		if mod_name and material then
@@ -36,8 +36,8 @@ local function is_saw_output(node_name)
 			else
 				-- need to try the long way
 				found = false
-				for itemstring, t in pairs(circular_saw.known_nodes) do
-					if t[1] == mod_name and t[2] == material then
+				for itemstring, t2 in pairs(circular_saw.known_nodes) do
+					if t2[1] == mod_name and t2[2] == material then
 						mod_name = itemstring:match('^([^:]+)') or ''
 						found = true
 						break

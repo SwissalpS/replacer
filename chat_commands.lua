@@ -1,6 +1,5 @@
 
 local rb = replacer.blabla
-local S = replacer.S
 
 -- let's hope there isn't a yes that means no in another language :/
 -- TODO: better option would be to simply toggle (see postool)

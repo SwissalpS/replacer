@@ -52,7 +52,7 @@ function replacer.history.init_player(player)
 	local db_strings =
 		player:get_meta():get_string('replacer_his'):split('||', false, r.history_max) or {}
 	local db = {}
-	local data, entry, mode_raw, colour_name, node_def
+	local data, entry, mode, mode_raw, colour_name, node_def
 	for i, entry_raw in ipairs(db_strings) do
 		data = entry_raw:split(' ', false, 4)
 		mode_raw = data[4] or '1.1'

@@ -79,7 +79,7 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 	local name = user:get_player_name()
 	if 'object' == pointed_thing.type then
 		local inventory_text = nil
-		local text = ''
+		local text
 		local ref = pointed_thing.ref
 		if not ref then
 			text = rbi.broken_object
@@ -94,6 +94,7 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 					sdata = minetest.deserialize(sdata) or {}
 					if sdata.itemstring then
 						text = text .. ' [' .. sdata.itemstring .. ']'
+						local show_recipe = false
 						if show_recipe then
 							-- the fields part is used here to provide
 							-- additional information about the entity
@@ -127,7 +128,7 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 					if 'table' == type(sdata.inv) then
 						local item_count = 0
 						local type_count = 0
-						for k, v in pairs(sdata.inv) do
+						for _, v in pairs(sdata.inv) do
 							type_count = type_count + 1
 							item_count = item_count + v
 						end
@@ -370,7 +371,6 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 				.. (((i - 1) % 3) + 1) .. ','
 				.. tostring(floor(((i - 1) / 3) + 2))
 				.. ';1.0,1.0;' .. r.image_button_link(n) .. ']'
-			i = i + 1
 		end
 		-- output item on the right
 		formspec = formspec

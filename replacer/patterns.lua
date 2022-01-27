@@ -80,6 +80,7 @@ replacer.patterns.offsets_touch = {
 
 -- 3x3x3 hollow cube
 replacer.patterns.offsets_hollowcube = {}
+do
 local p
 for x = -1, 1 do
 	for y = -1, 1 do
@@ -90,6 +91,7 @@ for x = -1, 1 do
 			end
 		end
 	end
+end
 end
 
 -- To get the crust, first nodes near it need to be collected
@@ -132,8 +134,8 @@ function replacer.patterns.reduce_crust_ps(data)
 	local p, p2
 	for i = 1, data.num do
 		p = data.ps[i]
-		for i = 1, 6 do
-			p2 = rp.offsets_touch[i]
+		for i2 = 1, 6 do
+			p2 = rp.offsets_touch[i2]
 			if data.aboves[poshash(vector_add(p, p2))] then
 				n = n + 1
 				newps[n] = p
@@ -153,8 +155,8 @@ function replacer.patterns.reduce_crust_above_ps(data)
 	for i = 1, data.num do
 		p = data.ps[i]
 		if rp.replaceable(p, 'air', data.pname) then
-			for i = 1, 6 do
-				p2 = rp.offsets_touch[i]
+			for i2 = 1, 6 do
+				p2 = rp.offsets_touch[i2]
 				if rp.replaceable(vector_add(p, p2), data.name, data.pname) then
 					n = n + 1
 					newps[n] = p
@@ -257,7 +259,7 @@ function replacer.patterns.search_positions(params)
 	visiteds = {}
 	founds = {}
 	n_founds = 0
-	local function go(p)
+	local function go2(p)
 		local vi = poshash(p)
 		if visiteds[vi] then
 			return false
@@ -274,7 +276,7 @@ function replacer.patterns.search_positions(params)
 		visiteds[vi] = true
 		return true
 	end
-	search_dfs(go, startpos, vector_add, moves)
+	search_dfs(go2, startpos, vector_add, moves)
 	return founds, n_founds, visiteds
 end -- search_positions
 
