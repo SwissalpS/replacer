@@ -1,0 +1,91 @@
+-- clean up inspect.lua to use same var names as are used by rest of replacer
+    after that, we can bump version to 4
+
+-- inspection tool: add button to open unified_inventory's formspec
+    this may no longer be as important and isn't that practical as there are
+    now so many buttons. It would be hard to keep clear which item will be shown.
+    <OgelGames@Discord> SwissalpS: by using player:set_inventory_formspec() unified_inventory
+        binds itself to the 'i'-key
+        https://github.com/minetest-mods/unified_inventory/blob/d6688872c84417d2f61d6f5e607aea39d78920aa/internal.lua#L302-L306
+    <OgelGames@Discord> I think you could open it by sending the formspec from
+        unified_inventory.get_formspec(player, page)
+    maybe we can use this on group buttons
+
+-- inspection tool:
+            figure out how to make the itemstring selectable for copy -> do that with new formspec version
+            is the new drop detection hindering setting replacer to wine:blue_agave
+            filter out 'normal' recipe.type uranium*_dust recipes given by core.get_all_craft_recipes()
+            add mixing method
+            add bucket/cannister as method
+            add home_workshop_misc:beer_tap as method -> home_workshop_misc:beer_mug
+            add digging method for ores
+            add info for seeds and saplings about planting
+            add info for plants telling when they are ripe -> allowing user to click on the ripe
+                stage and see possible seed drop -> showing info about planting.
+                don't forget wine:blue_agave when doing that
+            add spawning, breading etc. info for mobs
+            add biofuel hints also general 'fuel' craft types
+
+-- known incompat replacer ------------------------
+-- doors in general (low priority)
+ (lowest priority)
+-- elphabet: add human readable letter to shortstring mainly for history
+-- letters: similar to elphabet
+
+------ replacer fixes --------
+-- can't be set --> no recipe
+home_workshop_misc:beer_mug
+homedecor:glass_table_large_square
+homedecor:dvd_cd_cabinet
+homedecor:chains
+homedecor:wood_table_large_square
+scifi_nodes:junk
+scifi_nodes:engine
+scifi_nodes:doomengine
+scifi_nodes:crate
+scifi_nodes:capsule2
+scifi_nodes:capsule3
+scifi_nodes:builder
+
+-- can be set but can't be placed -- need alias for inspect tool too
+-- these seem to work now, maybe placing them with place_all isn't good simulation?
+homedecor:desk_lamp_7 -> 14
+homedecor:ceiling_lantern_6 -> 14
+homedecor:ceiling_lamp_8|on -> 14
+homedecor:glowlight_half_8|on -> 14
+homedecor:glowlight_quarter_0|on -> 14
+homedecor:glowlight_small_cube_1|on -> 14
+homedecor:ground_lantern_0-13|on homedecor:ground_lantern_14
+homedecor:hanging_lantern_10|on -> 14
+homedecor:lattice_lantern_large_1|on -> 14
+homedecor:lattice_lantern_small_1
+homedecor:plasma_ball_off -> homedecor:plasma_ball_on -- meh
+homedecor:plasma_lamp_8|on -> 14
+homedecor:standing_lamp_8
+homedecor:table_lamp_12
+
+------- need 'cable plate override' ---------
+homedecor:speaker_open -> homedecor:speaker (cable plate overrides) -- not fixing as user can have both in inventory
+
+---------- known incompat inspect -----------
+-- no recipe for silicon lump
+
+---- missing icons ----
+cottages:wool;cottages:wool (used by homedecor:curtain_open) -- meh, there is working recipe
+(homedecor:stained_glass) -- cottages:glass_pane_side
+
+-- fix in scifi_nodes
+flowers:dandelion --> dandelion_white and dandelion_yellow would exist (*scifi_nodes:plant10 also 9)
+
+-- fix in homedecor_kitchen
+homedecor:kitchen_cabinet --> homedecor:kitchen_cabinet_colorable *
+
+-- fix these in bridger mod
+bridger:corrugated_steelgreen --> bridger:corrugated_steel_green *
+bridger:corrugated_steelwhite
+bridger:corrugated_steelred
+bridger:corrugated_steelsteel
+bridger:corrugated_steelyellow
+
+-- christmas presents say they don't drop anything
+
