@@ -1,13 +1,13 @@
 
 globals = {
 	"replacer",
-	"minetest",
+	minetest = { fields = { "translate", "get_translator" } },
 }
 
 read_globals = {
 	-- Stdlib
 	string = { fields = { "split", "match", "find", "lower" } },
-	table = { fields = { "copy", "getn", "insert", "shuffle", "sort" }},
+	table = { fields = { "copy", "getn", "insert", "shuffle", "sort" } },
 
 	-- Minetest
 	"vector", "ItemStack",
