@@ -113,12 +113,12 @@ function replacer.test.chatcommand_place_all(player_name, param)
 	rt.i = 1
 	rt.active = true
 	rt.succ_count = 0
-	minetest.after(.1, rt.step)
+	minetest.after(.1, rt.step_place_all)
 	return true, 'Started process'
 end -- chatcommand_place_all
 
 
-function replacer.test.step()
+function replacer.test.step_place_all()
 	-- player may have logged off already
 	if not rt.active then return end
 
@@ -140,7 +140,7 @@ function replacer.test.step()
 		-- ensure area is generated and loaded
 		if rt.check_mapgen(pos_) then
 			rti('waiting for mapgen')
-			minetest.after(5, rt.step)
+			minetest.after(5, rt.step_place_all)
 			return
 		end
 
@@ -148,7 +148,7 @@ function replacer.test.step()
 			rti('emerging area')
 			move_player()
 			minetest.emerge_area(pos_, pos__)
-			minetest.after(2, rt.step)
+			minetest.after(2, rt.step_place_all)
 			return
 		end
 
@@ -188,8 +188,8 @@ function replacer.test.step()
 
 	rti('Step ' .. tostring(rt.i) .. ' of ' .. tostring(rt.count) .. ' done')
 
-	minetest.after(rt.seconds_between_steps, rt.step)
-end -- step
+	minetest.after(rt.seconds_between_steps, rt.step_place_all)
+end -- step_place_all
 
 
 function replacer.test.dealloc_player(player)
