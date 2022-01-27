@@ -49,6 +49,24 @@ function replacer.test.inform(message)
 end -- inform
 local rti = rt.inform
 
+local function select_nodes(patterns)
+	local function has_match(name, patterns_to_check)
+		for _, pattern in ipairs(patterns_to_check) do
+			if name:find(pattern) then return true end
+		end
+		return false
+	end -- has_match
+	rt.selected = {}
+	rt.count = 0
+	for name, _ in pairs(minetest.registered_nodes) do
+		if not has_match(name, rt.skip)
+			and has_match(name, patterns)
+		then
+			table.insert(rt.selected, name)
+			rt.count = rt.count + 1
+		end
+	end
+end -- select_nodes
 
 -- This function is quite robust but it still can happen that game crashes.
 -- It has worked best if area was already generated and loaded at least once.
@@ -80,23 +98,8 @@ function replacer.test.chatcommand_place_all(player_name, param)
 	end
 	if 0 == #patterns then table.insert(patterns, '.*') end
 	rt.player = minetest.get_player_by_name(player_name)
-	rt.pos = rt.player:get_pos()--vector.add(player:get_pos(), vector.new(1, 0, 1))--
-	rt.selected = {}
-	rt.count = 0
-	local function has_match(name, patterns_to_check)
-		for _, pattern in ipairs(patterns_to_check) do
-			if name:find(pattern) then return true end
-		end
-		return false
-	end -- has_match
-	for name, _ in pairs(minetest.registered_nodes) do
-		if not has_match(name, rt.skip)
-			and has_match(name, patterns)
-		then
-			table.insert(rt.selected, name)
-			rt.count = rt.count + 1
-		end
-	end
+	rt.pos = rt.player:get_pos()--vector.add(rt.player:get_pos(), vector.new(1, 0, 1))--
+	select_nodes(patterns)
 	if 0 == rt.count then
 		return true, 'Nothing to do.'
 	end
@@ -192,6 +195,58 @@ function replacer.test.step_place_all()
 end -- step_place_all
 
 
+function replacer.test.chatcommand_test_all(player_name, param)
+	if rt.active then
+		return false, 'There is an active task in progress, try again later'
+	end
+	param = param or ''
+	local dry_run
+	local params = param:split(' ')
+	local patterns = {}
+	rt.no_support = false
+	for _, param2 in ipairs(params) do
+		if 'no_support_node' == param2 then
+			rt.no_support = true
+		else
+			table.insert(patterns, param2)
+		end
+	end
+	if 0 == #patterns then table.insert(patterns, '.*') end
+	select_nodes(patterns)
+	if 0 == rt.count then
+		return true, 'Nothing to do.'
+	end
+	table.sort(rt.selected)
+	rt.player = minetest.get_player_by_name(player_name)
+	rt.pos = vector.add(rt.player:get_pos(), vector.new(1, 0, 0))
+	rt.pos_ = vector.add(rt.pos, vector.new(0, -1, 0))
+	minetest.set_node(rt.pos, rt.air_node)
+	minetest.set_node(rt.pos_, rt.support_node)
+	local inv = rt.player:get_inventory()
+	inv:set_stack('main', 1, ItemStack('replacer:replacer'))
+	inv:set_stack('main', 2, ItemStack(''))
+	--inv:add_item('main', ItemStack('replacer:replacer'))
+	rt.i = 1
+	rt.active = true
+	rt.succ_count = 0
+	minetest.after(.1, rt.step_test_all)
+	return true, 'Started process'
+end -- chatcommand_test_all
+
+
+function replacer.test.step_test_all()
+	-- player may have logged off already
+	if not rt.active then return end
+
+	-- Problem I: can't change selected slot programatically
+	-- Solution I: either use node_def.on_place/on_dig() directly
+	--		or switch places with inv:set_stack(inv:get_stack())
+	-- Problem II: can't simulate keys pressed
+	-- Solution II: possibly better way to test is to use mineunit
+	--		in the first place
+end -- step_test_all
+
+
 function replacer.test.dealloc_player(player)
 	if not rt.player or not rt.player.get_player_name then return end
 	if not rt.player:get_player_name() == player:get_player_name() then return end
@@ -210,6 +265,19 @@ minetest.register_chatcommand('place_all', {
 		.. 'with "_tinted" i.e. paintbrush nodes. To exclude patterns, edit test.lua and add to '
 		.. 'rt.skip table.',
 	func = rt.chatcommand_place_all,
+	privs = { privs = true }
+})
+minetest.register_chatcommand('replacer_test_all', {
+	params = '[[<include pattern1>] ... [ <include patternN>] ]',
+	description = 'Places one of all registered nodes on a support node at player position by player.'
+		.. 'Attempts to set replacer to it and then digs the node. Attempts to have player place it '
+		.. 'again using replacer. Checks if before and after match, then continues with next node. '
+		.. 'before starting, you should ensure that the first two slots on the left are free.'
+		.. 'Pass patterns to only place nodes whose name matches. e.g. "^beacon:" "_tinted$" '
+		.. '-> only place nodes beginning with "beacon:" i.e. beacon-mod, and all nodes ending '
+		.. 'with "_tinted" i.e. paintbrush nodes. To exclude patterns, edit test.lua and add to '
+		.. 'rt.skip table.',
+	func = rt.chatcommand_test_all,
 	privs = { privs = true }
 })
 
