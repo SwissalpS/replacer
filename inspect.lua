@@ -61,32 +61,32 @@ minetest.register_tool('replacer:inspect', {
 	wield_scale = { x = 1, y = 1, z = 1 },
 	liquids_pointable = true, -- it is ok to request information about liquids
 
-	on_use = function(itemstack, user, pointed_thing)
-		return replacer.inspect(itemstack, user, pointed_thing)
+	on_use = function(itemstack, player, pointed_thing)
+		return replacer.inspect(itemstack, player, pointed_thing)
 	end,
 
-	on_place = function(itemstack, placer, pointed_thing)
-		return replacer.inspect(itemstack, placer, pointed_thing, true)
+	on_place = function(itemstack, player, pointed_thing)
+		return replacer.inspect(itemstack, player, pointed_thing, true)
 	end,
 })
 
 
-function replacer.inspect(_, user, pointed_thing, right_clicked)
-	if nil == user or nil == pointed_thing then
+function replacer.inspect(_, player, pointed_thing, right_clicked)
+	if nil == player or nil == pointed_thing then
 		return nil
 	end
 
-	local name = user:get_player_name()
+	local player_name = player:get_player_name()
 	if 'object' == pointed_thing.type then
 		local inventory_text = nil
 		local text
-		local ref = pointed_thing.ref
-		if not ref then
+		local object_ref = pointed_thing.ref
+		if not object_ref then
 			text = rbi.broken_object
-		elseif ref:is_player() then
-			text = S('This is your fellow player "@1"', ref:get_player_name())
+		elseif object_ref:is_player() then
+			text = S('This is your fellow player "@1"', object_ref:get_player_name())
 		else
-			local luaob = ref:get_luaentity()
+			local luaob = object_ref:get_luaentity()
 			if luaob and luaob.get_staticdata then
 				text = S('This is an entity "@1"', luaob.name)
 				local sdata = luaob:get_staticdata()
@@ -99,7 +99,7 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 							-- the fields part is used here to provide
 							-- additional information about the entity
 							r.inspect_show_crafting(
-											name,
+											player_name,
 											sdata.itemstring,
 											{ luaob = luaob })
 						end
@@ -152,45 +152,44 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 			end
 
 		end
-		if ref then
-			text = text .. ' ' .. S('at @1', nice_pos_string(ref:getpos()))
+		if object_ref then
+			text = text .. ' ' .. S('at @1', nice_pos_string(object_ref:getpos()))
 		end
 		if inventory_text then text = text .. inventory_text end
-		chat(name, text)
+		chat(player_name, text)
 		return nil
 	elseif 'node' ~= pointed_thing.type then
-		chat(name, S('Sorry, this is an unkown something of type "@1". '
+		chat(player_name, S('Sorry, this is an unkown something of type "@1". '
 			.. 'No information available.', pointed_thing.type))
 		return nil
 	end
 
 	local pos  = minetest.get_pointed_thing_position(pointed_thing, right_clicked)
 	local node = minetest.get_node_or_nil(pos)
-
 	if not node then
-		chat(name, rb.wait_for_load)
+		chat(player_name, rb.wait_for_load)
 		return nil
 	end
 
 	-- EXPERIMENTAL: attempt to open unified_inventory's crafting guide
 	if ui then
-		local keys = user:get_player_control()
+		local keys = player:get_player_control()
 --pd(keys)
 		-- while testing let's use zoom until we either drop the idea
 		-- or get it to work
 		if keys.zoom then --aux1 then ---and keys.sneak then
-			ui.current_item[name] = node.name
-			ui.current_craft_direction[name] = 'recipe'-- keys.x and 'usage' or 'recipe'
-			ui.current_searchbox[name] = node.name
-			ui.apply_filter(user, node.name, 'recipe')--'usage' --nochange')
-			minetest.show_formspec(name, '', ui.get_formspec(user, 'craftguide'))
+			ui.current_item[player_name] = node.name
+			ui.current_craft_direction[player_name] = 'recipe'-- keys.x and 'usage' or 'recipe'
+			ui.current_searchbox[player_name] = node.name
+			ui.apply_filter(player, node.name, 'recipe')--'usage' --nochange')
+			minetest.show_formspec(player_name, '', ui.get_formspec(player, 'craftguide'))
 			return
 		end
 	end
 pd(node)
 pd(minetest.registered_nodes[node.name].mod_origin)
 	local protected_info = ''
-	if minetest.is_protected(pos, name) then
+	if minetest.is_protected(pos, player_name) then
 		protected_info = rbi.is_protected
 	elseif minetest.is_protected(pos, '_THIS_NAME_DOES_NOT_EXIST_') then
 		protected_info = rbi.you_can_dig
@@ -200,9 +199,12 @@ pd(minetest.registered_nodes[node.name].mod_origin)
 	local light = minetest.get_node_light(pos, nil)
 	-- the fields part is used here to provide additional
 	-- information about the node
-	r.inspect_show_crafting(name, node.name, {
-		pos = pos, param2 = node.param2, light = light,
-		protected_info = protected_info })
+	r.inspect_show_crafting(player_name, node.name, {
+		pos = pos,
+		param2 = node.param2,
+		light = light,
+		protected_info = protected_info
+	})
 
 	return nil -- no item shall be removed from inventory
 end -- replacer.inspect
@@ -255,18 +257,18 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	-- fetch recipes from core
-	local res = minetest.get_all_craft_recipes(node_name)
-	if not res then
-		res = {}
+	local recipes = minetest.get_all_craft_recipes(node_name)
+	if not recipes then
+		recipes = {}
 	end
---pd(res)
+--pd(recipes)
 	-- TODO: filter out invalid recipes with no items
 	--	   such as "group:flower,color_dark_grey"
 	--	also 'normal' recipe.type uranium*_dust recipes
 
 	-- add special recipes for nodes created by machines
 	for _, adder in pairs(r.recipe_adders) do
-		adder.add_recipe(node_name, fields.param2, res)
+		adder.add_recipe(node_name, fields.param2, recipes)
 	end
 
 	-- offer all alternate crafting recipes through prev/next buttons
@@ -276,34 +278,34 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		recipe_nr = recipe_nr + 1
 	end
 	-- wrap around
-	if #res < recipe_nr then
+	if #recipes < recipe_nr then
 		recipe_nr = 1
 	elseif 1 > recipe_nr then
-		recipe_nr = #res
+		recipe_nr = #recipes
 	end
 
 	-- fetch description
 	-- when clicking unknown nodes
-	local desc = ' ' .. rbi.no_desc .. ' '
+	local description = ' ' .. rbi.no_description .. ' '
 	if minetest.registered_nodes[node_name] then
 		if minetest.registered_nodes[node_name].description
 			and '' ~= minetest.registered_nodes[node_name].description
 		then
-			desc = minetest.registered_nodes[node_name].description
+			description = minetest.registered_nodes[node_name].description
 		elseif minetest.registered_nodes[node_name].name then
-			desc = minetest.registered_nodes[node_name].name
+			description = minetest.registered_nodes[node_name].name
 		else
-			desc = ' ' .. rbi.no_node_desc .. ' '
+			description = ' ' .. rbi.no_node_description .. ' '
 		end
 	elseif minetest.registered_items[node_name] then
 		if minetest.registered_items[node_name].description
 			and '' ~= minetest.registered_items[node_name].description
 		then
-			desc = minetest.registered_items[node_name].description
+			description = minetest.registered_items[node_name].description
 		elseif minetest.registered_items[node_name].name then
-			desc = minetest.registered_items[node_name].name
+			description = minetest.registered_items[node_name].name
 		else
-			desc = ' ' .. rbi.no_item_desc .. ' '
+			description = ' ' .. rbi.no_item_description .. ' '
 		end
 	end
 
@@ -317,7 +319,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		.. 'tooltip[quit;'.. mfe(rbi.exit) .. ']'
 
 	-- prev. and next buttons
-	if 1 < #res then
+	if 1 < #recipes then
 		formspec = formspec
 			.. 'button[4.1,5;1,0.75;prev_recipe;<-]'
 			.. 'tooltip[prev_recipe;'.. mfe(rbi.prev) .. ']'
@@ -327,8 +329,8 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 
 	formspec = formspec
 		-- description at bottom
-		.. 'label[0,5.7;' .. mfe(rbi.this_is) .. ' ' .. mfe(desc) .. ']'
-		.. 'tooltip[-1,5.7;7,2;' .. mfe(rbi.this_is) .. ' ' .. mfe(desc) .. ']'
+		.. 'label[0,5.7;' .. mfe(rbi.this_is) .. ' ' .. mfe(description) .. ']'
+		.. 'tooltip[-1,5.7;7,2;' .. mfe(rbi.this_is) .. ' ' .. mfe(description) .. ']'
 		 -- invisible field for passing on information
 		.. 'field[20,20;0.1,0.1;node_name;node_name;' .. node_name .. ']'
 		-- another invisible field
@@ -358,7 +360,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	-- if no recipes, collect drops else show current recipe
-	if 1 > #res then
+	if 1 > #recipes then
 		formspec = formspec .. 'label[3,1;' .. mfe(rbi.no_recipes) .. ']'
 		-- always returns a table
 		local drops = r.possible_node_drops(node_name)
@@ -370,24 +372,24 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		else
 			formspec = formspec .. mfe(rbi.may_drop_on_dig) .. ']'
 		end
-		for i, n in ipairs(drops) do
+		for i, drop_name in ipairs(drops) do
 			formspec = formspec .. 'item_image_button['
 				.. (((i - 1) % 3) + 1) .. ','
 				.. tostring(floor(((i - 1) / 3) + 2))
-				.. ';1.0,1.0;' .. r.image_button_link(n) .. ']'
+				.. ';1.0,1.0;' .. r.image_button_link(drop_name) .. ']'
 		end
 		-- output item on the right
 		formspec = formspec
 			.. 'item_image_button[5,2;1.0,1.0;' .. node_name .. ';normal;]'
 
 	else
-		if 1 < #res then
+		if 1 < #recipes then
 			formspec = formspec .. 'label[1,5;'
-				.. mfe(S('Alternate @1/@2', tostring(recipe_nr), tostring(#res))) .. ']'
+				.. mfe(S('Alternate @1/@2', tostring(recipe_nr), tostring(#recipes))) .. ']'
 		end
 		-- reverse order; default recipes (and thus the most intresting ones)
 		-- are usually the oldest
-		local recipe = res[#res + 1 - recipe_nr]
+		local recipe = recipes[#recipes + 1 - recipe_nr]
 --pd(recipe.type)
 		if 'normal' == recipe.type and recipe.items then
 			local width = recipe.width
