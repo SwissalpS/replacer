@@ -3,11 +3,10 @@ replacer.dev_mode =
 	minetest.settings:get_bool('replacer.dev_mode') or false
 if not replacer.dev_mode then return end
 
-local function pd(m) print(dump(m)) end
-
 replacer.test = {}
 local r = replacer
 local rt = replacer.test
+local pd = r.print_dump
 rt.spacing = 2
 rt.player = nil
 rt.facing = vector.new(0, 0, 0)

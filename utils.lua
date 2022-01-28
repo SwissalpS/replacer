@@ -65,6 +65,14 @@ function replacer.possible_node_drops(node_name, return_names_only)
 end -- possible_node_drops
 
 
+function replacer.print_dump(...)
+	if not replacer.dev_mode then return end
+	for _, m in ipairs(...) do
+		print(dump(m))
+	end
+end -- print_dump
+
+
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 
