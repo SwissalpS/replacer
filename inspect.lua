@@ -15,7 +15,7 @@ local floor = math.floor
 local max, min = math.max, math.min
 local chat = minetest.chat_send_player
 local mfe = minetest.formspec_escape
-
+local function pd(m) print(dump(m)) end
 -- use r.register_craft_method() to populate
 replacer.recipe_adders = {}
 
@@ -175,6 +175,7 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 	-- EXPERIMENTAL: attempt to open unified_inventory's crafting guide
 	if ui then
 		local keys = user:get_player_control()
+--pd(keys)
 		-- while testing let's use zoom until we either drop the idea
 		-- or get it to work
 		if keys.zoom then --aux1 then ---and keys.sneak then
@@ -186,6 +187,8 @@ function replacer.inspect(_, user, pointed_thing, right_clicked)
 			return
 		end
 	end
+pd(node)
+pd(minetest.registered_nodes[node.name].mod_origin)
 	local protected_info = ''
 	if minetest.is_protected(pos, name) then
 		protected_info = rbi.is_protected
@@ -217,6 +220,7 @@ function replacer.image_button_link(stack_string)
 -- TODO: show information about other groups not handled above
 	local stack = ItemStack(stack_string)
 	local new_node_name = stack:get_name()
+pd(stack_string .. ';' .. new_node_name .. ';' .. group)
 	return stack_string .. ';' .. new_node_name .. ';' .. group
 end -- image_button_link
 
@@ -255,7 +259,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	if not res then
 		res = {}
 	end
---print(dump(res))
+--pd(res)
 	-- TODO: filter out invalid recipes with no items
 	--	   such as "group:flower,color_dark_grey"
 	--	also 'normal' recipe.type uranium*_dust recipes
@@ -384,7 +388,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		-- reverse order; default recipes (and thus the most intresting ones)
 		-- are usually the oldest
 		local recipe = res[#res + 1 - recipe_nr]
---print(dump(recipe))
+--pd(recipe.type)
 		if 'normal' == recipe.type and recipe.items then
 			local width = recipe.width
 			if not width or 0 == width then
