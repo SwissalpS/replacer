@@ -15,6 +15,31 @@ if r.has_technic_mod then
 end
 
 
+function replacer.inform(name, message)
+	if (not message) or ('' == message) then return end
+
+	log('info', rb.log_messages:format(name, message))
+	local player = get_player_by_name(name)
+	if not player then return end
+
+	local meta = player:get_meta() if not meta then return end
+
+	if 0 < meta:get_int('replacer_mute') then return end
+
+	chat_send_player(name, message)
+end -- inform
+
+
+function replacer.nice_pos_string(pos)
+	local no_info = '<no positional information>'
+	if 'table' ~= type(pos) then return no_info end
+	if not (pos.x and pos.y and pos.z) then return no_info end
+
+	pos = { x = floor(pos.x + .5), y = floor(pos.y + .5), z = floor(pos.z + .5) }
+	return pos_to_string(pos)
+end -- nice_pos_string
+
+
 function replacer.play_sound(player_name, fail)
 	local player = get_player_by_name(player_name)
 	if not player then return end
@@ -71,31 +96,6 @@ function replacer.print_dump(...)
 		print(dump(m))
 	end
 end -- print_dump
-
-
-function replacer.inform(name, message)
-	if (not message) or ('' == message) then return end
-
-	log('info', rb.log_messages:format(name, message))
-	local player = get_player_by_name(name)
-	if not player then return end
-
-	local meta = player:get_meta() if not meta then return end
-
-	if 0 < meta:get_int('replacer_mute') then return end
-
-	chat_send_player(name, message)
-end -- inform
-
-
-function replacer.nice_pos_string(pos)
-	local no_info = '<no positional information>'
-	if 'table' ~= type(pos) then return no_info end
-	if not (pos.x and pos.y and pos.z) then return no_info end
-
-	pos = { x = floor(pos.x + .5), y = floor(pos.y + .5), z = floor(pos.z + .5) }
-	return pos_to_string(pos)
-end -- nice_pos_string
 
 
 -- from: http://lua-users.org/wiki/StringRecipes
