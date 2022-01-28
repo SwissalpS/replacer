@@ -92,7 +92,8 @@ end -- possible_node_drops
 
 function replacer.print_dump(...)
 	if not replacer.dev_mode then return end
-	for _, m in ipairs(...) do
+
+	for _, m in ipairs({ ... }) do
 		print(dump(m))
 	end
 end -- print_dump
