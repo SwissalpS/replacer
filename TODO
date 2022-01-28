@@ -1,6 +1,3 @@
--- clean up inspect.lua to use same var names as are used by rest of replacer
-    after that, we can bump version to 4
-
 -- inspection tool: add button to open unified_inventory's formspec
     this may no longer be as important and isn't that practical as there are
     now so many buttons. It would be hard to keep clear which item will be shown.

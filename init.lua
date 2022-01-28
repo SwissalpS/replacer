@@ -19,12 +19,12 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
--- Version 3.12 (20220126)
+-- Version 4.0 (20220127)
 
 -- Changelog: see CHANGELOG file
 
 replacer = {}
-replacer.version = 20220126
+replacer.version = 20220127
 
 replacer.has_bakedclay = minetest.get_modpath('bakedclay')
 replacer.has_basic_dyes = minetest.get_modpath('dye')

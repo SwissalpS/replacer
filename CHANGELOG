@@ -1,3 +1,6 @@
+20220127 * SwissalpS cleaned up var names in inspect.lua
+         * Added .luacheckrc and print_dump()
+         * Bumped version to 4.0
 20220126 * SwissalpS improved some compat items and redid translations.
          * Documentation updated.
          * Added LICENSE file.
