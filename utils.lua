@@ -2,6 +2,7 @@ local r = replacer
 local rb = replacer.blabla
 local chat_send_player = minetest.chat_send_player
 local get_player_by_name = minetest.get_player_by_name
+local get_node_drops = minetest.get_node_drops
 local log = minetest.log
 local floor = math.floor
 local pos_to_string = minetest.pos_to_string
@@ -56,21 +57,31 @@ end -- play_sound
 
 
 function replacer.possible_node_drops(node_name, return_names_only)
-	if not minetest.registered_nodes[node_name]
-		or not minetest.registered_nodes[node_name].drop then return {} end
+	if not minetest.registered_nodes[node_name] then return {} end
 
-	local drop = minetest.registered_nodes[node_name].drop
+	local droplist = {}
+	local drop = minetest.registered_nodes[node_name].drop or ''
 	if 'string' == type(drop) then
-		if '' == drop then return {} end
-		if return_names_only then
-			return { drop:match('^([^ ]+)') }
+		if '' == drop then
+			-- this returns value with randomness applied :/
+			drop = get_node_drops(node_name)
+			if 0 == #drop then return {} end
+
+			if not return_names_only then return drop end
+
+			for _, item in ipairs(drop) do
+				table.insert(droplist, item:match('^([^ ]+)'))
+			end
+			return droplist
 		end
-		return { drop }
-	end
+
+		if not return_names_only then return { drop } end
+
+		return { drop:match('^([^ ]+)') }
+	end -- if string
 
 	if 'table' ~= type(drop) or not drop.items then return {} end
 
-	local droplist = {}
 	local checks = {}
 	for _, drops in ipairs(drop.items) do
 		for _, item in ipairs(drops.items) do

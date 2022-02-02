@@ -10,7 +10,6 @@
 
 -- inspection tool:
             figure out how to make the itemstring selectable for copy -> do that with new formspec version
-            is the new drop detection hindering setting replacer to wine:blue_agave
             filter out 'normal' recipe.type uranium*_dust recipes given by core.get_all_craft_recipes()
             add mixing method
             add digging method for ores
@@ -29,7 +28,6 @@
 
 ------ replacer fixes --------
 -- can't be set --> no recipe
-home_workshop_misc:beer_mug
 homedecor:glass_table_large_square
 homedecor:dvd_cd_cabinet
 homedecor:chains
