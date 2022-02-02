@@ -30,8 +30,7 @@ function replacer.get_form_modes_4(player, mode)
 	end
 	local tmp_name = '_'
 	local formspec = 'formspec_version[4]'
-		.. 'size[' .. form_dimensions
-		.. ']padding[0.375,0.375]'
+		.. 'size[' .. form_dimensions .. ']'
 		.. 'label[0.33,0.44;' .. mfe(rb.choose_mode)
 		.. ']button_exit[' .. button_single_dimensions .. button_height .. ';'
 	if 1 == major then
@@ -81,6 +80,7 @@ function replacer.get_form_modes_4(player, mode)
 	formspec = formspec .. '~~~~~~~~~~~~~~;1;true]'
 	return formspec
 end -- get_form_modes_4
+
 
 function replacer.get_form_modes_default(mode)
 	local major = mode.major
@@ -167,7 +167,7 @@ function replacer.show_mode_formspec(player, mode)
 	if 4 > version then
 		formspec = r.get_form_modes_default(mode)
 	else
-		-- version 4+ allows us to use proper dropdowns and other gimmics
+		-- version 4 allows us to use proper dropdowns and other gimmics
 		formspec = r.get_form_modes_4(player, mode)
 	end
 	-- show the formspec to player
