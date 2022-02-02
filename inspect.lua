@@ -15,7 +15,9 @@ local floor = math.floor
 local max, min = math.max, math.min
 local chat = minetest.chat_send_player
 local mfe = minetest.formspec_escape
+-- luacheck: push ignore unused
 local pd = r.print_dump
+-- luacheck: pop
 -- use r.register_craft_method() to populate
 replacer.recipe_adders = {}
 
