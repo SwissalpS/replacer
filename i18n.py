@@ -25,7 +25,7 @@ params = {"recursive": False,
     "break-long-lines": True,
     "sort": False,
     "print-source": False,
-    "truncate-unused": True,
+    "truncate-unused": False,
 }
 # Available CLI options
 options = {"recursive": ['--recursive', '-r'],
