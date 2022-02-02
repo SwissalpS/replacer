@@ -27,6 +27,8 @@ Time-limit reached.=Достигнут лимит времени.
 
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Включает многословие. @nchat: когда включено, сообщения отправляются в чат. @naudio: когда выключено, заменитель молчит.
 
+Minor modes are disabled on this server.=Второстепенные режимы отключены на этом сервере.
+
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Inspection Tool@nИспользуйте для проверки целевого узла или объекта. @nPlace для проверки соседнего узла.
 
 This is a broken object. We have no further information about it. It is located=Это сломанный объект. У нас нет никакой дополнительной информации об этом. Он расположен.

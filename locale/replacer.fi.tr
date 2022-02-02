@@ -27,6 +27,8 @@ Time-limit reached.=Aikaraja saavutettu.
 
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Vaihtaa verbosity.@nchat: Kun päällä, viestit lähetetään chat.@naudio: Kun pois päältä, korvaaja on äänetön.
 
+Minor modes are disabled on this server.=Pienet tilat on poistettu käytöstä tällä palvelimella.
+
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Tarkastustyökalu@nTarkista kohdesolmu tai entiteetti.@nTarkista viereinen solmu.
 
 This is a broken object. We have no further information about it. It is located=Tämä on rikkinäinen esine. Meillä ei ole asiasta enempää tietoa. Se sijaitsee

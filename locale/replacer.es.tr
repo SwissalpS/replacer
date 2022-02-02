@@ -27,6 +27,8 @@ Time-limit reached.=Límite de tiempo alcanzado.
 
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Alterna la verbosidad. @nchat: cuando está activado, los mensajes se publican en el chat. @naudio: cuando está desactivado, el intercambiador está en silencio.
 
+Minor modes are disabled on this server.=Los modos menores están deshabilitados en este servidor.
+
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Herramienta de inspección@nUsar para inspeccionar el nodo o la entidad de destino.@nColocar para inspeccionar el nodo adyacente.
 
 This is a broken object. We have no further information about it. It is located=Este es un objeto roto. No tenemos más información al respecto. se encuentra

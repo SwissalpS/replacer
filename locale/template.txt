@@ -27,6 +27,8 @@ Time-limit reached.=
 
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=
 
+Minor modes are disabled on this server.=
+
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=
 
 This is a broken object. We have no further information about it. It is located=
