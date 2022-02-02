@@ -101,4 +101,5 @@ rbi.log_reg_craft_method_overriding_method = '[replacer] register_craft_method o
 rbi.log_reg_craft_method_added = '[replacer] register_craft_method method added: %s %s'
 rbi.scoop = 'scoop up'
 rbi.pour = 'pour out'
+rbi.filling = S('filling')
 
