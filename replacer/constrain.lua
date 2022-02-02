@@ -27,6 +27,10 @@ replacer.max_time = tonumber(minetest.settings:get('replacer.max_time') or 1.0)
 -- [see replacer_patterns.lua>replacer.patterns.search_positions()]
 replacer.radius_factor = tonumber(minetest.settings:get('replacer.radius_factor') or 0.4)
 
+-- disable minor modes on server
+replacer.disable_minor_modes =
+	minetest.settings:get_bool('replacer.disable_minor_modes') or false
+
 -- priv to allow using history
 replacer.history_priv = minetest.settings:get('replacer.history_priv') or 'creative'
 -- disable saving history over sessions/reboots. IOW: don't use player meta e.g. if using old MT

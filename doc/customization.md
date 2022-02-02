@@ -33,6 +33,10 @@ Radius == floor(max_positions ^ radius_factor + .5) where max_positions is a min
 of available charge and max_nodes. Small changes to this value can have big effects.<br>
 Set radius_factor to 0 or less for behaviour prior to version 3.3
 
+### replacer.disable_minor_modes (bool)
+If you don't want to use the minor modes at all, set to true. These are the modes where
+only node or rotation is applied.
+
 ### replacer.history_priv (creative)
 You can make history available to users with this priv. By default it is set to **creative**
 as survival users can make several replacers. You can make this an acheivment for busy players

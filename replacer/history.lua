@@ -68,6 +68,7 @@ function replacer.history.init_player(player)
 				minor = tonumber(mode[2]) or 1,
 			},
 		}
+		if r.disable_minor_modes then entry.mode.minor = 1 end
 		node_def = minetest.registered_items[entry.node.name]
 		colour_name = rud_colour_name(entry.node.param2, node_def)
 		if 0 < #colour_name then

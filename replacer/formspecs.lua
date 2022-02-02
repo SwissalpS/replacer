@@ -60,12 +60,16 @@ function replacer.get_form_modes_4(player, mode)
 		formspec = formspec .. 'mode3;' .. mfe(rb.mode_crust)
 	end
 	formspec = formspec .. ']tooltip[' .. tmp_name .. ';'
-		.. mfe(rb.mode_crust_tooltip) .. ']dropdown[' .. minor_dimensions .. ';minor;'
+		.. mfe(rb.mode_crust_tooltip) .. ']'
+	if not r.disable_minor_modes then
+		formspec = formspec .. 'dropdown[' .. minor_dimensions .. ';minor;'
 		.. mfe(rb.mode_minor1) .. ',' .. mfe(rb.mode_minor2) .. ',' .. mfe(rb.mode_minor3)
 		.. ';' .. tostring(minor) .. ';true]tooltip[' .. minor_dimensions .. ';'
 		.. mfe(rb.mode_minor1 .. ': ' .. rb.mode_minor1_info .. '\n'
 			.. rb.mode_minor2 .. ': ' .. rb.mode_minor2_info .. '\n'
 			.. rb.mode_minor3 .. ': ' .. rb.mode_minor3_info) .. ']'
+	end
+
 	if not has_history_priv then return formspec end
 
 	formspec = formspec .. 'label[0.33,3.22;' .. mfe(rb.choose_history)
@@ -130,6 +134,7 @@ function replacer.on_player_receive_fields(player, form_name, fields)
 	elseif fields.minor then
 		-- clamp to { 1, 2, 3 }
 		mode.minor = math.min(3, math.max(1, tonumber(fields.minor) or 1))
+		if r.disable_minor_modes then mode.minor = 1 end
 	elseif fields.history then
 		-- ignore if user doesn't have privs
 		if not check_player_privs(name, r.history_priv) then

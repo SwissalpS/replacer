@@ -56,6 +56,7 @@ function replacer.get_data(stack)
 	local mode, mode_bare = {}, meta:get_string('mode'):split('.') or {}
 	mode.major = tonumber(mode_bare[1] or 1) or 1
 	mode.minor = tonumber(mode_bare[2] or 1)
+	if r.disable_minor_modes then mode.minor = 1 end
 	return node, mode
 end -- get_data
 
@@ -67,6 +68,7 @@ function replacer.set_data(stack, node, mode)
 		local _
 		_, mode = r.get_data(stack)
 	end
+	if r.disable_minor_modes then mode.minor = 1 end
 	local tool_itemstring = stack:get_name()
 	local tool_def = core_registered_items[tool_itemstring]
 	-- some accidents or deliberate actions can be harmful
@@ -524,6 +526,12 @@ function replacer.on_place(itemstack, player, pt)
 		-- fetch current mode
 		node, mode = r.get_data(itemstack)
 		if keys.sneak then
+			if r.disable_minor_modes then
+				r.play_sound(name, true)
+				r.inform(name, rb.minor_modes_disabled)
+				return itemstack
+			end
+
 			-- increment and roll-over minor mode
 			mode.minor = mode.minor % 3 + 1
 			-- spam chat

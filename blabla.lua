@@ -71,6 +71,7 @@ rb.log_reg_alias = '[replacer] registered alias for "%s" to "%s"'
 rb.log_reg_set_callback_fail = '[replacer] register_set_enabler called without passing function.'
 rb.formspec_error = '[replacer] formspec error, user "%s" attempting to change history. Fields: %s'
 rb.formspec_hacker = '[replacer] formspec forge? By user "%s" Fields: %s'
+rb.minor_modes_disabled = S('Minor modes are disabled on this server.')
 
 ----------------- replacer:inspect -----------------
 rbi.description = S('Inspection Tool\nUse to inspect target node or entity.\n'

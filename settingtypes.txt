@@ -9,6 +9,8 @@ replacer.max_time (Time limit when putting nodes) float 1.0
 # Radius limit factor when more possible positions are found than either max_nodes or charge
 # Set to 0 or less for behaviour of before version 3.3
 replacer.radius_factor (A factor to adjust size limit) float 0.4
+# If you don't want to use the minor modes at all, set to true
+replacer.disable_minor_modes (Disable using minor modes) bool false
 # You can make history available to users with this priv. By default it is set to creative
 # as non-creative users can make several replacers.
 replacer.history_priv (Priv needed to allow using history) string creative
