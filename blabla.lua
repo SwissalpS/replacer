@@ -99,4 +99,6 @@ rbi.unkown_recipe = S('Error: Unkown recipe.')
 rbi.log_reg_craft_method_wrong_arguments = '[replacer] register_craft_method invalid arguments given.'
 rbi.log_reg_craft_method_overriding_method = '[replacer] register_craft_method overriding existing method '
 rbi.log_reg_craft_method_added = '[replacer] register_craft_method method added: %s %s'
+rbi.scoop = 'scoop up'
+rbi.pour = 'pour out'
 
