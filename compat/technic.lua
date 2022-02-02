@@ -1,6 +1,8 @@
 -- skip if technic isn't loaded at all
 if not replacer.has_technic_mod then return end
 
+local rbi = replacer.blabla.inspect
+
 -- adds exceptions for technic cable plates
 local lTiers = { 'lv', 'mv', 'hv' }
 local lPlates = { '_digi_cable_plate_', '_cable_plate_' }
@@ -254,4 +256,76 @@ end -- add_formspec_separate
 replacer.register_craft_method(
 	'technic:separate', 'technic:mv_centrifuge',
 	add_recipe_separate, add_formspec_separate)
+
+
+local function add_recipe_can_lava(item_name, _, recipes)
+	local item, method
+	if 'technic:lava_can' == item_name then
+		item = 'default:lava_source'
+		method = rbi.scoop
+	elseif 'default:lava_source' == item_name then
+		item = 'technic:lava_can'
+		method = rbi.pour
+	else
+		return
+	end
+
+	recipes[#recipes + 1] = {
+		method = method,
+		type = 'technic:lava_can',
+		items = { item },
+		output = item_name,
+	}
+end -- add_recipe_can_lava
+
+replacer.register_craft_method(
+	'technic:lava_can', 'technic:lava_can', add_recipe_can_lava)
+
+
+local function add_recipe_can_river(item_name, _, recipes)
+	local item, method
+	if 'technic:river_water_can' == item_name then
+		item = 'default:river_water_source'
+		method = rbi.scoop
+	elseif 'default:river_water_source' == item_name then
+		item = 'technic:river_water_can'
+		method = rbi.pour
+	else
+		return
+	end
+
+	recipes[#recipes + 1] = {
+		method = method,
+		type = 'technic:river_water_can',
+		items = { item },
+		output = item_name,
+	}
+end -- add_recipe_can_river
+
+replacer.register_craft_method(
+	'technic:river_water_can', 'technic:river_water_can', add_recipe_can_river)
+
+
+local function add_recipe_can_water(item_name, _, recipes)
+	local item, method
+	if 'technic:water_can' == item_name then
+		item = 'default:water_source'
+		method = rbi.scoop
+	elseif 'default:water_source' == item_name then
+		item = 'technic:water_can'
+		method = rbi.pour
+	else
+		return
+	end
+
+	recipes[#recipes + 1] = {
+		method = method,
+		type = 'technic:water_can',
+		items = { item },
+		output = item_name,
+	}
+end -- add_recipe_can_water
+
+replacer.register_craft_method(
+	'technic:water_can', 'technic:water_can', add_recipe_can_water)
 

@@ -13,7 +13,6 @@
             is the new drop detection hindering setting replacer to wine:blue_agave
             filter out 'normal' recipe.type uranium*_dust recipes given by core.get_all_craft_recipes()
             add mixing method
-            add bucket/cannister as method
             add home_workshop_misc:beer_tap as method -> home_workshop_misc:beer_mug
             add digging method for ores
             add info for seeds and saplings about planting
@@ -85,4 +84,8 @@ bridger:corrugated_steelsteel
 bridger:corrugated_steelyellow
 
 -- christmas presents say they don't drop anything
+
+-- will not implement --
+    add helper so when setting replacer to an itemframe that contains something,
+    set to the contents --> but which param values? This isn't a good idea.
 
