@@ -61,7 +61,6 @@ homedecor:table_lamp_12
 homedecor:speaker_open -> homedecor:speaker (cable plate overrides) -- not fixing as user can have both in inventory
 
 ---------- known incompat inspect -----------
--- no recipe for silicon lump
 
 ---- missing icons ----
 cottages:wool;cottages:wool (used by homedecor:curtain_open) -- meh, there is working recipe

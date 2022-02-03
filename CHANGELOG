@@ -1,3 +1,8 @@
+20220203 * SwissalpS fixed some issues: forced aliases, items that have no drops defined
+           Added compat for buckets, canisters and beertap/mugs
+           Fixed formspec for MT 5.5.0 (that now actually uses padding)
+           Added server setting to disable minor modes.
+           Updated documentation and locales.
 20220127 * SwissalpS cleaned up var names in inspect.lua
          * Added .luacheckrc and print_dump()
          * Bumped version to 4.0
