@@ -11,13 +11,16 @@
 -- inspection tool:
             figure out how to make the itemstring selectable for copy -> do that with new formspec version
             add mixing method
-            add digging method for ores
-            add info for seeds and saplings about planting
+            add spawning, breading etc. info for mobs -> this sounds feasable for mobs_redo mobs.
+            add biofuel hints also general 'fuel' craft types -> if biofuel doesn't expose a list
+                this is also doomed (as I don't want to maintain lists)
+            add digging method for ores --> maybe not. Doing this dynamically seems overkill to
+                check every registered item to see if it drops the requested item
+            add info for seeds and saplings about planting -> this too seems like a task that will
+                include mainting a list of all plant types of any mod that adds them. Not my intention.
             add info for plants telling when they are ripe -> allowing user to click on the ripe
                 stage and see possible seed drop -> showing info about planting.
                 don't forget wine:blue_agave when doing that
-            add spawning, breading etc. info for mobs
-            add biofuel hints also general 'fuel' craft types
 
 -- known incompat replacer ------------------------
 -- doors in general (low priority)
