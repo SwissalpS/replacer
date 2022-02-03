@@ -258,8 +258,8 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	-- fetch recipes from core
-	local recipes = minetest.get_all_craft_recipes(node_name)
-	if not recipes then
+	local recipes = minetest.get_all_craft_recipes(node_name) or {}
+	if 0 == #recipes then
 		-- some items have aliases that are set with force, and thus
 		-- don't show up in core.get_all_craft_recipes()
 		-- e.g. https://github.com/mt-mods/basic_materials/blob/d9e06980d33ec02c2321269f47ab9ec32b36551f/aliases.lua#L32
@@ -267,8 +267,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		-- we try to reverse lookup here
 		for k, v in pairs(minetest.registered_aliases) do
 			if v == node_name then
-				node_name = k
-				recipes = minetest.get_all_craft_recipes(node_name)
+				recipes = minetest.get_all_craft_recipes(k)
 				if recipes then break end
 			end
 		end
