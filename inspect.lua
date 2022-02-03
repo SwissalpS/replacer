@@ -367,8 +367,9 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 
 	-- show information about protection
 	if fields.protected_info and '' ~= fields.protected_info then
-		formspec = formspec .. 'label[0.0,4.5;'
+		formspec = formspec .. 'label[0.0,4.7;'
 			.. mfe(fields.protected_info) .. ']'
+			.. 'tooltip[-1,4.7;5,1;' .. mfe(fields.protected_info) .. ']'
 	end
 
 	-- if no recipes, collect drops else show current recipe
