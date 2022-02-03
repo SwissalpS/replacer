@@ -10,7 +10,6 @@
 
 -- inspection tool:
             figure out how to make the itemstring selectable for copy -> do that with new formspec version
-            filter out 'normal' recipe.type uranium*_dust recipes given by core.get_all_craft_recipes()
             add mixing method
             add digging method for ores
             add info for seeds and saplings about planting

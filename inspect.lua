@@ -277,7 +277,6 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 --pd(recipes)
 	-- TODO: filter out invalid recipes with no items
 	--	   such as "group:flower,color_dark_grey"
-	--	also 'normal' recipe.type uranium*_dust recipes
 
 	-- add special recipes for nodes created by machines
 	for _, adder in pairs(r.recipe_adders) do
