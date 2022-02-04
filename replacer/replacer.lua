@@ -24,6 +24,7 @@ local has_creative = creative.is_enabled_for
 local serialize = minetest.serialize
 local us_time = minetest.get_us_time
 -- vector
+local vector_distance = vector.distance
 local vector_multiply = vector.multiply
 local vector_new = vector.new
 local vector_subtract = vector.subtract
@@ -451,46 +452,42 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 		end
 	end
 
+	-- sort by distance, nearest last as we work backwards
+	table.sort(found_positions, function(pos1, pos2)
+		return vector_distance(pos1, pos) > vector_distance(pos2, pos)
+	end)
+
 	-- set nodes
-	-- Turn found_positions into a binary heap
-	r.datastructures.create_binary_heap({
-		input = found_positions,
-		n = possible_count,
-		compare = function(pos1, pos2)
-			-- Return true iff pos1 is nearer to the start position than pos2
-			local n1 = (pos1.x - pos.x) ^ 2 + (pos1.y - pos.y) ^ 2 +
-				(pos1.z - pos.z) ^ 2
-			local n2 = (pos2.x - pos.x) ^ 2 + (pos2.y - pos.y) ^ 2 +
-				(pos2.z - pos.z) ^ 2
-			return n1 < n2
-		end,
-	})
+	local pos3
 	local actual_node_count = 0
-	while not found_positions:is_empty() do
-		-- Take the position nearest to the start position
-		pos = found_positions:take()
-		node_old = core_get_node(pos)
-		adjust_new_to_minor()
-		succ, error = r.replace_single_node(pos, node_old, node_new,
-			player, name, inv, has_creative_or_give)
-		if not succ then
-			r.inform(name, error)
-			break
-		end
-		actual_node_count = actual_node_count + 1
-		if actual_node_count > max_nodes then
-			-- This can happen if too many nodes were detected and the nodes
-			-- limit has been set to a small value
-			r.inform(name, rb.too_many_nodes_detected)
-			break
-		end
 	local us_time_limit = us_time() + max_time_us
+	local index = found_count
+	repeat -- use fast repeat loop
+		pos3 = found_positions[index]
+		node_old = core_get_node(pos3)
+		-- only change nodes that need changing
+		if not adjust_new_to_minor() then
+			succ, error = r.replace_single_node(pos3, node_old, node_new,
+				player, name, inv, has_creative_or_give)
+			if not succ then
+				r.inform(name, error)
+				break
+			end
+			actual_node_count = actual_node_count + 1
+			if actual_node_count > max_nodes then
+				-- This can happen if too many nodes were detected and the nodes
+				-- limit has been set to a small value
+				r.inform(name, rb.too_many_nodes_detected)
+				break
+			end
+		end -- if can't skip
 		-- time-out check
 		if us_time() > us_time_limit then
 			r.inform(name, rb.timed_out)
 			break
 		end
-	end
+		index = index - 1
+	until (0 == index) or (actual_node_count == possible_count) -- loop found nodes
 
 	r.discharge(itemstack, charge, actual_node_count, has_creative_or_give)
 	if has_creative_or_give then
