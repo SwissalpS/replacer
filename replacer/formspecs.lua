@@ -15,18 +15,30 @@ function replacer.get_form_modes_4(player, mode)
 	local major, minor = mode.major, mode.minor
 	local name = player:get_player_name()
 	local has_history_priv = check_player_privs(name, r.history_priv)
-	local form_dimensions = '5.375,4.25'
+	local form_dimensions = r.disable_minor_modes and '5.375,3.5' or '5.375,4.25'
 	local button_height = '1'
 	local button_single_dimensions = '.33,.77;2,'
 	local button_field_dimensions = '2.9,.77;2,'
 	local button_crust_dimensions = '1.44,2.1;2,'
 	local minor_dimensions = '.38,3.42;4.5,.55'
+	local history_label_position, history_dropdown_position
 	if has_history_priv then
-		form_dimensions = '8.375,4.39'
 		button_single_dimensions = '0.33,0.77;2.3,'
 		button_field_dimensions = '3.04,0.77;2.3,'
 		button_crust_dimensions = '5.75,0.77;2.3,'
-		minor_dimensions = '1.88,2.12;4.5,0.60'
+		if r.disable_minor_modes then
+			form_dimensions = '8.375,3.39'
+			history_label_position = '0.33,2.22;'
+			history_dropdown_position = '0.38,2.55'
+		else
+			form_dimensions = '8.375,4.39'
+			button_single_dimensions = '0.33,0.77;2.3,'
+			button_field_dimensions = '3.04,0.77;2.3,'
+			button_crust_dimensions = '5.75,0.77;2.3,'
+			minor_dimensions = '1.88,2.12;4.5,0.60'
+			history_label_position = '0.33,3.22;'
+			history_dropdown_position = '0.38,3.55'
+		end
 	end
 	local tmp_name = '_'
 	local formspec = 'formspec_version[4]'
@@ -72,8 +84,8 @@ function replacer.get_form_modes_4(player, mode)
 
 	if not has_history_priv then return formspec end
 
-	formspec = formspec .. 'label[0.33,3.22;' .. mfe(rb.choose_history)
-		.. ']dropdown[0.38,3.55;7.5,0.6;history;'
+	formspec = formspec .. 'label[' .. history_label_position .. mfe(rb.choose_history)
+		.. ']dropdown[' .. history_dropdown_position .. ';7.5,0.6;history;'
 	local db = r.history.get_player_table(player)
 	for _, data in ipairs(db) do
 		if r.history_include_mode then
