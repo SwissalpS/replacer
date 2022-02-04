@@ -48,7 +48,7 @@ This is true for users without "give" privs and also on servers not running in c
 
 # Modes (Major)
 
-Special+Place on a node or Special+Use anywhere to change the mode.<br>
+Special+Place or Special+Use anywhere to change the mode.<br>
 The first informs you in chat about the mode change while the second opens a formspec.<br>
 Single-mode does not need any charge. The other modes do.<br>
 For a description of the modes with pictures, refer to:

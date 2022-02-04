@@ -687,6 +687,7 @@ function replacer.tool_def_basic()
 		--node_placement_prediction = nil,
 		-- place node(s)
 		on_place = r.on_place,
+		on_secondary_use = r.on_place,
 		-- Replace node(s)
 		on_use = r.on_use
 	}
