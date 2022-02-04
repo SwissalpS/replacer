@@ -1,3 +1,10 @@
+20220204 * SwissalpS added tooltip to protection info as that often clipped.
+         * fixed the alias resolving to not change node_name.
+         * fixed group:food_pumpkin.
+         * dropped datastructure usage for final sorting as it left weird patterns
+           when time-outs were reached. Instead using clasic table.sort with vector.distance
+           comparisons. Also using faster repeat ... until loop.
+         * In field and crust mode only count nodes that were actually changed.
 20220203 * SwissalpS fixed some issues: forced aliases, items that have no drops defined
            Added compat for buckets, canisters and beertap/mugs
            Fixed formspec for MT 5.5.0 (that now actually uses padding)
