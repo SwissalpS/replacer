@@ -8,6 +8,7 @@ local rb = replacer.blabla
 local rp = replacer.patterns
 local rud = replacer.unifieddyes
 local S = replacer.S
+local max_time_us = 1000000 * r.max_time
 -- math
 local max, min, floor = math.max, math.min, math.floor
 local core_check_player_privs = minetest.check_player_privs
@@ -451,9 +452,6 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 	end
 
 	-- set nodes
-	local t_start = us_time()
-	-- TODO
-	local max_time_us = 1000000 * r.max_time
 	-- Turn found_positions into a binary heap
 	r.datastructures.create_binary_heap({
 		input = found_positions,
@@ -486,8 +484,9 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 			r.inform(name, rb.too_many_nodes_detected)
 			break
 		end
+	local us_time_limit = us_time() + max_time_us
 		-- time-out check
-		if us_time() - t_start > max_time_us then
+		if us_time() > us_time_limit then
 			r.inform(name, rb.timed_out)
 			break
 		end
