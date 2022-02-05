@@ -65,7 +65,7 @@ This is an entity "@1"=Das ist eine Entität „@1“
 , dropped @1 minutes ago=, vor @1 Minuten gefallen
 by "@1"=von „@1“
 with order to @1=mit Befehl zu „@1“
-Has @1 different types of items,=Hat %s verschiedene Arten von Gegenständen,
+Has @1 different types of items,=Hat @1 verschiedene Arten von Gegenständen,
 total of @1 items in inventory.=insgesamt @1 Artikel im Inventar.
 This is an object "@1"=Dies ist ein „@1“ Objekt
 at @1=bei @1
@@ -99,3 +99,4 @@ separating=Trennen
 painting=Malen
 fermenting=Fermentieren
 Ferment in barrel.=Gärung im Fass.
+

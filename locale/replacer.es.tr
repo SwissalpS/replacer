@@ -69,7 +69,7 @@ Has @1 different types of items,=Tiene @1 tipos diferentes de artículos,
 total of @1 items in inventory.=total de @1 artículos en inventario.
 This is an object "@1"=Este es un objeto "@1"
 at @1=en @1
-Sorry, this is an unkown something of type "@1". No information available.=Lo sentimos, esto es algo desconocido de tipo "%s". No hay información disponible.
+Sorry, this is an unkown something of type "@1". No information available.=Lo sentimos, esto es algo desconocido de tipo "@1". No hay información disponible.
 Located at @1=Ubicado en @1
 with param2 of @1=con param2 de @1
 and receiving @1 light=y recibiendo @1 luz
@@ -99,3 +99,4 @@ separating=separando
 painting=pintaando
 fermenting=fermentando
 Ferment in barrel.=Fermentación en barrica.
+
