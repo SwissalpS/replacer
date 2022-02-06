@@ -216,10 +216,10 @@ function replacer.inspect_mob(luaob)
 		end end
 	end
 	if 'number' == type(entity_def.damage) and 0 < entity_def.damage then
-		text = text .. S('Can deal @1 damage. ', entity_def.damage)
+		text = text .. S('Can deal @1 damage.', entity_def.damage) .. ' '
 	end
 	if 'number' == type(entity_def.armor) and 0 < entity_def.armor then
-		text = text .. S('Has @1 armour. ', entity_def.armor)
+		text = text .. S('Has @1 armour.', entity_def.armor) .. ' '
 	end
 	if entity_def.arrow then
 		text = text .. rbi.mobs_shoots .. ' '
