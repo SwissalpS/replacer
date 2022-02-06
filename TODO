@@ -11,7 +11,6 @@
 -- inspection tool:
     figure out how to make the itemstring selectable for copy -> do that with new formspec version
     add mixing method
-    add spawning, breading etc. info for mobs -> this sounds feasable for mobs_redo mobs.
     add info for plants telling when they are ripe -> allowing user to click on the ripe
         stage and see possible seed drop -> showing info about planting.
         don't forget wine:blue_agave when doing that
@@ -79,7 +78,7 @@ bridger:corrugated_steelyellow
 
 -- will not implement --
     add helper so when setting replacer to an itemframe that contains something,
-    set to the contents --> but which param values? This isn't a good idea.
+        set to the contents --> but which param values? This isn't a good idea.
     add biofuel hints also general 'fuel' craft types -> if biofuel doesn't expose a list
         this is also doomed (as I don't want to maintain lists)
     add digging method for ores --> maybe not. Doing this dynamically seems overkill to

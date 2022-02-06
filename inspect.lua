@@ -80,85 +80,7 @@ function replacer.inspect(_, player, pointed_thing, right_clicked)
 
 	local player_name = player:get_player_name()
 	if 'object' == pointed_thing.type then
-		local inventory_text = nil
-		local text
-		local object_ref = pointed_thing.ref
-		if not object_ref then
-			text = rbi.broken_object
-		elseif object_ref:is_player() then
-			text = S('This is your fellow player "@1"', object_ref:get_player_name())
-		else
-			local luaob = object_ref:get_luaentity()
-			if luaob and luaob.get_staticdata then
-				text = S('This is an entity "@1"', luaob.name)
-				local sdata = luaob:get_staticdata()
-				if 0 < #sdata then
-					sdata = minetest.deserialize(sdata) or {}
-					if sdata.itemstring then
-						text = text .. ' [' .. sdata.itemstring .. ']'
-						local show_recipe = false
-						if show_recipe then
-							-- the fields part is used here to provide
-							-- additional information about the entity
-							r.inspect_show_crafting(
-											player_name,
-											sdata.itemstring,
-											{ luaob = luaob })
-						end
-					end
-					if sdata.age then
-						text = text .. S(', dropped @1 minutes ago',
-							tostring(floor((sdata.age / 60) + .5)))
-					end
-					if sdata.owner then
-						if true == sdata.protected then
-							if true == sdata.locked then
-								text = text .. ' ' .. rbi.owned_protected_locked
-							else
-								text = text .. ' ' .. rbi.owned_protected
-							end
-						else
-							if true == sdata.locked then
-								text = text .. ' ' .. rbi.owned_locked
-							end
-						end
-						text = text .. ' ' .. S('by "@1"', sdata.owner)
-					end
-					if 'string' == type(sdata.order) then
-						text = text .. ' ' .. S('with order to @1', sdata.order)
-					end
-					if 'table' == type(sdata.inv) then
-						local item_count = 0
-						local type_count = 0
-						for _, v in pairs(sdata.inv) do
-							type_count = type_count + 1
-							item_count = item_count + v
-						end
-						if 0 < type_count then
-							inventory_text = '\n'
-							if 1 < type_count then
-								inventory_text = inventory_text
-									.. S('Has @1 different types of items,',
-										tostring(type_count)) .. ' '
-							end
-							inventory_text = inventory_text
-								.. S('total of @1 items in inventory.',
-									tostring(item_count))
-						end
-					end
-				end
-			elseif luaob then
-				text = S('This is an object "@1"', luaob.name)
-			else
-				text = rbi.this_is_object
-			end
-
-		end
-		if object_ref then
-			text = text .. ' ' .. S('at @1', nice_pos_string(object_ref:getpos()))
-		end
-		if inventory_text then text = text .. inventory_text end
-		chat(player_name, text)
+		chat(player_name, r.inspect_entity(pointed_thing.ref))
 		return nil
 	elseif 'node' ~= pointed_thing.type then
 		chat(player_name, S('Sorry, this is an unkown something of type "@1". '
@@ -209,6 +131,270 @@ function replacer.inspect(_, player, pointed_thing, right_clicked)
 
 	return nil -- no item shall be removed from inventory
 end -- replacer.inspect
+
+
+-- bug work around to prevent using inspection tool as a weapon
+local function is_endangered(luaob)
+	if not luaob._cmi_is_mob then return false end
+	if not minetest.registered_entities[luaob.name] then return false end
+
+	return '' == luaob.owner
+end -- is_endangered
+
+
+-- helper for inspect_entity()/inspect_mob()
+local function is_registered(item_name_or_group)
+	if 'string' ~= type(item_name_or_group) then return false end
+	if item_name_or_group:find('^:?group:') then return true end
+	return minetest.registered_items[item_name_or_group] and true or false
+end
+
+function replacer.inspect_mob(luaob)
+
+	local index, list
+	local entity_def = minetest.registered_entities[luaob.name]
+	local text = '\n'
+	if 'string' == type(entity_def.type) then
+		text = text .. rbi.mobs_of_type .. ' "' .. entity_def.type .. '". '
+	end
+	if entity_def.owner_loyal then
+		text = text .. rbi.mobs_loyal .. ' '
+	end
+--[[ these are too inacurate.
+	if entity_def.attack_players then
+		text = text .. 'Can attack players. '
+	end
+	if entity_def.attack_animals then
+		text = text .. 'Can attack animals. '
+	end
+	if entity_def.attack_monsters then
+		text = text .. 'Can attack monsters. '
+	end
+	if entity_def.attack_npcs then
+		text = text .. 'Can attack NPCs. '
+	end
+--]]
+	if 'table' == type(entity_def.specific_attack) then
+		list, index = {}, #entity_def.specific_attack
+		if 0 < index then repeat
+			if is_registered(entity_def.specific_attack[index]) then
+				list[#list + 1] = entity_def.specific_attack[index]
+			end
+			index = index - 1
+		until 0 == index
+		if 0 < #list then
+			text = text .. rbi.mobs_attacks .. ' '
+				.. table.concat(list, ', ') .. '\n'
+		end end
+	end
+	if 'table' == type(entity_def.follow) then
+		list, index = {}, #entity_def.follow
+		if 0 < index then repeat
+			if is_registered(entity_def.follow[index]) then
+				list[#list + 1] = entity_def.follow[index]
+			end
+			index = index - 1
+		until 0 >= index
+		if 0 < #list then
+			text = text .. rbi.mobs_follows .. ' '
+				.. table.concat(list, ', ') .. '\n'
+		end end
+	end
+	if 'table' == type(entity_def.drops) then
+		list, index = {}, #entity_def.drops
+		if 0 < index then repeat
+			if 'table' == type(entity_def.drops[index])
+				and is_registered(entity_def.drops[index].name)
+			then
+				list[#list + 1] = entity_def.drops[index].name
+			end
+			index = index - 1
+		until 0 >= index
+		if 0 < #list then
+			text = text .. rbi.mobs_drops .. ' '
+				.. table.concat(list, ', ') .. '\n'
+		end end
+	end
+	if 'number' == type(entity_def.damage) and 0 < entity_def.damage then
+		text = text .. S('Can deal @1 damage. ', entity_def.damage)
+	end
+	if 'number' == type(entity_def.armor) and 0 < entity_def.armor then
+		text = text .. S('Has @1 armour. ', entity_def.armor)
+	end
+	if entity_def.arrow then
+		text = text .. rbi.mobs_shoots .. ' '
+	end
+	-- some mobs could still be breedable without these two fields
+	if 'function' == type(entity_def.on_breed) or entity_def.child_texture then
+		text = text .. rbi.mobs_breed .. ' '
+	end
+--[[ some of these might be of interest too
+reach
+immune_to
+light_damage
+light_damage_min
+light_damage_max
+water_damage
+lava_damage
+fire_damage
+air_damage
+suffocation
+stay_near
+hp_min
+hp_max
+jump
+jump_height
+fear_height
+fly
+fly_in
+floats
+glow
+passive
+attack_type
+docile_by_day
+group_attack
+group_helper
+runaway
+runaway_from
+view_range
+--]]
+	-- investigate spawning conditions (nodes and neighours)
+	local found, entry, j
+	local search_string = luaob.name .. ' spawning'
+	index = #minetest.registered_abms
+	if 0 < index then repeat
+		entry = minetest.registered_abms[index]
+		if entry.label and search_string == entry.label then
+			found = true
+			list, j = {}, #entry.nodenames
+			if 0 < j then repeat
+				if is_registered(entry.nodenames[j]) then
+					list[#list + 1] = entry.nodenames[j]
+				end
+				j = j - 1
+			until 0 == j
+			if 0 < #list then
+				text = text .. '\n' .. rbi.mobs_spawns_on .. ' ' .. table.concat(list, ', ')
+			end end
+			list, j = {}, #entry.neighbors
+			if 0 < j then repeat
+				if is_registered(entry.neighbors[j]) then
+					list[#list + 1] = entry.neighbors[j]
+				end
+				j = j - 1
+			until 0 == j
+			if 0 < #list then
+				text = text .. ' ' .. rbi.mobs_spawns_neighbours .. ' '
+					.. table.concat(list, ', ')
+			end end
+		end
+		index = index - 1
+	until (0 == index) or found end
+	if not found then
+		search_string = luaob.name .. '_spawning'
+		index = #minetest.registered_lbms
+		if 0 < index then repeat
+			entry = minetest.registered_lbms[index]
+			if entry.name and search_string == entry.name then
+				found = true
+				list, j = {}, #entry.nodenames
+				if 0 < j then repeat
+					if is_registered(entry.nodenames[j]) then
+						list[#list + 1] = entry.nodenames[j]
+					end
+					j = j - 1
+				until 0 == j
+				if 0 < #list then
+					text = text .. '\n' .. rbi.mobs_spawns_on .. ' ' .. table.concat(list, ', ')
+				end end
+			end
+			index = index - 1
+		until (0 == index) or found end
+	end
+	return text
+end -- inspect_mob
+
+
+function replacer.inspect_entity(object_ref)
+	if not object_ref then return rbi.broken_object end
+
+	local pos_string = S('at @1', nice_pos_string(object_ref:getpos()))
+	if object_ref:is_player() then
+		return S('This is your fellow player "@1"', object_ref:get_player_name())
+			.. ' ' .. pos_string
+	end
+
+	local luaob = object_ref:get_luaentity()
+	if not luaob then return rbi.this_is_object .. ' ' .. pos_string end
+
+	if (not luaob.get_staticdata) and (not minetest.registered_entities[luaob.name]) then
+		return S('This is an object "@1"', luaob.name) .. ' ' .. pos_string
+	end
+
+	local text = (luaob._cmi_is_mob and rbi.mobs_disclaimer .. '\n' or '')
+		.. S('This is an entity "@1"', luaob.name)
+	if luaob.get_staticdata and not is_endangered(luaob) then
+		text = text .. r.inspect_staticdata(luaob:get_staticdata())
+	end
+	if not minetest.registered_entities[luaob.name] then return text end
+
+	if luaob._cmi_is_mob then return text .. r.inspect_mob(luaob) end
+
+	return text
+end -- inspect_entity
+
+
+function replacer.inspect_staticdata(staticdata)
+	if (not staticdata) or (0 == #staticdata) then return '' end
+
+	local text = ''
+	local sdata = minetest.deserialize(staticdata) or {}
+	if sdata.itemstring then
+		text = text .. ' [' .. sdata.itemstring .. ']'
+	end
+	if sdata.age then
+		text = text .. S(', dropped @1 minutes ago',
+			tostring(floor((sdata.age / 60) + .5)))
+	end
+	if sdata.owner then
+		if true == sdata.protected then
+			if true == sdata.locked then
+				text = text .. ' ' .. rbi.owned_protected_locked
+			else
+				text = text .. ' ' .. rbi.owned_protected
+			end
+		else
+			if true == sdata.locked then
+				text = text .. ' ' .. rbi.owned_locked
+			end
+		end
+		text = text .. ' ' .. S('by "@1"', sdata.owner)
+	end
+	if 'table' == type(sdata.follow) and 0 < #sdata.follow then
+		text = text .. ' is tamable'
+	end
+	if 'string' == type(sdata.order) then
+		text = text .. ' ' .. S('with order to @1', sdata.order)
+	end
+	if 'table' == type(sdata.inv) then
+		local item_count = 0
+		local type_count = 0
+		for _, v in pairs(sdata.inv) do
+			type_count = type_count + 1
+			item_count = item_count + v
+		end
+		if 0 < type_count then
+			text = text .. '\n'
+			if 1 < type_count then
+				text = text .. S('Has @1 different types of items,',
+					tostring(type_count)) .. ' '
+			end
+			text = text .. S('total of @1 items in inventory.',
+				tostring(item_count))
+		end
+	end
+	return text
+end -- inspect_staticdata
 
 
 function replacer.image_button_link(stack_string)
