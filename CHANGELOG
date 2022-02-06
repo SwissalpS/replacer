@@ -1,3 +1,6 @@
+20220205 * SwissalpS tweaked formspec of replacer to adjust when minor modes are disabled.
+         * Enabled changing modes with place without pointing at a node.
+         * Added more info on mobs.
 20220204 * SwissalpS added tooltip to protection info as that often clipped.
          * fixed the alias resolving to not change node_name.
          * fixed group:food_pumpkin.
