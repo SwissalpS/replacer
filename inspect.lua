@@ -389,10 +389,11 @@ function replacer.inspect_player(object_ref, player)
 		end
 	end
 	if wearing and 0 < #wearing then
-		parts = {}
-		local index = #wearing
+		local index, parts = #wearing, {}
 		repeat
-			if '' ~= wearing[index] then insert(parts, wearing[index]) end
+			if '' ~= wearing[index] then
+				insert(parts, wearing[index])
+			end
 			index = index - 1
 		until 0 == index
 		if 0 < #parts then
