@@ -399,6 +399,7 @@ function replacer.inspect_player(object_ref, player)
 			insert(lines, rbi.player_is_wearing .. ' ' .. concat(parts, ', '))
 		end
 	end
+
 	return concat(lines, '\n')
 end -- inspect_player
 
