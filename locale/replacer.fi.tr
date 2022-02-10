@@ -28,6 +28,8 @@ Time-limit reached.=Aikaraja saavutettu.
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Vaihtaa verbosity.@nchat: Kun päällä, viestit lähetetään chat.@naudio: Kun pois päältä, korvaaja on äänetön.
 
 Minor modes are disabled on this server.=Pienet tilat on poistettu käytöstä tällä palvelimella.
+<no positional information>=<ei sijaintitietoja>
+days=päivää
 
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Tarkastustyökalu@nTarkista kohdesolmu tai entiteetti.@nTarkista viereinen solmu.
 
@@ -65,6 +67,17 @@ Can shoot misiles.=Osaa ampua ohjuksia.
 Can breed.=Voi lisääntyä.
 Spawns on:=Syntyy:
 with neighours:=naapureiden kanssa:
+Placed:=Sijoitettu:
+Digs:=Kaivaukset:
+Inflicted:=Aiheutettu:
+Punched:=Lävistetty:
+XP:=XP:
+Deaths:=Kuolemat:
+Played:=Pelasi:
+Is currently on a mission.=On tällä hetkellä tehtävässä.
+You don't have any common channels.=Sinulla ei ole yhteisiä kanavia.
+You are both on these channels:=Olette molemmat näillä kanavilla:
+Is wearing:=On yllään:
 fermenting/pickling=käyminen/peittaus
 Store near group:wood, light < 12.=Varasto lähellä group:wood,@nkevyt < 12.
 Replacing nodes of type "@1" is not allowed on this server. Replacement failed.=Tyypin "@1" solmujen korvaaminen ei ole sallittua tässä palvelimessa. Vaihto epäonnistui.
@@ -73,8 +86,8 @@ printing=painatus
 Sorry, this is an unkown something of type "@1". No information available.=Anteeksi, tämä on tuntematon asia, jonka tyyppi on "@1". Tietoja ei ole saatavilla.
 Can deal @1 damage.=Voi tehdä @1 vahinkoa.
 Has @1 armour.=Siinä on @1-panssari.
-at @1=osoitteessa @1
 This is your fellow player "@1"=Tämä on pelikaverisi "@1"
+at @1=osoitteessa @1
 This is an object "@1"=Tämä on objekti "@1"
 This is an entity "@1"=Tämä on entiteetti "@1"
 , dropped @1 minutes ago=, pudonnut @1 minuuttia sitten

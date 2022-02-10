@@ -28,6 +28,8 @@ Time-limit reached.=Tempo limite raggiunto.
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Attiva/disattiva verbosità.@nchat: quando è attivo, i messaggi vengono inviati alla chat.@naudio: quando è disattivato, il sostituto è silenzioso.
 
 Minor modes are disabled on this server.=Le modalità minori sono disabilitate su questo server.
+<no positional information>=<nessuna informazione sulla posizione>
+days=giorni
 
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Strumento di ispezione@nUtilizzare per ispezionare il nodo o l'entità di destinazione.@nPosizionare per ispezionare il nodo adiacente.
 
@@ -65,6 +67,17 @@ Can shoot misiles.=Può sparare missili.
 Can breed.=Può riprodursi.
 Spawns on:=Genera su:
 with neighours:=con i vicini:
+Placed:=Posizionato:
+Digs:=Scavi:
+Inflicted:=Inflitto:
+Punched:=Punzonato:
+XP:=XP:
+Deaths:=Deceduti:
+Played:=Giocato:
+Is currently on a mission.=Attualmente è in missione.
+You don't have any common channels.=Non hai canali comuni.
+You are both on these channels:=Siete entrambi su questi canali:
+Is wearing:=Indossa:
 fermenting/pickling=fermentazione/decapaggio
 Store near group:wood, light < 12.=Negozio vicino al gruppo group:wood,@nluce < 12.
 Replacing nodes of type "@1" is not allowed on this server. Replacement failed.=La sostituzione dei nodi di tipo "@1" non è consentita su questo server. Sostituzione non riuscita.
@@ -73,8 +86,8 @@ printing=stampa
 Sorry, this is an unkown something of type "@1". No information available.=Siamo spiacenti, questo è un qualcosa sconosciuto di tipo "@1". Nessuna informazione disponibile.
 Can deal @1 damage.=Può infliggere @1 danno.
 Has @1 armour.=Ha @1 armatura.
-at @1=alle @1
 This is your fellow player "@1"=Questo è il tuo compagno di gioco "@1"
+at @1=alle @1
 This is an object "@1"=Questo è un oggetto "@1"
 This is an entity "@1"=Questa è un'entità "@1"
 , dropped @1 minutes ago=, caduto @1 minuti fa

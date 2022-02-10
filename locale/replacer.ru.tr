@@ -28,6 +28,8 @@ Time-limit reached.=Достигнут лимит времени.
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Включает многословие. @nchat: когда включено, сообщения отправляются в чат. @naudio: когда выключено, заменитель молчит.
 
 Minor modes are disabled on this server.=Второстепенные режимы отключены на этом сервере.
+<no positional information>=<нет информации о местоположении>
+days=дни
 
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=Inspection Tool@nИспользуйте для проверки целевого узла или объекта. @nPlace для проверки соседнего узла.
 
@@ -65,6 +67,17 @@ Can shoot misiles.=Может стрелять ракетами.
 Can breed.=Может размножаться.
 Spawns on:=Появляется на:
 with neighours:=с соседями:
+Placed:=Размещено:
+Digs:=Раскопки:
+Inflicted:=Нанесено:
+Punched:=Перфорировано:
+XP:=Опыт:
+Deaths:=Летальные исходы:
+Played:=Играл:
+Is currently on a mission.=В настоящее время находится в командировке.
+You don't have any common channels.=У вас нет общих каналов.
+You are both on these channels:=Вы оба на этих каналах:
+Is wearing:=Носит:
 fermenting/pickling=ферментация/маринование
 Store near group:wood, light < 12.=Хранить рядом с группой дерево@n(group:wood), свет < 12.
 Replacing nodes of type "@1" is not allowed on this server. Replacement failed.=Замена узлов типа "@1" на этом сервере запрещена. Замена не удалась.
@@ -73,8 +86,8 @@ printing=печать
 Sorry, this is an unkown something of type "@1". No information available.=Извините, это неизвестное что-то типа "@1". Информация отсутствует.
 Can deal @1 damage.=Может нанести @1 урона.
 Has @1 armour.=Имеет @1 броню.
-at @1=в @1
 This is your fellow player "@1"=Это ваш товарищ по игре "@1"
+at @1=в @1
 This is an object "@1"=Это объект "@1"
 This is an entity "@1"=Это сущность "@1"
 , dropped @1 minutes ago=, выпало @1 минут назад

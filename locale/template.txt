@@ -28,6 +28,8 @@ Time-limit reached.=
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=
 
 Minor modes are disabled on this server.=
+<no positional information>=
+days=
 
 Inspection Tool@nUse to inspect target node or entity.@nPlace to inspect the adjacent node.=
 
@@ -65,6 +67,17 @@ Can shoot misiles.=
 Can breed.=
 Spawns on:=
 with neighours:=
+Placed:=
+Digs:=
+Inflicted:=
+Punched:=
+XP:=
+Deaths:=
+Played:=
+Is currently on a mission.=
+You don't have any common channels.=
+You are both on these channels:=
+Is wearing:=
 fermenting/pickling=
 Store near group:wood, light < 12.=
 Replacing nodes of type "@1" is not allowed on this server. Replacement failed.=
@@ -73,8 +86,8 @@ printing=
 Sorry, this is an unkown something of type "@1". No information available.=
 Can deal @1 damage.=
 Has @1 armour.=
-at @1=
 This is your fellow player "@1"=
+at @1=
 This is an object "@1"=
 This is an entity "@1"=
 , dropped @1 minutes ago=
