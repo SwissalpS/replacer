@@ -22,6 +22,27 @@ if r.has_technic_mod then
 end
 
 
+function replacer.common_list_items(list1, list2)
+	if 'table' ~= type(list1) or 'table' ~= type(list2) then return {} end
+	if 0 == #list1 or 0 == #list2 then return {} end
+
+	local common, index1, total2, j = {}, #list1, #list2
+	repeat
+		j = total2
+		repeat
+			if list1[index] == list2[j] then
+				insert(common, list2[j])
+				break
+			end
+			j = j - 1
+		until 0 == j
+		index = index - 1
+	until 0 == index
+
+	return common
+end -- common_list_items
+
+
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 
@@ -35,6 +56,33 @@ function replacer.inform(name, message)
 
 	chat_send_player(name, message)
 end -- inform
+
+
+function replacer.nice_duration(seconds)
+	if 'number' ~= type(seconds) then return '' end
+
+	seconds = absolute(seconds)
+	local days = floor(seconds / 86400)
+	seconds = seconds % 86400
+	local text = (0 == days and '') or (tostring(days) .. ' ' .. rb.days .. ' ')
+	return text .. os.date('! %H:%M:%S', seconds)
+end -- nice_duration
+
+
+function replacer.nice_number(number, seperator)
+	if 'number' ~= type(number) then return '' end
+
+	local sign = 0 > number and '-' or ''
+	-- TODO: use default depending on locale, won't work as not all 'de' use same
+	-- and not all 'en' use same, hindi has it's own format: 12'34'567
+	seperator = seperator or "'"
+	local reversed = tostring(absolute(number)):reverse()
+	local list = {}
+	for s in gmatch(reversed, '...') do insert(list, s) end
+	local rest = #reversed % 3
+	if 0 ~= rest then insert(list, reversed:sub(-rest, -1)) end
+	return sign .. concat(list, seperator):reverse()
+end -- nice_number
 
 
 function replacer.nice_pos_string(pos)

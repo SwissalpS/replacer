@@ -72,6 +72,8 @@ rb.log_reg_set_callback_fail = '[replacer] register_set_enabler called without p
 rb.formspec_error = '[replacer] formspec error, user "%s" attempting to change history. Fields: %s'
 rb.formspec_hacker = '[replacer] formspec forge? By user "%s" Fields: %s'
 rb.minor_modes_disabled = S('Minor modes are disabled on this server.')
+rb.no_pos = S('<no positional information>')
+rb.days = S('days')
 
 ----------------- replacer:inspect -----------------
 rbi.description = S('Inspection Tool\nUse to inspect target node or entity.\n'
@@ -113,4 +115,15 @@ rbi.mobs_shoots = S('Can shoot misiles.')
 rbi.mobs_breed = S('Can breed.')
 rbi.mobs_spawns_on = S('Spawns on:')
 rbi.mobs_spawns_neighbours = S('with neighours:')
+rbi.player_placed = S('Placed:')
+rbi.player_digs = S('Digs:')
+rbi.player_inflicted = S('Inflicted:')
+rbi.player_punches = S('Punched:')
+rbi.player_xp = S('XP:')
+rbi.player_deaths = S('Deaths:')
+rbi.player_duration = S('Played:')
+rbi.player_has_active_mission = S('Is currently on a mission.')
+rbi.player_no_common_channels = S("You don't have any common channels.")
+rbi.player_common_channels = S('You are both on these channels:')
+rbi.player_is_wearing = S('Is wearing:')
 

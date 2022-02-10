@@ -331,13 +331,84 @@ view_range
 end -- inspect_mob
 
 
-function replacer.inspect_entity(object_ref)
+function replacer.inspect_player(object_ref, player)
+	local lines = { S('This is your fellow player "@1"', object_ref:get_player_name()) }
+	local meta = object_ref:get_meta()
+	local xp_hud_on = 'off' ~= meta:get_string('hud_state')
+	local placed = xp_hud_on and meta:get_int('placed_nodes')
+	local digs = xp_hud_on and meta:get_int('digged_nodes')
+	local punches = xp_hud_on and meta:get_int('punch_count')
+	local inflicted = xp_hud_on and meta:get_int('inflicted_damage')
+	local xp = xp_hud_on and meta:get_int('xp')
+	local play_seconds = meta:get_int('played_time')
+	local deaths = meta:get_int('died')
+	-- TODO: not accurate if either player has never joined any channel, then #main is not yet in list
+	local channels = nil --parse_json(meta:get_string('beerchat:channels'))
+	local has_active_mission = deserialize(meta:get_string('currentmission')) and true or false
+	local wearing = deserialize(meta:get_string('3d_armor_inventory'))
+	-- other possible interesting points:
+	--	["stamina:poisoned"] = "no",
+	--	["stamina:exhaustion"] = "0"
+
+	-- short_data_points
+	local shorts = {}
+	if placed and 0 < placed then
+		insert(shorts, rbi.player_placed .. ' ' .. r.nice_number(placed))
+	end
+	if digs and 0 < digs then
+		insert(shorts, rbi.player_digs .. ' ' .. r.nice_number(digs))
+	end
+	if punches and 0 < punches then
+		insert(shorts, rbi.player_punches .. ' ' .. r.nice_number(punches))
+	end
+	if inflicted and 0 < inflicted then
+		insert(shorts, rbi.player_inflicted .. ' ' .. r.nice_number(inflicted))
+	end
+	if xp and 0 < xp then
+		insert(shorts, rbi.player_xp .. ' ' .. r.nice_number(xp))
+	end
+	if 0 < deaths then
+		insert(shorts, rbi.player_deaths .. ' ' .. r.nice_number(deaths))
+	end
+	if 0 < #shorts then
+		insert(lines, concat(shorts, '\t'))
+	end
+	if 0 < play_seconds then
+		insert(lines, rbi.player_duration .. ' ' .. r.nice_duration(play_seconds))
+	end
+	if has_active_mission then
+		insert(lines, rbi.player_has_active_mission)
+	end
+	if channels then
+		local common = r.common_list_items(channels,
+			parse_json(player:get_meta():get_string('beerchat:channels')))
+		if 0 == #common then
+			insert(lines, rbi.player_no_common_channels)
+		else
+			insert(lines, rbi.player_common_channels .. ' ' .. concat(common, ', '))
+		end
+	end
+	if wearing and 0 < #wearing then
+		parts = {}
+		local index = #wearing
+		repeat
+			if '' ~= wearing[index] then insert(parts, wearing[index]) end
+			index = index - 1
+		until 0 == index
+		if 0 < #parts then
+			insert(lines, rbi.player_is_wearing .. ' ' .. concat(parts, ', '))
+		end
+	end
+	return concat(lines, '\n')
+end -- inspect_player
+
+
+function replacer.inspect_entity(object_ref, player)
 	if not object_ref then return rbi.broken_object end
 
 	local pos_string = S('at @1', nice_pos_string(object_ref:getpos()))
 	if object_ref:is_player() then
-		return S('This is your fellow player "@1"', object_ref:get_player_name())
-			.. ' ' .. pos_string
+		return r.inspect_player(object_ref, player) --.. ' ' .. pos_string
 	end
 
 	local luaob = object_ref:get_luaentity()
