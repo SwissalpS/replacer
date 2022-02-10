@@ -13,8 +13,27 @@ local nice_pos_string = replacer.nice_pos_string
 local S = replacer.S
 local floor = math.floor
 local max, min = math.max, math.min
+local concat = table.concat
+local insert = table.insert
 local chat = minetest.chat_send_player
 local mfe = minetest.formspec_escape
+local core_log = minetest.log
+local deserialize = minetest.deserialize
+local parse_json = minetest.parse_json
+local get_node_or_nil = minetest.get_node_or_nil
+local get_node_light = minetest.get_node_light
+local get_pointed_thing_position = minetest.get_pointed_thing_position
+local get_all_craft_recipes = minetest.get_all_craft_recipes
+local is_protected = minetest.is_protected
+local show_formspec = minetest.show_formspec
+local registered_abms = minetest.registered_abms
+local registered_lbms = minetest.registered_lbms
+local registered_aliases = minetest.registered_aliases
+local registered_tools = minetest.registered_tools
+local registered_nodes = minetest.registered_nodes
+local registered_items = minetest.registered_items
+local registered_entities = minetest.registered_entities
+local registered_craftitems = minetest.registered_craftitems
 -- luacheck: push ignore unused pd
 local pd = r.print_dump
 -- luacheck: pop
@@ -35,15 +54,15 @@ function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
 	func_formspec)
 	if ('string' ~= type(uid) or '' == uid)
 		or ('string' ~= type(machine_itemstring)
-			or not minetest.registered_items[machine_itemstring])
+			or not registered_items[machine_itemstring])
 		or 'function' ~= type(func_inspect)
 	then
-		minetest.log('warning', rbi.log_reg_craft_method_wrong_arguments)
+		core_log('warning', rbi.log_reg_craft_method_wrong_arguments)
 		return
 	end
 
 	if r.recipe_adders[uid] then
-		minetest.log('warning', rbi.log_reg_craft_method_overriding_method .. uid)
+		core_log('warning', rbi.log_reg_craft_method_overriding_method .. uid)
 	end
 
 	r.recipe_adders[uid] = {
@@ -51,7 +70,7 @@ function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
 		add_recipe = func_inspect,
 		formspec = ('function' == type(func_formspec) and func_formspec) or nil
 	}
-	minetest.log('info', rbi.log_reg_craft_method_added:format(uid, machine_itemstring))
+	core_log('info', rbi.log_reg_craft_method_added:format(uid, machine_itemstring))
 end -- register_craft_method
 
 
@@ -64,11 +83,11 @@ minetest.register_tool('replacer:inspect', {
 	liquids_pointable = true, -- it is ok to request information about liquids
 
 	on_use = function(itemstack, player, pointed_thing)
-		return replacer.inspect(itemstack, player, pointed_thing)
+		return r.inspect(itemstack, player, pointed_thing)
 	end,
 
 	on_place = function(itemstack, player, pointed_thing)
-		return replacer.inspect(itemstack, player, pointed_thing, true)
+		return r.inspect(itemstack, player, pointed_thing, true)
 	end,
 })
 
@@ -80,7 +99,7 @@ function replacer.inspect(_, player, pointed_thing, right_clicked)
 
 	local player_name = player:get_player_name()
 	if 'object' == pointed_thing.type then
-		chat(player_name, r.inspect_entity(pointed_thing.ref))
+		chat(player_name, r.inspect_entity(pointed_thing.ref, player))
 		return nil
 	elseif 'node' ~= pointed_thing.type then
 		chat(player_name, S('Sorry, this is an unkown something of type "@1". '
@@ -88,8 +107,8 @@ function replacer.inspect(_, player, pointed_thing, right_clicked)
 		return nil
 	end
 
-	local pos  = minetest.get_pointed_thing_position(pointed_thing, right_clicked)
-	local node = minetest.get_node_or_nil(pos)
+	local pos  = get_pointed_thing_position(pointed_thing, right_clicked)
+	local node = get_node_or_nil(pos)
 	if not node then
 		chat(player_name, rb.wait_for_load)
 		return nil
@@ -105,21 +124,21 @@ function replacer.inspect(_, player, pointed_thing, right_clicked)
 			ui.current_craft_direction[player_name] = 'recipe'-- keys.x and 'usage' or 'recipe'
 			ui.current_searchbox[player_name] = node.name
 			ui.apply_filter(player, node.name, 'recipe')--'usage' --nochange')
-			minetest.show_formspec(player_name, '', ui.get_formspec(player, 'craftguide'))
+			show_formspec(player_name, '', ui.get_formspec(player, 'craftguide'))
 			return
 		end
 	end
 
---pd(node, minetest.registered_nodes[node.name].mod_origin)
+--pd(node, registered_nodes[node.name].mod_origin)
 	local protected_info = ''
-	if minetest.is_protected(pos, player_name) then
+	if is_protected(pos, player_name) then
 		protected_info = rbi.is_protected
-	elseif minetest.is_protected(pos, '_THIS_NAME_DOES_NOT_EXIST_') then
+	elseif is_protected(pos, '_THIS_NAME_DOES_NOT_EXIST_') then
 		protected_info = rbi.you_can_dig
 	end
 
 		-- get light of the node at the current time
-	local light = minetest.get_node_light(pos, nil)
+	local light = get_node_light(pos, nil)
 	-- the fields part is used here to provide additional
 	-- information about the node
 	r.inspect_show_crafting(player_name, node.name, {
@@ -136,7 +155,7 @@ end -- replacer.inspect
 -- bug work around to prevent using inspection tool as a weapon
 local function is_endangered(luaob)
 	if not luaob._cmi_is_mob then return false end
-	if not minetest.registered_entities[luaob.name] then return false end
+	if not registered_entities[luaob.name] then return false end
 
 	return '' == luaob.owner
 end -- is_endangered
@@ -146,13 +165,13 @@ end -- is_endangered
 local function is_registered(item_name_or_group)
 	if 'string' ~= type(item_name_or_group) then return false end
 	if item_name_or_group:find('^:?group:') then return true end
-	return minetest.registered_items[item_name_or_group] and true or false
+	return registered_items[item_name_or_group] and true or false
 end
 
 function replacer.inspect_mob(luaob)
 
 	local index, list
-	local entity_def = minetest.registered_entities[luaob.name]
+	local entity_def = registered_entities[luaob.name]
 	local text = '\n'
 	if 'string' == type(entity_def.type) then
 		text = text .. rbi.mobs_of_type .. ' "' .. entity_def.type .. '". '
@@ -183,8 +202,7 @@ function replacer.inspect_mob(luaob)
 			index = index - 1
 		until 0 == index
 		if 0 < #list then
-			text = text .. rbi.mobs_attacks .. ' '
-				.. table.concat(list, ', ') .. '\n'
+			text = text .. rbi.mobs_attacks .. ' ' .. concat(list, ', ') .. '\n'
 		end end
 	end
 	if 'table' == type(entity_def.follow) then
@@ -196,8 +214,7 @@ function replacer.inspect_mob(luaob)
 			index = index - 1
 		until 0 >= index
 		if 0 < #list then
-			text = text .. rbi.mobs_follows .. ' '
-				.. table.concat(list, ', ') .. '\n'
+			text = text .. rbi.mobs_follows .. ' ' .. concat(list, ', ') .. '\n'
 		end end
 	end
 	if 'table' == type(entity_def.drops) then
@@ -211,8 +228,7 @@ function replacer.inspect_mob(luaob)
 			index = index - 1
 		until 0 >= index
 		if 0 < #list then
-			text = text .. rbi.mobs_drops .. ' '
-				.. table.concat(list, ', ') .. '\n'
+			text = text .. rbi.mobs_drops .. ' ' .. concat(list, ', ') .. '\n'
 		end end
 	end
 	if 'number' == type(entity_def.damage) and 0 < entity_def.damage then
@@ -261,9 +277,9 @@ view_range
 	-- investigate spawning conditions (nodes and neighours)
 	local found, entry, j
 	local search_string = luaob.name .. ' spawning'
-	index = #minetest.registered_abms
+	index = #registered_abms
 	if 0 < index then repeat
-		entry = minetest.registered_abms[index]
+		entry = registered_abms[index]
 		if entry.label and search_string == entry.label then
 			found = true
 			list, j = {}, #entry.nodenames
@@ -274,7 +290,7 @@ view_range
 				j = j - 1
 			until 0 == j
 			if 0 < #list then
-				text = text .. '\n' .. rbi.mobs_spawns_on .. ' ' .. table.concat(list, ', ')
+				text = text .. '\n' .. rbi.mobs_spawns_on .. ' ' .. concat(list, ', ')
 			end end
 			list, j = {}, #entry.neighbors
 			if 0 < j then repeat
@@ -285,16 +301,16 @@ view_range
 			until 0 == j
 			if 0 < #list then
 				text = text .. ' ' .. rbi.mobs_spawns_neighbours .. ' '
-					.. table.concat(list, ', ')
+					.. concat(list, ', ')
 			end end
 		end
 		index = index - 1
 	until (0 == index) or found end
 	if not found then
 		search_string = luaob.name .. '_spawning'
-		index = #minetest.registered_lbms
+		index = #registered_lbms
 		if 0 < index then repeat
-			entry = minetest.registered_lbms[index]
+			entry = registered_lbms[index]
 			if entry.name and search_string == entry.name then
 				found = true
 				list, j = {}, #entry.nodenames
@@ -305,7 +321,7 @@ view_range
 					j = j - 1
 				until 0 == j
 				if 0 < #list then
-					text = text .. '\n' .. rbi.mobs_spawns_on .. ' ' .. table.concat(list, ', ')
+					text = text .. '\n' .. rbi.mobs_spawns_on .. ' ' .. concat(list, ', ')
 				end end
 			end
 			index = index - 1
@@ -327,7 +343,7 @@ function replacer.inspect_entity(object_ref)
 	local luaob = object_ref:get_luaentity()
 	if not luaob then return rbi.this_is_object .. ' ' .. pos_string end
 
-	if (not luaob.get_staticdata) and (not minetest.registered_entities[luaob.name]) then
+	if (not luaob.get_staticdata) and (not registered_entities[luaob.name]) then
 		return S('This is an object "@1"', luaob.name) .. ' ' .. pos_string
 	end
 
@@ -336,7 +352,7 @@ function replacer.inspect_entity(object_ref)
 	if luaob.get_staticdata and not is_endangered(luaob) then
 		text = text .. r.inspect_staticdata(luaob:get_staticdata())
 	end
-	if not minetest.registered_entities[luaob.name] then return text end
+	if not registered_entities[luaob.name] then return text end
 
 	if luaob._cmi_is_mob then return text .. r.inspect_mob(luaob) end
 
@@ -348,7 +364,7 @@ function replacer.inspect_staticdata(staticdata)
 	if (not staticdata) or (0 == #staticdata) then return '' end
 
 	local text = ''
-	local sdata = minetest.deserialize(staticdata) or {}
+	local sdata = deserialize(staticdata) or {}
 	if sdata.itemstring then
 		text = text .. ' [' .. sdata.itemstring .. ']'
 	end
@@ -432,10 +448,10 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	if fields then
 		for k, v in pairs(fields) do
 			if v and '' == v
-				and minetest.registered_items[k]
-				or minetest.registered_nodes[k]
-				or minetest.registered_craftitems[k]
-				or minetest.registered_tools[k]
+				and registered_items[k]
+				or registered_nodes[k]
+				or registered_craftitems[k]
+				or registered_tools[k]
 			then
 				node_name = k
 				recipe_nr = 1
@@ -444,16 +460,16 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	-- fetch recipes from core
-	local recipes = minetest.get_all_craft_recipes(node_name) or {}
+	local recipes = get_all_craft_recipes(node_name) or {}
 	if 0 == #recipes then
 		-- some items have aliases that are set with force, and thus
 		-- don't show up in core.get_all_craft_recipes()
 		-- e.g. https://github.com/mt-mods/basic_materials/blob/d9e06980d33ec02c2321269f47ab9ec32b36551f/aliases.lua#L32
 		-- https://github.com/mt-mods/basic_materials/blob/d9e06980d33ec02c2321269f47ab9ec32b36551f/crafts.lua#L256
 		-- we try to reverse lookup here
-		for k, v in pairs(minetest.registered_aliases) do
+		for k, v in pairs(registered_aliases) do
 			if v == node_name then
-				recipes = minetest.get_all_craft_recipes(k)
+				recipes = get_all_craft_recipes(k)
 				if recipes then break end
 			end
 		end
@@ -484,23 +500,23 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	-- fetch description
 	-- when clicking unknown nodes
 	local description = ' ' .. rbi.no_description .. ' '
-	if minetest.registered_nodes[node_name] then
-		if minetest.registered_nodes[node_name].description
-			and '' ~= minetest.registered_nodes[node_name].description
+	if registered_nodes[node_name] then
+		if registered_nodes[node_name].description
+			and '' ~= registered_nodes[node_name].description
 		then
-			description = minetest.registered_nodes[node_name].description
-		elseif minetest.registered_nodes[node_name].name then
-			description = minetest.registered_nodes[node_name].name
+			description = registered_nodes[node_name].description
+		elseif registered_nodes[node_name].name then
+			description = registered_nodes[node_name].name
 		else
 			description = ' ' .. rbi.no_node_description .. ' '
 		end
-	elseif minetest.registered_items[node_name] then
-		if minetest.registered_items[node_name].description
-			and '' ~= minetest.registered_items[node_name].description
+	elseif registered_items[node_name] then
+		if registered_items[node_name].description
+			and '' ~= registered_items[node_name].description
 		then
-			description = minetest.registered_items[node_name].description
-		elseif minetest.registered_items[node_name].name then
-			description = minetest.registered_items[node_name].name
+			description = registered_items[node_name].description
+		elseif registered_items[node_name].name then
+			description = registered_items[node_name].name
 		else
 			description = ' ' .. rbi.no_item_description .. ' '
 		end
@@ -652,7 +668,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		formspec = formspec
 			.. 'item_image_button[5,2;1.0,1.0;' .. recipe.output .. ';normal;]'
 	end
-	minetest.show_formspec(player_name, 'replacer:crafting', formspec)
+	show_formspec(player_name, 'replacer:crafting', formspec)
 end -- inspect_show_crafting
 
 

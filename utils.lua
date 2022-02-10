@@ -3,9 +3,15 @@ local rb = replacer.blabla
 local chat_send_player = minetest.chat_send_player
 local get_player_by_name = minetest.get_player_by_name
 local get_node_drops = minetest.get_node_drops
-local log = minetest.log
+local core_log = minetest.log
 local floor = math.floor
+local absolute = math.abs
+local concat = table.concat
+local insert = table.insert
+local gmatch = string.gmatch
+local registered_nodes = minetest.registered_nodes
 local pos_to_string = minetest.pos_to_string
+local sound_play = minetest.sound_play
 local sound_fail = 'default_break_glass'
 local sound_success = 'default_item_smoke'
 local sound_gain = 0.5
@@ -19,7 +25,7 @@ end
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 
-	log('info', rb.log_messages:format(name, message))
+	core_log('info', rb.log_messages:format(name, message))
 	local player = get_player_by_name(name)
 	if not player then return end
 
@@ -49,7 +55,7 @@ function replacer.play_sound(player_name, fail)
 
 	if 0 < meta:get_int('replacer_muteS') then return end
 
-	minetest.sound_play(fail and sound_fail or sound_success, {
+	sound_play(fail and sound_fail or sound_success, {
 		to_player = player_name,
 		max_hear_distance = 2,
 		gain = sound_gain }, true)
@@ -57,10 +63,10 @@ end -- play_sound
 
 
 function replacer.possible_node_drops(node_name, return_names_only)
-	if not minetest.registered_nodes[node_name] then return {} end
+	if not registered_nodes[node_name] then return {} end
 
 	local droplist = {}
-	local drop = minetest.registered_nodes[node_name].drop or ''
+	local drop = registered_nodes[node_name].drop or ''
 	if 'string' == type(drop) then
 		if '' == drop then
 			-- this returns value with randomness applied :/
@@ -70,7 +76,7 @@ function replacer.possible_node_drops(node_name, return_names_only)
 			if not return_names_only then return drop end
 
 			for _, item in ipairs(drop) do
-				table.insert(droplist, item:match('^([^ ]+)'))
+				insert(droplist, item:match('^([^ ]+)'))
 			end
 			return droplist
 		end
@@ -93,7 +99,7 @@ function replacer.possible_node_drops(node_name, return_names_only)
 			end
 			if not checks[item] then
 				checks[item] = 1
-				table.insert(droplist, item)
+				insert(droplist, item)
 			end
 		end
 	end
@@ -102,7 +108,7 @@ end -- possible_node_drops
 
 
 function replacer.print_dump(...)
-	if not replacer.dev_mode then return end
+	if not r.dev_mode then return end
 
 	for _, m in ipairs({ ... }) do
 		print(dump(m))
