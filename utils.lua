@@ -86,9 +86,8 @@ end -- nice_number
 
 
 function replacer.nice_pos_string(pos)
-	local no_info = '<no positional information>'
-	if 'table' ~= type(pos) then return no_info end
-	if not (pos.x and pos.y and pos.z) then return no_info end
+	if 'table' ~= type(pos) then return rb.no_pos end
+	if not (pos.x and pos.y and pos.z) then return rb.no_pos end
 
 	pos = { x = floor(pos.x + .5), y = floor(pos.y + .5), z = floor(pos.z + .5) }
 	return pos_to_string(pos)
