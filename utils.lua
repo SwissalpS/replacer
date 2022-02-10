@@ -26,18 +26,18 @@ function replacer.common_list_items(list1, list2)
 	if 'table' ~= type(list1) or 'table' ~= type(list2) then return {} end
 	if 0 == #list1 or 0 == #list2 then return {} end
 
-	local common, index1, total2, j = {}, #list1, #list2
+	local common, index1, total2, index2 = {}, #list1, #list2
 	repeat
-		j = total2
+		index2 = total2
 		repeat
-			if list1[index] == list2[j] then
-				insert(common, list2[j])
+			if list1[index1] == list2[index2] then
+				insert(common, list2[index2])
 				break
 			end
-			j = j - 1
-		until 0 == j
-		index = index - 1
-	until 0 == index
+			index2 = index2 - 1
+		until 0 == index2
+		index1 = index1 - 1
+	until 0 == index1
 
 	return common
 end -- common_list_items
