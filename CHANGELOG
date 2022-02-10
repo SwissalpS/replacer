@@ -1,3 +1,4 @@
+20220210 * SwissalpS added some more info to inspection tool when inspecting players.
 20220205 * SwissalpS tweaked formspec of replacer to adjust when minor modes are disabled.
          * Enabled changing modes with place without pointing at a node.
          * Added more info on mobs.
