@@ -9,6 +9,8 @@
     maybe we can use this on group buttons
 
 -- inspection tool:
+    support for itemframes, itemholder, drawers info about content
+    crafting info on craftable entities like bikes, trains
     figure out how to make the itemstring selectable for copy -> do that with new formspec version
     add mixing method
     add info for plants telling when they are ripe -> allowing user to click on the ripe
