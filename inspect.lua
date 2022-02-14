@@ -738,8 +738,10 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			formspec = formspec .. 'label[3,1;' .. mfe(rbi.unkown_recipe) .. ']'
 		end
 		-- output item on the right
-		formspec = formspec
-			.. 'item_image_button[5,2;1.0,1.0;' .. recipe.output .. ';normal;]'
+		if recipe.output then
+			formspec = formspec
+				.. 'item_image_button[5,2;1.0,1.0;' .. recipe.output .. ';normal;]'
+		end
 	end
 	show_formspec(player_name, 'replacer:crafting', formspec)
 end -- inspect_show_crafting
