@@ -12,9 +12,10 @@ local colour_to_name = unifieddyes.color_to_name
 
 -- for inspection tool formspec
 local S = replacer.S
-local function add_recipe(node_name, param2, recipes)
-	if not param2 then return end
+local function add_recipe(node_name, context, recipes)
+	if not (context and context.param2) then return end
 
+	local param2 = context.param2
 	local node_def = minetest.registered_items[node_name]
 	if ud.is_airbrushed(node_def) then
 		-- find the correct recipe and append it to bottom of list

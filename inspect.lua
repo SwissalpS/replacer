@@ -554,7 +554,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 
 	-- add special recipes for nodes created by machines
 	for _, adder in pairs(r.recipe_adders) do
-		adder.add_recipe(node_name, fields.param2, recipes)
+		adder.add_recipe(node_name, fields, recipes)
 	end
 
 	-- offer all alternate crafting recipes through prev/next buttons
