@@ -52,10 +52,9 @@ replacer.recipe_adders = {}
 --     returns a string, even if empty.
 function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
 	func_formspec)
-	if ('string' ~= type(uid) or '' == uid)
-		or ('string' ~= type(machine_itemstring)
-			or not registered_items[machine_itemstring])
-		or 'function' ~= type(func_inspect)
+	if (('string' ~= type(uid)) or ('' == uid))
+		or ('string' ~= type(machine_itemstring))
+		or ('function' ~= type(func_inspect))
 	then
 		core_log('warning', rbi.log_reg_craft_method_wrong_arguments)
 		return
