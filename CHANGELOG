@@ -1,3 +1,6 @@
+20220215 * SwissalpS added compat for itemholder and powered_stand when override is used
+           to make them work nicely:
+           https://github.com/pandorabox-io/pandorabox_custom/blob/master/scifi_override.lua
 20220214 * SwissalpS added compat for itemframe, pedestal, itemholder and powered_stand
            (itemframes and scifi_nodes) showing info on what they are holding.
 20220210 * SwissalpS added some more info to inspection tool when inspecting players.
