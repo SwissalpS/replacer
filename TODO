@@ -9,7 +9,8 @@
     maybe we can use this on group buttons
 
 -- inspection tool:
-    support for itemframes, itemholder, drawers info about content
+    stop passing context in hidden fields, use runtime cache to keep
+        context -> enables to keep all recipes in cycle and possibly reduce look-ups.
     crafting info on craftable entities like bikes, trains
     figure out how to make the itemstring selectable for copy -> do that with new formspec version
     add mixing method
