@@ -1,4 +1,9 @@
 -- replacer has default mod as hard dependancy, so no checking
+
+-- for replacer
+replacer.deny_list['default:water_source'] = true
+replacer.deny_list['default:river_water_source'] = true
+
 -- helpers for inspection tool
 -- some common groups
 replacer.group_placeholder['group:water_bucket'] = 'bucket:bucket_river_water'
