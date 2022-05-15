@@ -193,7 +193,7 @@ end -- step
 
 function replacer.test.dealloc_player(player)
 	if not rt.player or not rt.player.get_player_name then return end
-	if not rt.player:get_player_name() == player:get_player_name() then return end
+	if rt.player:get_player_name() ~= player:get_player_name() then return end
 	rt.active = false
 	rt.player = nil
 end -- dealloc_player
