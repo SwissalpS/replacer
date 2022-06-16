@@ -700,11 +700,19 @@ if r.has_technic_mod then
 	function replacer.tool_def_technic()
 		local def = r.tool_def_basic()
 		def.description = rb.description_technic
-		def.wear_represents = 'technic_RE_charge'
-		def.on_refill = technic.refill_RE_charge
+		if technic.plus then
+			def.technic_max_charge = r.max_charge
+		else
+			def.wear_represents = 'technic_RE_charge'
+			def.on_refill = technic.refill_RE_charge
+		end
 		return def
 	end
-	technic.register_power_tool(r.tool_name_technic, r.max_charge)
-	minetest.register_tool(r.tool_name_technic, r.tool_def_technic())
+	if technic.plus then
+		technic.register_power_tool(r.tool_name_technic, r.tool_def_technic())
+	else
+		technic.register_power_tool(r.tool_name_technic, r.max_charge)
+		minetest.register_tool(r.tool_name_technic, r.tool_def_technic())
+	end
 end
 
