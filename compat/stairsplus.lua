@@ -1,10 +1,6 @@
 local r = replacer
 if not r.has_stairsplus then return end
 
-local function is_saw_output(node_name)
-
-end -- is_saw_output
-
 local S = replacer.S
 local function add_circular_saw_recipe(node_name, _, recipes)
 	local basic_node_name = stairsplus.api.get_node_of_shaped_node(node_name)
