@@ -25,6 +25,10 @@
 -- letters: similar to elphabet
 
 ------ replacer fixes --------
+
+try to add a formspec for player to be able to choose from multiple valid drops
+    when node does not drop itself.
+
 -- can't be set --> no recipe
 homedecor:glass_table_large_square
 homedecor:dvd_cd_cabinet
