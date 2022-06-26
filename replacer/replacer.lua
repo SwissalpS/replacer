@@ -622,6 +622,7 @@ function replacer.on_place(itemstack, player, pt)
 		-- let's check if digging this would drop something use-able
 		local drops = r.possible_node_drops(node.name, true)
 		local drop_name
+		local valid_drops = {}
 	--	if 0 == core_get_item_group(node.name, 'not_in_creative_inventory') then
 			for i = 1, #drops do
 				drop_name = drops[i]
@@ -631,14 +632,27 @@ function replacer.on_place(itemstack, player, pt)
 						or (0 == core_get_item_group(drop_name,
 							'not_in_creative_inventory')))
 				then
+					-- it drops itself, so let's shortcut and set to it
+					if drop_name == node.name then
+						return true
+					end
+					-- otherwise let's add to valid options so user can choose (once we add that feature)
+					table.insert(valid_drops, drop_name)
 					-- example dirt_with_rainforest_litter can not be
 					-- crafted on all servers but drops dirt, so
 					-- replacer would be set to dirt
-					node.name = drop_name
-					return true
+					--node.name = drop_name
+					--return true
 				end
 			end -- loop drops
 	--	end -- node is in creative inventory
+
+		-- TODO: show formspec for user to choose, if there are multiple options
+		if 0 < #valid_drops then
+			-- for now we just take the first option
+			node.name = valid_drops[1]
+			return true
+		end
 
 		if not creative_enabled then return false end
 
