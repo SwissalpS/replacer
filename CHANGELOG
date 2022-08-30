@@ -1,3 +1,4 @@
+20220830 * SwissalpS fixed de translation typo. Thanks Niklp09 for reporting.
 20220626 * SwissalpS fixed case where other drops were prefered from actual node that user tried to set to.
 20220624 * SX added technic.plus compat fix
 20220215 * SwissalpS added compat for itemholder and powered_stand when override is used
