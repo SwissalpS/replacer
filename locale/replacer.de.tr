@@ -25,7 +25,7 @@ Node replacement tool=Ersetzer
 Node replacement tool (technic)=Ersetzer (Technik)
 Time-limit reached.=Zeitbegrenzung erreicht.
 
-Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Schaltet die Ausführlichkeit um.@nchat: Wenn eingeschaltet, werden Nachrichten im Chat ausgegeben.@audio: Wenn ausgeschaltet, ist der Ersetzer stumm.
+Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Schaltet die Ausführlichkeit um.@nchat: Wenn eingeschaltet, werden Nachrichten im Chat ausgegeben.@naudio: Wenn ausgeschaltet, ist der Ersetzer stumm.
 
 Minor modes are disabled on this server.=Nebenmodi sind auf diesem Server deaktiviert.
 <no positional information>=<keine Positionsinformationen>
@@ -125,3 +125,4 @@ separating=Trennen
 painting=Malen
 fermenting=Fermentieren
 Ferment in barrel.=Gärung im Fass.
+
