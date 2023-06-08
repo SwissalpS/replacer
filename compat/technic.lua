@@ -73,7 +73,7 @@ local function add_recipe_cnc(item_name, _, recipes)
 		output = item_name,
 		program = program --:gsub('_', ' ')
 	}
-end -- add_recipe_freeze
+end -- add_recipe_cnc
 
 local function add_formspec_cnc(recipe)
 	if not recipe.program then return '' end
