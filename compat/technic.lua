@@ -26,7 +26,7 @@ replacer.register_set_enabler(function(node)
 end)
 
 ------------------------------------------
------------ for inpection tool -----------
+----------- for inspection tool -----------
 ------------------------------------------
 -- have not tested 'other' technic mod, so just support technic.plus
 --if not technic.plus then return end
