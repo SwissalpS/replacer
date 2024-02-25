@@ -20,7 +20,7 @@ in_out['wine:glass_coffee_liquor'] = 'farming:coffee_beans'
 in_out['wine:glass_champagne'] = 'wine:glass_champagne_raw'
 
 local function add_recipe(item_name, _, recipes)
-	if not 'string' == type(item_name)
+	if 'string' ~= type(item_name)
 		or not item_name:find('^wine:glass_') then return end
 
 	-- this one is an exception

@@ -10,7 +10,7 @@ local skip = {}
 for _, n in ipairs(exceptions) do skip[n] = true end
 
 local function ehlphabet_number_sticker(item_name)
-	if not item_name or not 'string' == type(item_name) then return end
+	if not item_name or 'string' ~= type(item_name) then return end
 
 	return item_name:match('^ehlphabet:([0-9]+)'),
 		item_name:find('_sticker$') and true
