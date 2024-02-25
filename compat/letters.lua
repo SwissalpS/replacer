@@ -3,7 +3,7 @@ if not minetest.get_modpath('letters') then return end
 -- for inspection tool
 local S = replacer.S
 local function add_recipe_u(item_name, _, recipes)
-	if not item_name or not 'string' == type(item_name) then return end
+	if not item_name or 'string' ~= type(item_name) then return end
 
 	local input, letter = item_name:match('^(.+)_letter_(.)u$')
 	if not input then return end
@@ -21,7 +21,7 @@ replacer.register_craft_method('letters:upper', 'letters:letter_cutter_upper', a
 
 
 local function add_recipe_l(item_name, _, recipes)
-	if not item_name or not 'string' == type(item_name) then return end
+	if not item_name or 'string' ~= type(item_name) then return end
 
 	local input, letter = item_name:match('^(.+)_letter_(.)l$')
 	if not input then return end
