@@ -1,4 +1,5 @@
 20240225 * SwissalpS patched a crash situation with multinode-nodes. Thanks frogTheSecond and Huhhila for detecting and reporting.
+20221107 * fluxionary fixed typo unkown -> unknown
 20220830 * SwissalpS fixed de translation typo. Thanks Niklp09 for reporting.
 20220626 * SwissalpS fixed case where other drops were prefered from actual node that user tried to set to.
 20220624 * SX added technic.plus compat fix
