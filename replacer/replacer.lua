@@ -364,6 +364,18 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 				end
 			end
 		end
+		-- with multinode-nodes it is possible to click the
+		-- node in a way that none of the coordinates of
+		-- ``normal`` is 0, leading to empty ``dirs`` and crash
+		-- when passing nil to vector functions.
+		-- Player can click on another part of the node to
+		-- have success.
+		if 0 == #dirs then
+			r.play_sound(name, true)
+			r.inform(name, rb.no_pos)
+			return
+		end
+
 		-- The normal is used as offset to test if the searched position
 		-- is next to the field; the offset goes in the other direction when
 		-- a right click happens

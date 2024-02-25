@@ -24,7 +24,7 @@
 -- Changelog: see CHANGELOG file
 
 replacer = {}
-replacer.version = 20220830
+replacer.version = 20240225
 
 replacer.has_bakedclay = minetest.get_modpath('bakedclay')
 replacer.has_basic_dyes = minetest.get_modpath('dye')
