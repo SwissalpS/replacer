@@ -101,7 +101,7 @@ function replacer.inspect(_, player, pointed_thing, right_clicked)
 		chat(player_name, r.inspect_entity(pointed_thing.ref, player))
 		return nil
 	elseif 'node' ~= pointed_thing.type then
-		chat(player_name, S('Sorry, this is an unkown something of type "@1". '
+		chat(player_name, S('Sorry, this is an unknown something of type "@1". '
 			.. 'No information available.', pointed_thing.type))
 		return nil
 	end
@@ -734,7 +734,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 		else
 --pd('unhandled recipe encountered', recipe)
 --r.play_sound(player_name, true)
-			formspec = formspec .. 'label[3,1;' .. mfe(rbi.unkown_recipe) .. ']'
+			formspec = formspec .. 'label[3,1;' .. mfe(rbi.unknown_recipe) .. ']'
 		end
 		-- output item on the right
 		if recipe.output then
