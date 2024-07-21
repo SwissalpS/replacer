@@ -12,14 +12,6 @@ local gmatch = string.gmatch
 local registered_nodes = minetest.registered_nodes
 local pos_to_string = minetest.pos_to_string
 local sound_play = minetest.sound_play
-local sound_fail = 'default_break_glass'
-local sound_success = 'default_item_smoke'
-local sound_gain = 0.5
-if r.has_technic_mod then
-	sound_fail = 'technic_prospector_miss'
-	--sound_success = 'technic_prospector_hit'
-	sound_gain = 0.1
-end
 
 
 function replacer.common_list_items(list1, list2)
@@ -102,10 +94,11 @@ function replacer.play_sound(player_name, fail)
 
 	if 0 < meta:get_int('replacer_muteS') then return end
 
-	sound_play(fail and sound_fail or sound_success, {
+	local sound = fail and r.sounds.fail or r.sounds.success
+	sound_play(sound.name, {
 		to_player = player_name,
 		max_hear_distance = 2,
-		gain = sound_gain }, true)
+		gain = sound.gain or 0.5 }, true)
 end -- play_sound
 
 

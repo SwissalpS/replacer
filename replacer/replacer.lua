@@ -1,6 +1,6 @@
 replacer.tool_name_basic = 'replacer:replacer'
 replacer.tool_name_technic = 'replacer:replacer_technic'
-replacer.tool_default_node = 'default:dirt'
+replacer.tool_default_node = replacer.materials.dirt
 
 -- pulling to local scope especially those used in loops
 local r = replacer

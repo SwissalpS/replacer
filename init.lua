@@ -42,6 +42,8 @@ replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 								and minetest.global_exists('unifieddyes')
 replacer.has_unified_inventory_mod = minetest.get_modpath('unified_inventory')
 								and true or false
+replacer.has_xcompat_mod = minetest.get_modpath('xcompat')
+								and minetest.global_exists('xcompat')
 
 -- image mapping tables for replacer:inspect
 replacer.group_placeholder = {}
@@ -53,6 +55,8 @@ dofile(path .. 'test.lua')
 -- strings for translation (i+r)
 dofile(path .. 'blabla.lua')
 -- utilities (i+r)
+-- material and sound compatibility for various games
+dofile(path .. 'xcompat.lua')
 dofile(path .. 'utils.lua')
 -- more settings and functions
 dofile(path .. 'replacer/constrain.lua')

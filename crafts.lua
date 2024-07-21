@@ -1,11 +1,13 @@
+local r = replacer
+local rm = r.materials
 
 if not replacer.hide_recipe_basic then
 	minetest.register_craft({
 		output = replacer.tool_name_basic,
 		recipe = {
-			{ 'default:chest', '', 'default:gold_ingot' },
-			{ '', 'default:mese_crystal_fragment', '' },
-			{ 'default:steel_ingot', '', 'default:chest' },
+			{ rm.chest, '', rm.gold_ingot },
+			{ '', rm.mese_crystal_fragment, '' },
+			{ rm.steel_ingot, '',  '' },
 		}
 	})
 end
@@ -28,9 +30,9 @@ if replacer.has_technic_mod then
 		minetest.register_craft({
 			output = replacer.tool_name_technic,
 			recipe = {
-				{ 'default:chest', 'technic:green_energy_crystal', 'default:gold_ingot' },
-				{ '', 'default:mese_crystal_fragment', '' },
-				{ 'default:steel_ingot', '', 'default:chest' },
+				{ rm.chest, 'technic:green_energy_crystal', rm.gold_ingot },
+				{ '', rm.mese_crystal_fragment, '' },
+				{ rm.steel_ingot, '', rm.chest },
 			}
 		})
 	end
@@ -40,7 +42,8 @@ end
 minetest.register_craft({
   output = 'replacer:inspect',
   recipe = {
-		{ 'default:torch' },
-		{ 'default:stick' },
+		{ rm.torch },
+		{ rm.stick },
   }
 })
+

@@ -26,5 +26,6 @@ read_globals = {
 	"technic",
 	"unified_inventory",
 	"unifieddyes",
+	"xcompat",
 }
 
