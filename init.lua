@@ -36,6 +36,9 @@ replacer.has_circular_saw = minetest.get_modpath('moreblocks')
 								and circular_saw.names
 replacer.has_colormachine_mod = minetest.get_modpath('colormachine')
 								and minetest.global_exists('colormachine')
+replacer.has_stairsplus_mod = minetest.get_modpath('stairsplus')
+								and minetest.global_exists('stairsplus')
+								and stairsplus.api and true or false
 replacer.has_technic_mod = minetest.get_modpath('technic')
 								and minetest.global_exists('technic')
 replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')

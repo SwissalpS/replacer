@@ -1,3 +1,5 @@
+20240721 * SwissalpS added support for fluxionary's fork of moreblocks --> stairsplus.api
+           thanks fluxionary, sorry for not doing it the way you PRed.
 20240225 * SwissalpS patched a crash situation with multinode-nodes. Thanks frogTheSecond and Huhhila for detecting and reporting.
 20221107 * fluxionary fixed typo unkown -> unknown
 20220830 * SwissalpS fixed de translation typo. Thanks Niklp09 for reporting.
