@@ -27,13 +27,14 @@ replacer = {}
 replacer.version = 20240225
 
 replacer.has_bakedclay = minetest.get_modpath('bakedclay')
+								and true or false
 replacer.has_basic_dyes = minetest.get_modpath('dye')
 								and minetest.global_exists('dye')
-								and dye.basecolors
+								and dye.basecolors and true or false
 replacer.has_circular_saw = minetest.get_modpath('moreblocks')
 								and minetest.global_exists('moreblocks')
 								and minetest.global_exists('circular_saw')
-								and circular_saw.names
+								and circular_saw.names and true or false
 replacer.has_colormachine_mod = minetest.get_modpath('colormachine')
 								and minetest.global_exists('colormachine')
 replacer.has_stairsplus_mod = minetest.get_modpath('stairsplus')
