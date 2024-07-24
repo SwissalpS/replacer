@@ -20,7 +20,8 @@ local core_registered_nodes = minetest.registered_nodes
 local core_swap_node = minetest.swap_node
 local deserialize = minetest.deserialize
 local get_craft_recipe = minetest.get_craft_recipe
-local has_creative = creative.is_enabled_for
+local has_creative = minetest.global_exists('creative')
+										and creative.is_enabled_for or function() return false end
 local serialize = minetest.serialize
 local us_time = minetest.get_us_time
 -- vector
