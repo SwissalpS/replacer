@@ -28,15 +28,15 @@ replacer.alias_map = {}
 --    r.register_exception('mobs:cobweb', 'mobs:cobweb')
 function replacer.register_exception(node_name, drop_name, callback)
 	if r.exception_map[node_name] then
-		minetest.log('warning', rb.log_reg_exception_override:format(node_name))
+		r.log('warning', rb.log_reg_exception_override:format(node_name))
 	end
 	r.exception_map[node_name] = drop_name
-	minetest.log('info', rb.log_reg_exception:format(node_name, drop_name))
+	r.log('info', rb.log_reg_exception:format(node_name, drop_name))
 
 	if 'function' ~= type(callback) then return end
 
 	r.exception_callbacks[node_name] = callback
-	minetest.log('info', rb.log_reg_exception_callback:format(node_name))
+	r.log('info', rb.log_reg_exception_callback:format(node_name))
 end -- register_exception
 
 
@@ -48,10 +48,10 @@ end -- register_exception
 -- replacer.register_non_creative_alias('vines:jungle_middle', 'vines:jungle_end')
 function replacer.register_non_creative_alias(name_sibling, name_placed)
 	if r.alias_map[name_sibling] then
-		minetest.log('warning', rb.log_reg_alias_override:format(name_sibling))
+		r.log('warning', rb.log_reg_alias_override:format(name_sibling))
 	end
 	r.alias_map[name_sibling] = name_placed
-	minetest.log('info', rb.log_reg_alias:format(name_sibling, name_placed))
+	r.log('info', rb.log_reg_alias:format(name_sibling, name_placed))
 end -- register_non_creative_alias
 
 
@@ -73,7 +73,7 @@ end -- register_non_creative_alias
 -- the callback signature is f(node, player, pointed_thing)
 function replacer.register_set_enabler(callback)
     if 'function' ~= type(callback) then
-		minetest.log('error', rb.log_reg_set_callback_fail)
+		r.log('error', rb.log_reg_set_callback_fail)
 		return
     end
 

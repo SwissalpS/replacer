@@ -38,7 +38,7 @@ end -- common_list_items
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 
-	core_log('info', rb.log_messages:format(name, message))
+	r.log('info', rb.log_messages:format(name, message))
 	local player = get_player_by_name(name)
 	if not player then return end
 
@@ -48,6 +48,16 @@ function replacer.inform(name, message)
 
 	chat_send_player(name, message)
 end -- inform
+
+
+function replacer.log(level, message)
+	if not message then
+		message = level
+		level = 'warning'
+	end
+
+	core_log(level, '[replacer] ' .. message)
+end -- log
 
 
 function replacer.nice_duration(seconds)

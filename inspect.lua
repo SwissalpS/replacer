@@ -17,7 +17,6 @@ local concat = table.concat
 local insert = table.insert
 local chat = minetest.chat_send_player
 local mfe = minetest.formspec_escape
-local core_log = minetest.log
 local deserialize = minetest.deserialize
 local parse_json = minetest.parse_json
 local get_node_or_nil = minetest.get_node_or_nil
@@ -56,12 +55,12 @@ function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
 		or ('string' ~= type(machine_itemstring))
 		or ('function' ~= type(func_inspect))
 	then
-		core_log('warning', rbi.log_reg_craft_method_wrong_arguments)
+		r.log(rbi.log_reg_craft_method_wrong_arguments)
 		return
 	end
 
 	if r.recipe_adders[uid] then
-		core_log('warning', rbi.log_reg_craft_method_overriding_method .. uid)
+		r.log(rbi.log_reg_craft_method_overriding_method .. uid)
 	end
 
 	r.recipe_adders[uid] = {
@@ -69,7 +68,7 @@ function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
 		add_recipe = func_inspect,
 		formspec = ('function' == type(func_formspec) and func_formspec) or nil
 	}
-	core_log('info', rbi.log_reg_craft_method_added:format(uid, machine_itemstring))
+	r.log('info', rbi.log_reg_craft_method_added:format(uid, machine_itemstring))
 end -- register_craft_method
 
 
