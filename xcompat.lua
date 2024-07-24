@@ -23,13 +23,25 @@ if r.has_xcompat_mod then
 
 	r.sounds = {
 		fail = {
-			name = xcompat.sounds.node_sound_glass_defaults().dug.name
+			name = ''
 		},
-		-- TODO: PR xcompat to have 'default_item_smoke' and similar
 		success = {
-			name = xcompat.sounds.node_sound_sand_defaults().dug.name
+			name = ''
 		}
 	}
+	local sound = xcompat.sounds.node_sound_glass_defaults()
+	if sound and sound.dug and sound.dug.name then
+		r.sounds.fail.name = sound.dug.name
+	else
+		r.sounds.fail.gain = 0.0
+	end
+	-- TODO: PR xcompat to have 'default_item_smoke' and similar
+	sound = xcompat.sounds.node_sound_sand_defaults()
+	if sound and sound.dug and sound.dug.name then
+		r.sounds.success.name = sound.dug.name
+	else
+		r.sounds.success.gain = 0.0
+	end
 else
 	-- assume default game
 	r.materials = {
