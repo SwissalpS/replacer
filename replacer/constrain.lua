@@ -56,6 +56,10 @@ if nil == replacer.hide_recipe_technic_direct then
 	replacer.hide_recipe_technic_direct = true
 end
 
+
+function replacer.no() return false end
+
+
 -- function that other mods, especially custom server mods,
 -- can override. e.g. restrict usage of replacer in certain
 -- areas, privs, throttling etc.

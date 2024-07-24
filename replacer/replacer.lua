@@ -21,7 +21,7 @@ local core_swap_node = minetest.swap_node
 local deserialize = minetest.deserialize
 local get_craft_recipe = minetest.get_craft_recipe
 local has_creative = minetest.global_exists('creative')
-										and creative.is_enabled_for or function() return false end
+										and creative.is_enabled_for or r.no
 local serialize = minetest.serialize
 local us_time = minetest.get_us_time
 -- vector
