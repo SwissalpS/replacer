@@ -622,7 +622,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	-- base info
-	local formspec = 'size[6,6]'
+	local formspec = 'size[6,6.5]'
 		-- label on top
 		--.. 'textarea[-9,-18,6,1;;' .. mfe(rbi.name) .. ' ' .. node_name .. ';]'
 		.. 'label[0,0;' .. mfe(rbi.name) .. ' ' .. node_name .. ']'
