@@ -329,6 +329,13 @@ view_range
 end -- inspect_mob
 
 
+function replacer.inspect_mob_farlands_reloaded(luaob)
+	local text = '\n'
+	text = text .. S('Health: @1/@2', luaob.hp or '?', luaob.max_hp or '?')
+	return text
+end -- inspect_mob_farlands_reloaded
+
+
 function replacer.inspect_player(object_ref, player)
 	local lines = { S('This is your fellow player "@1"', object_ref:get_player_name()) }
 	local meta = object_ref:get_meta()
@@ -425,7 +432,13 @@ function replacer.inspect_entity(object_ref, player)
 	end
 	if not registered_entities[luaob.name] then return text end
 
-	if luaob._cmi_is_mob then return text .. r.inspect_mob(luaob) end
+	if luaob._cmi_is_mob or luaob.name:find('^mobs_mc:') then
+		-- mobs_redo, mineclonia and VoxelLibre mobs
+		return text .. r.inspect_mob(luaob)
+	elseif luaob.name:find('^fl_wildlife:') then
+		-- farlands_reloaded mob
+		return text .. r.inspect_mob_farlands_reloaded(luaob)
+	end
 
 	return text
 end -- inspect_entity
@@ -442,6 +455,11 @@ function replacer.inspect_staticdata(staticdata)
 	if sdata.age then
 		text = text .. S(', dropped @1 minutes ago',
 			tostring(floor((sdata.age / 60) + .5)))
+	end
+	if 'number' == type(sdata.health) then
+		-- mineclonia / VoxelLibre
+		text = text .. '\n' .. S('Health: @1/@2',
+			tostring(.1 * floor(10 * (sdata.health + 0.05))), '?')
 	end
 	if sdata.owner then
 		if true == sdata.protected then
