@@ -723,7 +723,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			and '' == recipe.output
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. r.image_button_link('default:furnace_active') .. ']'
+				.. r.image_button_link(r.machines.furnace_active) .. ']'
 				.. 'item_image_button[2.9,2.7;1.0,1.0;'
 				.. r.image_button_link(recipe.items[1]) .. ']'
 				.. 'label[1.0,0;' .. tostring(recipe.items[1]) .. ']'
@@ -733,7 +733,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			and 1 == #recipe.items
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. r.image_button_link('default:furnace') .. ']'
+				.. r.image_button_link(r.machines.furnace) .. ']'
 				.. 'item_image_button[2.2,2.2;1.0,1.0;'
 				.. r.image_button_link(recipe.items[1]) .. ']'
 		elseif recipe.items
