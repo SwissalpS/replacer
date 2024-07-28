@@ -1,5 +1,9 @@
 local r = replacer
 r.materials = {}
+r.sounds = {
+	fail = { name = '' },
+	success = { name = '' },
+}
 local rm = r.materials
 
 if r.has_xcompat_mod then
@@ -21,14 +25,6 @@ if r.has_xcompat_mod then
 		until 0 == i
 	end
 
-	r.sounds = {
-		fail = {
-			name = ''
-		},
-		success = {
-			name = ''
-		}
-	}
 	local sound = xcompat.sounds.node_sound_glass_defaults()
 	if sound and sound.dug and sound.dug.name then
 		r.sounds.fail.name = sound.dug.name
@@ -54,14 +50,8 @@ else
 		torch = 'default:torch',
 	}
 
-	r.sounds = {
-		fail = {
-			name = 'default_break_glass'
-		},
-		success = {
-			name = 'default_item_smoke'
-		}
-	}
+	r.sounds.fail.name = 'default_break_glass'
+	r.sounds.success.name = 'default_item_smoke'
 end
 
 if r.has_technic_mod then
