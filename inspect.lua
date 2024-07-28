@@ -503,15 +503,25 @@ end -- inspect_staticdata
 
 
 function replacer.image_button_link(stack_string)
-	local group = ''
+	local group, g = ''
 	if r.image_replacements[stack_string] then
 		stack_string = r.image_replacements[stack_string]
 	end
 	if r.group_placeholder[stack_string] then
 		stack_string = r.group_placeholder[stack_string]
 		group = 'G'
+	elseif stack_string:find('^:?group:') then
+		-- dynamically figure out a group replacement
+		g = stack_string:sub(1 + stack_string:find(':', 2))
+		for item_name, _ in pairs(registered_items) do
+			if 0 ~= minetest.get_item_group(item_name, g) then
+				r.group_placeholder[stack_string] = item_name
+				stack_string = item_name
+				group = 'G'
+				break
+			end
+		end
 	end
--- TODO: show information about other groups not handled above
 	local stack = ItemStack(stack_string)
 	local new_node_name = stack:get_name()
 --pd(stack_string .. ';' .. new_node_name .. ';' .. group)
