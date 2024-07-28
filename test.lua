@@ -23,7 +23,12 @@ rt.skip = {
 	'^air$', '^ignore$', 'corium', '^tnt:',
 	'^technic:hv_nuclear_reactor_core_active$',
 	'^default:lava_source$', '^default:lava_flowing$',
+	'^hades_core:lava_source$', '^hades_core:lava_flowing$',
+	'^mcl_core:lava_source$', '^mcl_core:lava_flowing$',
 	'^default:.*water_source$', '^default:.*water_flowing$',
+	'^hades_core:water_source$', '^hades_core:water_flowing$',
+	'^ks_terrain:water_source$', '^ks_terrain:water_flowing$',
+	'^mcl_core:water_source$', '^mcl_core:water_flowing$',
 	--'^default:large_cactus_seedling$', -- depends on support_node
 	'^digistuff:heatsink_onic$', -- depends on support_node
 	--'^farming:seed_',  -- depends on support_node
