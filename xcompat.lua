@@ -40,15 +40,13 @@ if r.has_xcompat_mod then
 	end
 else
 	-- assume default game
-	r.materials = {
-		chest = 'default:chest',
-		dirt = 'default:dirt',
-		gold_ingot = 'default:gold_ingot',
-		mese_crystal_fragment = 'default:mese_crystal_fragment',
-		steel_ingot = 'default:steel_ingot',
-		stick = 'default:stick',
-		torch = 'default:torch',
-	}
+	rm.chest = 'default:chest'
+	rm.dirt = 'default:dirt'
+	rm.gold_ingot = 'default:gold_ingot'
+	rm.mese_crystal_fragment = 'default:mese_crystal_fragment'
+	rm.steel_ingot = 'default:steel_ingot'
+	rm.stick = 'default:stick'
+	rm.torch = 'default:torch'
 
 	r.sounds.fail.name = 'default_break_glass'
 	r.sounds.success.name = 'default_item_smoke'
