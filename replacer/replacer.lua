@@ -111,43 +111,48 @@ function replacer.set_data(stack, node, mode)
 end -- set_data
 
 
-if r.has_technic_mod then
-	if technic.plus then
-		replacer.get_charge = technic.get_RE_charge
-		replacer.set_charge = technic.set_RE_charge
-	else
-		-- technic still stores data serialized, so this is the nearest we get to current standard
-		function replacer.get_charge(itemstack)
-			local meta = deserialize(itemstack:get_meta():get_string(''))
-			if (not meta) or (not meta.charge) then
-				return 0
-			end
-			return meta.charge
-		end
-
-		function replacer.set_charge(itemstack, charge, maximum)
-			technic.set_RE_wear(itemstack, charge, maximum)
-			local meta = itemstack:get_meta()
-			local data = deserialize(meta:get_string(''))
-			if (not data) or (not data.charge) then
-				data = { charge = 0 }
-			end
-			data.charge = charge
-			meta:set_string('', serialize(data))
-		end
+function replacer.discharge(stack, charge, num_nodes, has_creative_or_give)
+	if has_creative_or_give or (r.has_technic_mod and technic.creative_mode) then
+		return
 	end
 
-	function replacer.discharge(itemstack, charge, num_nodes, has_creative_or_give)
-		if (not technic.creative_mode) and (not has_creative_or_give) then
-			charge = charge - r.charge_per_node * num_nodes
-			r.set_charge(itemstack, charge, r.max_charge)
-			return itemstack
-		end
+	charge = charge - r.charge_per_node * num_nodes
+	r.set_charge(stack, charge)
+	return stack
+end -- discharge
+
+
+function replacer.get_charge(stack)
+	if r.has_technic_mod and technic.creative_mode then
+		return r.max_charge, r.max_charge
 	end
-else
-	function replacer.discharge() end
-	function replacer.get_charge() return r.max_charge end
-end
+
+	return stack:get_meta():get_float('charge'), r.max_charge
+end -- get_charge
+
+
+-- do division once so subsequent calls can use faster multiplication
+local wear_to_charge_factor = 1 / r.max_charge * 65536
+function replacer.set_charge(stack, charge)
+	-- clamp and set charge
+	charge = max(0, min(charge, r.max_charge))
+	stack:get_meta():set_float('charge', charge)
+
+	-- update wear indicator
+	if 0 == charge then
+		stack:set_wear(0)
+		return
+	end
+
+	local wear = 65536 - floor(charge * wear_to_charge_factor)
+	stack:set_wear(max(1, min(65536, wear)))
+end -- set_charge
+
+
+function replacer.refill_charge(stack)
+	r.set_charge(stack, r.max_charge)
+	return stack
+end -- refill_charge
 
 
 -- replaces one node with another one and returns if it was successful
@@ -722,19 +727,32 @@ end
 
 minetest.register_tool(r.tool_name_basic, r.tool_def_basic())
 
+
 function replacer.tool_def_technic()
 	local def = r.tool_def_basic()
 	def.description = rb.description_technic
+	def.wear_color = {
+		blend = 'linear',
+		color_stops = {
+			[0.3] = 'red',
+			[0.45] = 'yellow',
+			[0.75] = 'green',
+		}
+	}
 	if r.has_technic_mod then
+		def.technic_get_charge = r.get_charge
+		def.technic_set_charge = r.set_charge
 		if technic.plus then
 			def.technic_max_charge = r.max_charge
 		else
 			def.wear_represents = 'technic_RE_charge'
-			def.on_refill = technic.refill_RE_charge
+			def.on_refill = r.refill_charge
 		end
 	end
 	return def
-end
+end -- tool_def_technic
+
+
 if r.has_technic_mod or r.enable_recipe_technic_without_technic then
 	if r.has_technic_mod and technic.plus then
 		technic.register_power_tool(r.tool_name_technic, r.tool_def_technic())
