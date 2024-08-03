@@ -41,6 +41,10 @@ replacer.hide_recipe_technic_upgrade (Hide upgrade recipe) bool false
 # Hide the direct upgrade recipe. Only available if technic is installed.
 replacer.hide_recipe_technic_direct (Hide direct recipe) bool true
 
+# Enable technic replacer recipe without technic mod installed. You may want to
+# override the recipe to match your server type and be more expensive.
+replacer.enable_recipe_technic_without_technic (Enable technic replacer without [technic]) bool false
+
 # Enable developer mode
 replacer.dev_mode (Enable developer mode) bool false
 

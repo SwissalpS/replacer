@@ -14,6 +14,7 @@ if r.has_xcompat_mod then
 	-- let xcompat decide what is available
 	do
 		local material_keys = {
+			'axe_diamond',
 			'chest',
 			'dirt',
 			'gold_ingot',
@@ -44,6 +45,7 @@ if r.has_xcompat_mod then
 	end
 else
 	-- assume default game
+	rm.axe_diamond = 'default:axe_diamond'
 	rm.chest = 'default:chest'
 	rm.dirt = 'default:dirt'
 	rm.gold_ingot = 'default:gold_ingot'

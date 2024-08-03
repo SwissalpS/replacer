@@ -36,6 +36,15 @@ if r.has_technic_mod then
 			}
 		})
 	end
+elseif r.enable_recipe_technic_without_technic then
+	minetest.register_craft({
+		output = r.tool_name_technic,
+		recipe = {
+			{ rm.chest, rm.axe_diamond, rm.gold_ingot },
+			{ rm.axe_diamond, rm.mese_crystal_fragment, rm.axe_diamond },
+			{ rm.steel_ingot, rm.axe_diamond, rm.chest },
+		}
+	})
 end
 
 

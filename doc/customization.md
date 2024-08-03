@@ -73,6 +73,12 @@ Hides the direct recipe of technic replacer that does not require a basic replac
 ingredient.<br>
 Only available if technic is installed.
 
+### replacer.enable_recipe_technic_without_technic (false)
+Enables a direct recipe of technic replacer without technic mod installed.<br>
+The recipe is rather cheap and it is recommended to override it to play well with<br>
+the type of server you are running.<br>
+Only has effect if technic isn't installed.
+
 ### replacer.dev_mode (false)
 Enable developer mode which gives users with **priv** priv to run **/place_all** chat command.<br>
 This is not recommended on live servers as some nodes your mods provide may crash the server
