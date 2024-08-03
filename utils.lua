@@ -35,6 +35,17 @@ function replacer.common_list_items(list1, list2)
 end -- common_list_items
 
 
+-- expose creative check function for servers/games to override
+-- e.g. server override could check for a priv allowing
+-- user to have 'creative' priv only with replacer
+function replacer.has_creative(name)
+	if minetest.global_exists('creative') and creative.is_enabled_for then
+		return creative.is_enabled_for(name)
+	end
+	return false
+end -- has_creative
+
+
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 

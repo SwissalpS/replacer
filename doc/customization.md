@@ -3,6 +3,7 @@ Customization documentation for replacer minetest mod
 
 - [Settings](#settings)
 - [API Commands](#api-commands)
+- [Overrides](#overrides)
 - [Inspection Tool](#inspection-tool)
 
 ## Settings
@@ -150,6 +151,17 @@ The callback signature is ```f(node, player_ref, pointed_thing)```
 replacer.register_set_enabler(callback)
 ```
 [More details in (replacer/enable.lua)](replacer/enable.lua)
+
+## Overrides
+
+Most functions are public and can be overridden.
+
+### Creative priv check
+Depending on game there may not be ```creative``` global and
+its functions. Or you may want to give creative priv to some users
+but only when they are using replacer. For this you can override
+```replacer.has_creative(name)``` function returning a boolean value.
+[Default located in (utils.lua)](utils.lua)
 
 ## Inspection Tool
 
