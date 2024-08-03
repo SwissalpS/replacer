@@ -1,6 +1,9 @@
 local r = replacer
+-- materials for crafting recipes
 r.materials = {}
+-- machines for inspector to show standard processes
 r.machines = {}
+-- sounds for replacer feedback
 r.sounds = {
 	fail = { name = '' },
 	success = { name = '' },

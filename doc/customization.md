@@ -39,11 +39,11 @@ only node or rotation is applied.
 
 ### replacer.history_priv (creative)
 You can make history available to users with this priv. By default it is set to **creative**
-as survival users can make several replacers. You can make this an acheivment for busy players
+as survival users can make several replacers. You can make this an achievement for busy players
 to work towards, or set to **interact** to allow any player to use history of previously
 used node settings.
 
-### replacer.history_disable_persistancy (false)
+### replacer.history_disable_persistency (false)
 When set, does not save history over sessions. Reason might be old MT version.<br>
 Currently history is stored in player's meta on logoff and at intervals.
 
@@ -153,7 +153,7 @@ replacer.register_set_enabler(callback)
 
 ## Inspection Tool
 
-### adding craft methods
+### Adding craft methods
 Some mods provide precesses that go beyond simple crafting, mixing or cooking. To provide
 better support for those there is:
 ```lua

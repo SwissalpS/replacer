@@ -34,9 +34,9 @@ replacer.disable_minor_modes =
 -- priv to allow using history
 replacer.history_priv = minetest.settings:get('replacer.history_priv') or 'creative'
 -- disable saving history over sessions/reboots. IOW: don't use player meta e.g. if using old MT
-replacer.history_disable_persistancy =
-	minetest.settings:get_bool('replacer.history_disable_persistancy') or false
--- ignored when persistancy is disabled. Interval in minutes to
+replacer.history_disable_persistency =
+	minetest.settings:get_bool('replacer.history_disable_persistency') or false
+-- ignored when persistency is disabled. Interval in minutes to
 replacer.history_save_interval =
 	tonumber(minetest.settings:get('replacer.history_save_interval') or 7)
 -- include mode when changing from history

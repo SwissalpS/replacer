@@ -52,9 +52,9 @@ replacer.image_replacements = {}
 local path = minetest.get_modpath('replacer') .. '/'
 -- for developers
 dofile(path .. 'test.lua')
--- strings for translation (i+r)
+-- strings for translation (inspect & replacer)
 dofile(path .. 'blabla.lua')
--- utilities (i+r)
+-- utilities (inspect & replacer)
 -- material and sound compatibility for various games
 dofile(path .. 'xcompat.lua')
 dofile(path .. 'utils.lua')
