@@ -17,7 +17,6 @@ local concat = table.concat
 local insert = table.insert
 local chat = minetest.chat_send_player
 local mfe = minetest.formspec_escape
-local core_log = minetest.log
 local deserialize = minetest.deserialize
 local parse_json = minetest.parse_json
 local get_node_or_nil = minetest.get_node_or_nil
@@ -56,12 +55,12 @@ function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
 		or ('string' ~= type(machine_itemstring))
 		or ('function' ~= type(func_inspect))
 	then
-		core_log('warning', rbi.log_reg_craft_method_wrong_arguments)
+		r.log(rbi.log_reg_craft_method_wrong_arguments)
 		return
 	end
 
 	if r.recipe_adders[uid] then
-		core_log('warning', rbi.log_reg_craft_method_overriding_method .. uid)
+		r.log(rbi.log_reg_craft_method_overriding_method .. uid)
 	end
 
 	r.recipe_adders[uid] = {
@@ -69,7 +68,7 @@ function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
 		add_recipe = func_inspect,
 		formspec = ('function' == type(func_formspec) and func_formspec) or nil
 	}
-	core_log('info', rbi.log_reg_craft_method_added:format(uid, machine_itemstring))
+	r.log('info', rbi.log_reg_craft_method_added:format(uid, machine_itemstring))
 end -- register_craft_method
 
 
@@ -330,6 +329,13 @@ view_range
 end -- inspect_mob
 
 
+function replacer.inspect_mob_farlands_reloaded(luaob)
+	local text = '\n'
+	text = text .. S('Health: @1/@2', luaob.hp or '?', luaob.max_hp or '?')
+	return text
+end -- inspect_mob_farlands_reloaded
+
+
 function replacer.inspect_player(object_ref, player)
 	local lines = { S('This is your fellow player "@1"', object_ref:get_player_name()) }
 	local meta = object_ref:get_meta()
@@ -426,7 +432,13 @@ function replacer.inspect_entity(object_ref, player)
 	end
 	if not registered_entities[luaob.name] then return text end
 
-	if luaob._cmi_is_mob then return text .. r.inspect_mob(luaob) end
+	if luaob._cmi_is_mob or luaob.name:find('^mobs_mc:') then
+		-- mobs_redo, mineclonia and VoxelLibre mobs
+		return text .. r.inspect_mob(luaob)
+	elseif luaob.name:find('^fl_wildlife:') then
+		-- farlands_reloaded mob
+		return text .. r.inspect_mob_farlands_reloaded(luaob)
+	end
 
 	return text
 end -- inspect_entity
@@ -443,6 +455,11 @@ function replacer.inspect_staticdata(staticdata)
 	if sdata.age then
 		text = text .. S(', dropped @1 minutes ago',
 			tostring(floor((sdata.age / 60) + .5)))
+	end
+	if 'number' == type(sdata.health) then
+		-- mineclonia / VoxelLibre
+		text = text .. '\n' .. S('Health: @1/@2',
+			tostring(.1 * floor(10 * (sdata.health + 0.05))), '?')
 	end
 	if sdata.owner then
 		if true == sdata.protected then
@@ -486,15 +503,25 @@ end -- inspect_staticdata
 
 
 function replacer.image_button_link(stack_string)
-	local group = ''
+	local group, g = ''
 	if r.image_replacements[stack_string] then
 		stack_string = r.image_replacements[stack_string]
 	end
 	if r.group_placeholder[stack_string] then
 		stack_string = r.group_placeholder[stack_string]
 		group = 'G'
+	elseif stack_string:find('^:?group:') then
+		-- dynamically figure out a group replacement
+		g = stack_string:sub(1 + stack_string:find(':', 2))
+		for item_name, _ in pairs(registered_items) do
+			if 0 ~= minetest.get_item_group(item_name, g) then
+				r.group_placeholder[stack_string] = item_name
+				stack_string = item_name
+				group = 'G'
+				break
+			end
+		end
 	end
--- TODO: show information about other groups not handled above
 	local stack = ItemStack(stack_string)
 	local new_node_name = stack:get_name()
 --pd(stack_string .. ';' .. new_node_name .. ';' .. group)
@@ -595,7 +622,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 	end
 
 	-- base info
-	local formspec = 'size[6,6]'
+	local formspec = 'size[6,6.5]'
 		-- label on top
 		--.. 'textarea[-9,-18,6,1;;' .. mfe(rbi.name) .. ' ' .. node_name .. ';]'
 		.. 'label[0,0;' .. mfe(rbi.name) .. ' ' .. node_name .. ']'
@@ -696,7 +723,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			and '' == recipe.output
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. r.image_button_link('default:furnace_active') .. ']'
+				.. r.image_button_link(r.machines.furnace_active) .. ']'
 				.. 'item_image_button[2.9,2.7;1.0,1.0;'
 				.. r.image_button_link(recipe.items[1]) .. ']'
 				.. 'label[1.0,0;' .. tostring(recipe.items[1]) .. ']'
@@ -706,7 +733,7 @@ function replacer.inspect_show_crafting(player_name, node_name, fields)
 			and 1 == #recipe.items
 		then
 			formspec = formspec .. 'item_image_button[1,1;3.4,3.4;'
-				.. r.image_button_link('default:furnace') .. ']'
+				.. r.image_button_link(r.machines.furnace) .. ']'
 				.. 'item_image_button[2.2,2.2;1.0,1.0;'
 				.. r.image_button_link(recipe.items[1]) .. ']'
 		elseif recipe.items

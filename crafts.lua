@@ -1,46 +1,58 @@
+local r = replacer
+local rm = r.materials
 
-if not replacer.hide_recipe_basic then
+if not r.hide_recipe_basic then
 	minetest.register_craft({
-		output = replacer.tool_name_basic,
+		output = r.tool_name_basic,
 		recipe = {
-			{ 'default:chest', '', 'default:gold_ingot' },
-			{ '', 'default:mese_crystal_fragment', '' },
-			{ 'default:steel_ingot', '', 'default:chest' },
+			{ rm.chest, '', rm.gold_ingot },
+			{ '', rm.mese_crystal_fragment, '' },
+			{ rm.steel_ingot, '',  '' },
 		}
 	})
 end
 
 
 -- only if technic mod is installed
-if replacer.has_technic_mod then
-	if not replacer.hide_recipe_technic_upgrade then
+if r.has_technic_mod then
+	if not r.hide_recipe_technic_upgrade then
 		minetest.register_craft({
-			output = replacer.tool_name_technic,
+			output = r.tool_name_technic,
 			recipe = {
-				{ replacer.tool_name_basic, 'technic:green_energy_crystal', '' },
+				{ r.tool_name_basic, 'technic:green_energy_crystal', '' },
 				{ '', '', '' },
 				{ '', '', '' },
 			}
 		})
 	end
-	if not replacer.hide_recipe_technic_direct then
+	if not r.hide_recipe_technic_direct then
 		-- direct upgrade craft
 		minetest.register_craft({
-			output = replacer.tool_name_technic,
+			output = r.tool_name_technic,
 			recipe = {
-				{ 'default:chest', 'technic:green_energy_crystal', 'default:gold_ingot' },
-				{ '', 'default:mese_crystal_fragment', '' },
-				{ 'default:steel_ingot', '', 'default:chest' },
+				{ rm.chest, 'technic:green_energy_crystal', rm.gold_ingot },
+				{ '', rm.mese_crystal_fragment, '' },
+				{ rm.steel_ingot, '', rm.chest },
 			}
 		})
 	end
+elseif r.enable_recipe_technic_without_technic then
+	minetest.register_craft({
+		output = r.tool_name_technic,
+		recipe = {
+			{ rm.chest, rm.axe_diamond, rm.gold_ingot },
+			{ rm.axe_diamond, rm.mese_crystal_fragment, rm.axe_diamond },
+			{ rm.steel_ingot, rm.axe_diamond, rm.chest },
+		}
+	})
 end
 
 
 minetest.register_craft({
   output = 'replacer:inspect',
   recipe = {
-		{ 'default:torch' },
-		{ 'default:stick' },
+		{ rm.torch },
+		{ rm.stick },
   }
 })
+

@@ -34,9 +34,9 @@ replacer.disable_minor_modes =
 -- priv to allow using history
 replacer.history_priv = minetest.settings:get('replacer.history_priv') or 'creative'
 -- disable saving history over sessions/reboots. IOW: don't use player meta e.g. if using old MT
-replacer.history_disable_persistancy =
-	minetest.settings:get_bool('replacer.history_disable_persistancy') or false
--- ignored when persistancy is disabled. Interval in minutes to
+replacer.history_disable_persistency =
+	minetest.settings:get_bool('replacer.history_disable_persistency') or false
+-- ignored when persistency is disabled. Interval in minutes to
 replacer.history_save_interval =
 	tonumber(minetest.settings:get('replacer.history_save_interval') or 7)
 -- include mode when changing from history
@@ -55,6 +55,10 @@ replacer.hide_recipe_technic_direct =
 if nil == replacer.hide_recipe_technic_direct then
 	replacer.hide_recipe_technic_direct = true
 end
+
+
+function replacer.no() return false end
+
 
 -- function that other mods, especially custom server mods,
 -- can override. e.g. restrict usage of replacer in certain
@@ -91,15 +95,15 @@ function replacer.register_limit(node_name, node_max)
 	-- add to deny_list if limit is zero
 	if 0 == node_max then
 		r.deny_list[node_name] = true
-		minetest.log('info', rb.log_deny_list_insert:format(node_name))
+		r.log('info', rb.log_deny_list_insert:format(node_name))
 		return
 	end
 
 	-- log info if already limited
 	if nil ~= r.limit_list[node_name] then
-		minetest.log('info', rb.log_limit_override:format(node_name, r.limit_list[node_name]))
+		r.log('info', rb.log_limit_override:format(node_name, r.limit_list[node_name]))
 	end
 	r.limit_list[node_name] = node_max
-	minetest.log('info', rb.log_limit_insert:format(node_name, node_max))
+	r.log('info', rb.log_limit_insert:format(node_name, node_max))
 end -- register_limit
 

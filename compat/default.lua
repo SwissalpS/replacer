@@ -1,4 +1,4 @@
--- replacer has default mod as hard dependancy, so no checking
+if not minetest.get_modpath('default') then return end
 -- helpers for inspection tool
 -- some common groups
 replacer.group_placeholder['group:water_bucket'] = 'bucket:bucket_river_water'

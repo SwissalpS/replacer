@@ -98,7 +98,7 @@ end -- on_priv_revoke
 
 function replacer.history.save(player)
 	local name = player:get_player_name()
-	if r.history_disable_persistancy then
+	if r.history_disable_persistency then
 		r.history.db[name] = nil
 		r.history.dirty[name] = nil
 		return
@@ -121,8 +121,8 @@ minetest.register_on_joinplayer(r.history.init_player)
 minetest.register_on_leaveplayer(r.history.dealloc_player)
 minetest.register_on_priv_grant(r.history.on_priv_grant)
 minetest.register_on_priv_revoke(r.history.on_priv_revoke)
-if not r.history_disable_persistancy then
+if not r.history_disable_persistency then
 	r.history_save_interval = 60 * r.history_save_interval
 	minetest.after(r.history_save_interval, r.history.auto_save)
-end -- if persistancy is enabled
+end -- if persistency is enabled
 

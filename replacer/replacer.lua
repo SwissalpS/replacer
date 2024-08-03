@@ -1,6 +1,6 @@
 replacer.tool_name_basic = 'replacer:replacer'
 replacer.tool_name_technic = 'replacer:replacer_technic'
-replacer.tool_default_node = 'default:dirt'
+replacer.tool_default_node = replacer.materials.dirt
 
 -- pulling to local scope especially those used in loops
 local r = replacer
@@ -20,7 +20,7 @@ local core_registered_nodes = minetest.registered_nodes
 local core_swap_node = minetest.swap_node
 local deserialize = minetest.deserialize
 local get_craft_recipe = minetest.get_craft_recipe
-local has_creative = creative.is_enabled_for
+local has_creative = r.has_creative
 local serialize = minetest.serialize
 local us_time = minetest.get_us_time
 -- vector
@@ -722,22 +722,26 @@ end
 
 minetest.register_tool(r.tool_name_basic, r.tool_def_basic())
 
-if r.has_technic_mod then
-	function replacer.tool_def_technic()
-		local def = r.tool_def_basic()
-		def.description = rb.description_technic
+function replacer.tool_def_technic()
+	local def = r.tool_def_basic()
+	def.description = rb.description_technic
+	if r.has_technic_mod then
 		if technic.plus then
 			def.technic_max_charge = r.max_charge
 		else
 			def.wear_represents = 'technic_RE_charge'
 			def.on_refill = technic.refill_RE_charge
 		end
-		return def
 	end
-	if technic.plus then
+	return def
+end
+if r.has_technic_mod or r.enable_recipe_technic_without_technic then
+	if r.has_technic_mod and technic.plus then
 		technic.register_power_tool(r.tool_name_technic, r.tool_def_technic())
-	else
+	elseif r.has_technic_mod then
 		technic.register_power_tool(r.tool_name_technic, r.max_charge)
+		minetest.register_tool(r.tool_name_technic, r.tool_def_technic())
+	else
 		minetest.register_tool(r.tool_name_technic, r.tool_def_technic())
 	end
 end
