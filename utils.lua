@@ -12,14 +12,6 @@ local gmatch = string.gmatch
 local registered_nodes = minetest.registered_nodes
 local pos_to_string = minetest.pos_to_string
 local sound_play = minetest.sound_play
-local sound_fail = 'default_break_glass'
-local sound_success = 'default_item_smoke'
-local sound_gain = 0.5
-if r.has_technic_mod then
-	sound_fail = 'technic_prospector_miss'
-	--sound_success = 'technic_prospector_hit'
-	sound_gain = 0.1
-end
 
 
 function replacer.common_list_items(list1, list2)
@@ -43,10 +35,21 @@ function replacer.common_list_items(list1, list2)
 end -- common_list_items
 
 
+-- expose creative check function for servers/games to override
+-- e.g. server override could check for a priv allowing
+-- user to have 'creative' priv only with replacer
+function replacer.has_creative(name)
+	if minetest.global_exists('creative') and creative.is_enabled_for then
+		return creative.is_enabled_for(name)
+	end
+	return false
+end -- has_creative
+
+
 function replacer.inform(name, message)
 	if (not message) or ('' == message) then return end
 
-	core_log('info', rb.log_messages:format(name, message))
+	r.log('info', rb.log_messages:format(name, message))
 	local player = get_player_by_name(name)
 	if not player then return end
 
@@ -56,6 +59,16 @@ function replacer.inform(name, message)
 
 	chat_send_player(name, message)
 end -- inform
+
+
+function replacer.log(level, message)
+	if not message then
+		message = level
+		level = 'warning'
+	end
+
+	core_log(level, '[replacer] ' .. message)
+end -- log
 
 
 function replacer.nice_duration(seconds)
@@ -102,10 +115,11 @@ function replacer.play_sound(player_name, fail)
 
 	if 0 < meta:get_int('replacer_muteS') then return end
 
-	sound_play(fail and sound_fail or sound_success, {
+	local sound = fail and r.sounds.fail or r.sounds.success
+	sound_play(sound.name, {
 		to_player = player_name,
 		max_hear_distance = 2,
-		gain = sound_gain }, true)
+		gain = sound.gain or 0.5 }, true)
 end -- play_sound
 
 

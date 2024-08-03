@@ -3,7 +3,6 @@
 
 local r = replacer
 local rb = replacer.blabla
-local log = minetest.log
 local get_player_information = minetest.get_player_information
 local mfe = minetest.formspec_escape
 local check_player_privs = minetest.check_player_privs
@@ -150,7 +149,7 @@ function replacer.on_player_receive_fields(player, form_name, fields)
 	elseif fields.history then
 		-- ignore if user doesn't have privs
 		if not check_player_privs(name, r.history_priv) then
-			log('info', rb.formspec_error:format(name, dump(fields)))
+			r.log('info', rb.formspec_error:format(name, dump(fields)))
 			return
 		end
 		local entry = r.history.get_by_index(player, tonumber(fields.history) or 1)
@@ -163,7 +162,7 @@ function replacer.on_player_receive_fields(player, form_name, fields)
 		return
 	else
 		-- some hacked client forging formspec?
-		log('info', rb.formspec_hacker:format(name, dump(fields)))
+		r.log('info', rb.formspec_hacker:format(name, dump(fields)))
 		return
 	end
 

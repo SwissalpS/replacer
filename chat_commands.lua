@@ -15,11 +15,14 @@ replacer.chatcommand_mute = {
 	description = rb.ccm_description,
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		if not player then -- TODO: seems unlikely to happen
+		-- can happen if command was issued by e.g. command block
+		-- while owner isn't online. Rather unlikely but possible.
+		if not player then
 			return false, rb.ccm_player_not_found
 		end
 		local meta = player:get_meta()
-		if not meta then -- TODO: seems unlikely to happen
+		-- TODO: low chance of this happening, above check would already fail.
+		if not meta then
 			return false, rb.ccm_player_meta_error
 		end
 

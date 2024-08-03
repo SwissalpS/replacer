@@ -29,11 +29,11 @@ replacer.version = 20240225
 replacer.has_bakedclay = minetest.get_modpath('bakedclay')
 replacer.has_basic_dyes = minetest.get_modpath('dye')
 								and minetest.global_exists('dye')
-								and dye.basecolors
+								and dye.basecolors and true or false
 replacer.has_circular_saw = minetest.get_modpath('moreblocks')
 								and minetest.global_exists('moreblocks')
 								and minetest.global_exists('circular_saw')
-								and circular_saw.names
+								and circular_saw.names and true or false
 replacer.has_colormachine_mod = minetest.get_modpath('colormachine')
 								and minetest.global_exists('colormachine')
 replacer.has_technic_mod = minetest.get_modpath('technic')
@@ -42,6 +42,8 @@ replacer.has_unifieddyes_mod = minetest.get_modpath('unifieddyes')
 								and minetest.global_exists('unifieddyes')
 replacer.has_unified_inventory_mod = minetest.get_modpath('unified_inventory')
 								and true or false
+replacer.has_xcompat_mod = minetest.get_modpath('xcompat')
+								and minetest.global_exists('xcompat')
 
 -- image mapping tables for replacer:inspect
 replacer.group_placeholder = {}
@@ -50,9 +52,11 @@ replacer.image_replacements = {}
 local path = minetest.get_modpath('replacer') .. '/'
 -- for developers
 dofile(path .. 'test.lua')
--- strings for translation (i+r)
+-- strings for translation (inspect & replacer)
 dofile(path .. 'blabla.lua')
--- utilities (i+r)
+-- utilities (inspect & replacer)
+-- material and sound compatibility for various games
+dofile(path .. 'xcompat.lua')
 dofile(path .. 'utils.lua')
 -- more settings and functions
 dofile(path .. 'replacer/constrain.lua')
