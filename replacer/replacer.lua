@@ -127,7 +127,8 @@ function replacer.get_charge(stack)
 		return r.max_charge, r.max_charge
 	end
 
-	return stack:get_meta():get_float('charge'), r.max_charge
+	local charge = stack:get_meta():get_float('charge')
+	return max(0, min(charge, r.max_charge)), r.max_charge
 end -- get_charge
 
 
