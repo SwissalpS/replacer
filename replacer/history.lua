@@ -33,6 +33,8 @@ function r.history.auto_save()
 end -- auto_save
 
 function replacer.history.dealloc_player(player)
+	if not player then return end
+
 	r.history.save(player)
 	r.history.db[player:get_player_name()] = nil
 end -- dealloc_player
@@ -46,6 +48,8 @@ function replacer.history.get_player_table(player)
 end -- get_player_table
 
 function replacer.history.init_player(player)
+	if not player then return end
+
 	local name = player:get_player_name()
 	if not minetest.check_player_privs(name, r.history_priv) then return end
 
