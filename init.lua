@@ -3,7 +3,7 @@
 	Copyright (C) 2013 Sokomine
 	Copyright (C) 2019 coil0
 	Copyright (C) 2019 HybridDog
-	Copyright (C) 2019-2024 SwissalpS
+	Copyright (C) 2019-2025 SwissalpS
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
--- Version 4.93 (20240803)
+-- Version 4.94 (20251010)
 
 -- Changelog: see CHANGELOG file
 
 replacer = {}
-replacer.version = 20240803
+replacer.version = 20251010
 
 replacer.has_bakedclay = minetest.get_modpath('bakedclay')
 replacer.has_basic_dyes = minetest.get_modpath('dye')

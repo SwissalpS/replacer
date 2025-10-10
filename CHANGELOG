@@ -1,3 +1,6 @@
+20251010 * SwissalpS rolled own charge logic for more game/mod independance.
+         * Changed meta data storage format
+         * Added 'title' chat subcommand (also enabled 'version' subcommand).
 20240803 * SwissalpS made replacer game agnostic (using [xcompat]).
 20240225 * SwissalpS patched a crash situation with multinode-nodes. Thanks frogTheSecond and Huhhila for detecting and reporting.
 20221107 * fluxionary fixed typo unkown -> unknown
