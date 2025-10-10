@@ -38,6 +38,8 @@ replacer.chatcommand_mute = {
 			key = 'replacer_muteS'
 		elseif 'version' == command then
 			return true, tostring(replacer.version)
+		elseif 'title' == command then
+			return replacer.chatcommand_set_title(player, param:sub(7))
 		else
 			return false, usage
 		end
@@ -54,6 +56,22 @@ replacer.chatcommand_mute = {
 		return true, ''
 	end
 }
+
+
+function replacer.chatcommand_set_title(player, title)
+	local stack = player:get_wielded_item()
+	if replacer.tool_name_basic ~= stack:get_name():sub(1, #replacer.tool_name_basic) then
+		return false, rb.ccm_wrong_wielditem
+	end
+
+	if replacer.set_title(stack, title) then
+		player:set_wielded_item(stack)
+		return true, ''
+	else
+		return false, rb.ccm_failed_to_set_title
+	end
+end
+
 
 minetest.register_chatcommand('replacer', replacer.chatcommand_mute)
 

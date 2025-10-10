@@ -138,6 +138,16 @@ function replacer.set_data(stack, node, mode)
 end -- set_data
 
 
+function replacer.set_title(stack, title)
+	if 'string' ~= type(title) then return false end
+
+	-- trim to max 80 characters, not because core can't handle it.
+	stack:get_meta():set_string('_title', title:sub(1, 80))
+	r.set_data(stack, r.get_data(stack))
+	return true
+end -- set_title
+
+
 function replacer.discharge(stack, charge, num_nodes, has_creative_or_give)
 	if has_creative_or_give or (r.has_technic_mod and technic.creative_mode) then
 		return
