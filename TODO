@@ -26,6 +26,13 @@
 
 ------ replacer fixes --------
 
+add /replacer help [<subcommand>] to show help on subcommands and without param
+    output general usage help
+
+think about possibly allowing drop-ins in title for e.g. mode or param values
+    e.g. 'Garden %M.%m %p' --> 'Garden 3.1 122' (mode major, minor, param2)
+    param1 would be 'P'; node name 'N' or similar.
+
 try to add a formspec for player to be able to choose from multiple valid drops
     when node does not drop itself.
 
