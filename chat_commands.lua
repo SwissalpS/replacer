@@ -40,6 +40,8 @@ replacer.chatcommand_mute = {
 			return true, tostring(replacer.version)
 		elseif 'title' == command then
 			return replacer.chatcommand_set_title(player, param:sub(7))
+		elseif 'help' == command then
+			return true, 'TODO: output tool instructions and chat command help.'
 		else
 			return false, usage
 		end
