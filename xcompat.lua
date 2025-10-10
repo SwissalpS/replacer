@@ -67,19 +67,20 @@ end
 
 
 -- machines are not yet covered by xcompat
-local gameid = xcompat.gameid
-if 'farlands_reloaded' == gameid then
-	r.machines.furnace = 'fl_workshop:furnace'
-	r.machines.furnace_active = 'fl_workshop:furnace_active'
-elseif 'hades_revisited' == gameid then
-	r.machines.furnace = 'hades_furnaces:furnace'
-	r.machines.furnace_active = 'hades_furnaces:furnace_active'
-elseif 'mineclonia' == gameid then
-	r.machines.furnace = 'mcl_furnaces:furnace'
-	r.machines.furnace_active = 'mcl_furnaces:furnace_active'
-else
-	-- fallback to default game
-	r.machines.furnace = 'default:furnace'
-	r.machines.furnace_active = 'default:furnace_active'
+-- fallback to default game
+r.machines.furnace = 'default:furnace'
+r.machines.furnace_active = 'default:furnace_active'
+if r.has_xcompat_mod then
+	local gameid = xcompat.gameid
+	if 'farlands_reloaded' == gameid then
+		r.machines.furnace = 'fl_workshop:furnace'
+		r.machines.furnace_active = 'fl_workshop:furnace_active'
+	elseif 'hades_revisited' == gameid then
+		r.machines.furnace = 'hades_furnaces:furnace'
+		r.machines.furnace_active = 'hades_furnaces:furnace_active'
+	elseif 'mineclonia' == gameid then
+		r.machines.furnace = 'mcl_furnaces:furnace'
+		r.machines.furnace_active = 'mcl_furnaces:furnace_active'
+	end
 end
 
