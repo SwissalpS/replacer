@@ -1,4 +1,4 @@
-if not minetest.get_modpath('ropes') then return end
+if not core.get_modpath('ropes') then return end
 
 replacer.register_non_creative_alias('ropes:ropeladder', 'ropes:ropeladder_top')
 replacer.register_non_creative_alias('ropes:ropeladder_bottom', 'ropes:ropeladder_top')

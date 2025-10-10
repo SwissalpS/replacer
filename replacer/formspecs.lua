@@ -3,10 +3,10 @@
 
 local r = replacer
 local rb = replacer.blabla
-local get_player_information = minetest.get_player_information
-local mfe = minetest.formspec_escape
-local check_player_privs = minetest.check_player_privs
-local show_formspec = minetest.show_formspec
+local get_player_information = core.get_player_information
+local mfe = core.formspec_escape
+local check_player_privs = core.check_player_privs
+local show_formspec = core.show_formspec
 
 replacer.form_name_modes = 'replacer_replacer_mode_change'
 
@@ -172,7 +172,7 @@ function replacer.on_player_receive_fields(player, form_name, fields)
 	player:set_wielded_item(wielded)
 end -- on_player_receive_fields
 -- listen to submitted fields
-minetest.register_on_player_receive_fields(r.on_player_receive_fields)
+core.register_on_player_receive_fields(r.on_player_receive_fields)
 
 function replacer.show_mode_formspec(player, mode)
 	if not player then return end

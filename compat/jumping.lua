@@ -1,4 +1,4 @@
-if not minetest.get_modpath('jumping') then return end
+if not core.get_modpath('jumping') then return end
 
 local sBaseName = 'jumping:trampoline'
 local sDropName = sBaseName .. '1'

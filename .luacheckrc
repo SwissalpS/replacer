@@ -1,7 +1,7 @@
 
 globals = {
 	"replacer",
-	minetest = { fields = { "translate", "get_translator" } },
+	core = { fields = { "translate", "get_translator" } },
 }
 
 read_globals = {
@@ -9,8 +9,8 @@ read_globals = {
 	string = { fields = { "split", "match", "find", "lower" } },
 	table = { fields = { "copy", "getn", "insert", "shuffle", "sort" } },
 
-	-- Minetest
-	"minetest",
+	-- Luanti
+	"core",
 	"vector", "ItemStack",
 	"dump", "VoxelArea",
 

@@ -16,7 +16,7 @@ local function add_recipe(node_name, context, recipes)
 	if not (context and context.param2) then return end
 
 	local param2 = context.param2
-	local node_def = minetest.registered_items[node_name]
+	local node_def = core.registered_items[node_name]
 	if ud.is_airbrushed(node_def) then
 		-- find the correct recipe and append it to bottom of list
 		local first
@@ -78,6 +78,6 @@ end -- is_airbrushed
 -- mostly for scifi_nodes plastic.
 replacer.register_set_enabler(function(node)
 	return node and node.name
-		and ud.is_airbrush_compatible(minetest.registered_nodes[node.name])
+		and ud.is_airbrush_compatible(core.registered_nodes[node.name])
 end)
 

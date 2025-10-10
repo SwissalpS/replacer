@@ -2,13 +2,13 @@ replacer.patterns = {}
 local r = replacer
 local rp = replacer.patterns
 local floor = math.floor
-local is_protected = minetest.is_protected
-local poshash = minetest.hash_node_position
-local core_registered_nodes = minetest.registered_nodes
+local is_protected = core.is_protected
+local poshash = core.hash_node_position
+local core_registered_nodes = core.registered_nodes
 local vector_add = vector.add
 local vector_distance = vector.distance
 
--- cache results of minetest.get_node
+-- cache results of core.get_node
 replacer.patterns.known_nodes = {}
 function replacer.patterns.get_node(pos)
 	local i = poshash(pos)
@@ -16,7 +16,7 @@ function replacer.patterns.get_node(pos)
 	if nil ~= node then
 		return node
 	end
-	node = minetest.get_node(pos)
+	node = core.get_node(pos)
 	rp.known_nodes[i] = node
 	return node
 end -- get_node

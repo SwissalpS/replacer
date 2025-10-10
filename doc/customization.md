@@ -1,5 +1,5 @@
-Customization documentation for replacer minetest mod
-=====================================================
+Customization documentation for replacer Luanti mod
+====================================================
 
 - [Settings](#settings)
 - [API Commands](#api-commands)

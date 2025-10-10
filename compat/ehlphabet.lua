@@ -1,4 +1,4 @@
-if not minetest.get_modpath('ehlphabet') then return end
+if not core.get_modpath('ehlphabet') then return end
 
 -- for inspection tool
 local S = replacer.S

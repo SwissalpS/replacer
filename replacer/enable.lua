@@ -2,7 +2,7 @@ local r = replacer
 local rb = replacer.blabla
 
 replacer.enable_recipe_technic_without_technic =
-	minetest.settings:get_bool('replacer.enable_recipe_technic_without_technic')
+	core.settings:get_bool('replacer.enable_recipe_technic_without_technic')
 	or false
 
 -- see replacer.register_exception()

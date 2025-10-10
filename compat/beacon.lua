@@ -1,4 +1,4 @@
-if not minetest.get_modpath('beacon') then return end
+if not core.get_modpath('beacon') then return end
 
 local function is_beacon_beam_or_base(node_name)
 	if 'string' ~= type(node_name) then return nil end

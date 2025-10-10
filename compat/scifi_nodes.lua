@@ -1,4 +1,4 @@
-if not minetest.get_modpath('scifi_nodes') then return end
+if not core.get_modpath('scifi_nodes') then return end
 
 local S = replacer.S
 
@@ -18,7 +18,7 @@ local function add_recipe_itemholder(item_name, context, recipes)
 
     if not (context and context.pos) then return end
 
-	local held_name = minetest.get_meta(context.pos):get_string('item')
+	local held_name = core.get_meta(context.pos):get_string('item')
 	local items
 	if '' ~= held_name then
 		items = { held_name }
@@ -26,7 +26,7 @@ local function add_recipe_itemholder(item_name, context, recipes)
 		-- servers without override need to search for dropped items.
 		items = {}
 		local luaentity
-		local objects = minetest.get_objects_inside_radius(context.pos, .5)
+		local objects = core.get_objects_inside_radius(context.pos, .5)
 		if (not objects) or (0 == #objects) then return end
 
 		for _, obj in ipairs(objects) do
@@ -34,7 +34,7 @@ local function add_recipe_itemholder(item_name, context, recipes)
 				luaentity = obj:get_luaentity()
 				if luaentity and luaentity.itemstring
 					and ('' ~= luaentity.itemstring)
-					and minetest.registered_items[ItemStack(luaentity.itemstring):get_name()]
+					and core.registered_items[ItemStack(luaentity.itemstring):get_name()]
 				then
 					table.insert(items, luaentity.itemstring)
 				end
@@ -61,7 +61,7 @@ local function add_recipe_powered_stand(item_name, context, recipes)
 
     if not (context and context.pos) then return end
 
-	local held_name = minetest.get_meta(context.pos):get_string('item')
+	local held_name = core.get_meta(context.pos):get_string('item')
 	local items
 	if '' ~= held_name then
 		items = { held_name }
@@ -69,7 +69,7 @@ local function add_recipe_powered_stand(item_name, context, recipes)
 		-- servers without override need to search for dropped items.
 		items = {}
 		local luaentity
-		local objects = minetest.get_objects_inside_radius(
+		local objects = core.get_objects_inside_radius(
 			vector.add(context.pos, vector.new(0, 1, 0)), .5)
 		if (not objects) or (0 == #objects) then return end
 
@@ -78,7 +78,7 @@ local function add_recipe_powered_stand(item_name, context, recipes)
 				luaentity = obj:get_luaentity()
 				if luaentity and luaentity.itemstring
 					and ('' ~= luaentity.itemstring)
-					and minetest.registered_items[ItemStack(luaentity.itemstring):get_name()]
+					and core.registered_items[ItemStack(luaentity.itemstring):get_name()]
 				then
 					table.insert(items, luaentity.itemstring)
 				end

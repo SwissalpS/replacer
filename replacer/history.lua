@@ -24,8 +24,8 @@ function replacer.history.add_item(player, mode, node, short_description)
 end -- add_item
 
 function r.history.auto_save()
-	minetest.after(r.history_save_interval, r.history.auto_save)
-	for _, player in ipairs(minetest.get_connected_players()) do
+	core.after(r.history_save_interval, r.history.auto_save)
+	for _, player in ipairs(core.get_connected_players()) do
 		if r.history.dirty[player:get_player_name()] then
 			r.history.save(player)
 		end
@@ -51,7 +51,7 @@ function replacer.history.init_player(player)
 	if not player then return end
 
 	local name = player:get_player_name()
-	if not minetest.check_player_privs(name, r.history_priv) then return end
+	if not core.check_player_privs(name, r.history_priv) then return end
 
 	local db_strings =
 		player:get_meta():get_string('replacer_his'):split('||', false, r.history_max) or {}
@@ -73,7 +73,7 @@ function replacer.history.init_player(player)
 			},
 		}
 		if r.disable_minor_modes then entry.mode.minor = 1 end
-		node_def = minetest.registered_items[entry.node.name]
+		node_def = core.registered_items[entry.node.name]
 		colour_name = rud_colour_name(entry.node.param2, node_def)
 		if 0 < #colour_name then
 			colour_name = ' ' .. colour_name
@@ -90,14 +90,14 @@ function replacer.history.on_priv_grant(name, granter, priv)
 	-- skip duplicate calls
 	if granter then return end
 	if priv ~= r.history_priv then return end
-	r.history.init_player(minetest.get_player_by_name(name))
+	r.history.init_player(core.get_player_by_name(name))
 end -- on_priv_grant
 
 function replacer.history.on_priv_revoke(name, revoker, priv)
 	-- skip duplicate calls
 	if revoker then return end
 	if priv ~= r.history_priv then return end
-	r.history.dealloc_player(minetest.get_player_by_name(name))
+	r.history.dealloc_player(core.get_player_by_name(name))
 end -- on_priv_revoke
 
 function replacer.history.save(player)
@@ -121,12 +121,12 @@ function replacer.history.save(player)
 	r.history.dirty[name] = nil
 end -- save
 
-minetest.register_on_joinplayer(r.history.init_player)
-minetest.register_on_leaveplayer(r.history.dealloc_player)
-minetest.register_on_priv_grant(r.history.on_priv_grant)
-minetest.register_on_priv_revoke(r.history.on_priv_revoke)
+core.register_on_joinplayer(r.history.init_player)
+core.register_on_leaveplayer(r.history.dealloc_player)
+core.register_on_priv_grant(r.history.on_priv_grant)
+core.register_on_priv_revoke(r.history.on_priv_revoke)
 if not r.history_disable_persistency then
 	r.history_save_interval = 60 * r.history_save_interval
-	minetest.after(r.history_save_interval, r.history.auto_save)
+	core.after(r.history_save_interval, r.history.auto_save)
 end -- if persistency is enabled
 

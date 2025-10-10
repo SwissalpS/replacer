@@ -1,4 +1,4 @@
-if not minetest.get_modpath('telemosaic') then return end
+if not core.get_modpath('telemosaic') then return end
 
 local rgp = replacer.group_placeholder
 rgp['group:telemosaic_extender_one'] = 'telemosaic:extender_one'

@@ -1,6 +1,6 @@
 -- enable developer mode
 replacer.dev_mode =
-	minetest.settings:get_bool('replacer.dev_mode') or false
+	core.settings:get_bool('replacer.dev_mode') or false
 if not replacer.dev_mode then return end
 
 replacer.test = {}
@@ -83,7 +83,7 @@ function replacer.test.chatcommand_place_all(player_name, param)
 		end
 	end
 	if 0 == #patterns then table.insert(patterns, '.*') end
-	rt.player = minetest.get_player_by_name(player_name)
+	rt.player = core.get_player_by_name(player_name)
 	rt.pos = rt.player:get_pos()--vector.add(player:get_pos(), vector.new(1, 0, 1))--
 	rt.selected = {}
 	rt.count = 0
@@ -93,7 +93,7 @@ function replacer.test.chatcommand_place_all(player_name, param)
 		end
 		return false
 	end -- has_match
-	for name, _ in pairs(minetest.registered_nodes) do
+	for name, _ in pairs(core.registered_nodes) do
 		if not has_match(name, rt.skip)
 			and has_match(name, patterns)
 		then
@@ -113,11 +113,11 @@ function replacer.test.chatcommand_place_all(player_name, param)
 			.. ' to ' .. r.nice_pos_string(pos2)
 	end
 
-	minetest.emerge_area(rt.pos, vector.add(pos2, vector.new(0, -1, 0)))
+	core.emerge_area(rt.pos, vector.add(pos2, vector.new(0, -1, 0)))
 	rt.i = 1
 	rt.active = true
 	rt.succ_count = 0
-	minetest.after(.1, rt.step)
+	core.after(.1, rt.step)
 	return true, 'Started process'
 end -- chatcommand_place_all
 
@@ -138,27 +138,27 @@ function replacer.test.step()
 
 	for _ = 1, rt.nodes_per_step do
 		name = rt.selected[rt.i]
-		node = minetest.registered_nodes[name]
+		node = core.registered_nodes[name]
 		pos_ = vector.add(rt.pos, vector.new(rt.x, 0, rt.z))
 		pos__ = vector.add(pos_, vector.new(0, -1, 0))
 		-- ensure area is generated and loaded
 		if rt.check_mapgen(pos_) then
 			rti('waiting for mapgen')
-			minetest.after(5, rt.step)
+			core.after(5, rt.step)
 			return
 		end
 
-		if minetest.find_node_near(pos_, 1, 'ignore', true) then
+		if core.find_node_near(pos_, 1, 'ignore', true) then
 			rti('emerging area')
 			move_player()
-			minetest.emerge_area(pos_, pos__)
-			minetest.after(2, rt.step)
+			core.emerge_area(pos_, pos__)
+			core.after(2, rt.step)
 			return
 		end
 
-		minetest.set_node(pos_, rt.air_node)
+		core.set_node(pos_, rt.air_node)
 		if not rt.no_support then
-			minetest.set_node(pos__, rt.support_node)
+			core.set_node(pos__, rt.support_node)
 		end
 		move_player()
 		print(r.nice_pos_string(pos_) .. ' ' .. name)
@@ -181,7 +181,7 @@ function replacer.test.step()
 	end
 	-- keep player alive
 	--rt.player:set_hp(55555, { type = 'set_hp', from = 'mod' })
-	minetest.do_item_eat(55555, 'farming:bread 99', ItemStack('farming:bread 99'),
+	core.do_item_eat(55555, 'farming:bread 99', ItemStack('farming:bread 99'),
 		rt.player, { type = 'nothing' })
 	if rt.count <= rt.i then
 		rti(tostring(rt.succ_count) .. ' of ' .. tostring(rt.count)
@@ -192,7 +192,7 @@ function replacer.test.step()
 
 	rti('Step ' .. tostring(rt.i) .. ' of ' .. tostring(rt.count) .. ' done')
 
-	minetest.after(rt.seconds_between_steps, rt.step)
+	core.after(rt.seconds_between_steps, rt.step)
 end -- step
 
 
@@ -204,8 +204,8 @@ function replacer.test.dealloc_player(player)
 end -- dealloc_player
 
 
-minetest.register_on_leaveplayer(rt.dealloc_player)
-minetest.register_chatcommand('place_all', {
+core.register_on_leaveplayer(rt.dealloc_player)
+core.register_chatcommand('place_all', {
 	params = '[dry-run][ move_player][ no_support_node][ [<include pattern1>] ... [ <include patternN>] ]',
 	description = 'Places one of all registered nodes on a grid in +x,+z plane starting '
 		.. 'at player position. You can use dry-run option to detect how much space you will need. '
@@ -223,11 +223,11 @@ local events = {} -- list of { minp, maxp, time }
 
 -- update last mapgen event time
 --luacheck: no unused args
-minetest.register_on_generated(function(minp, maxp, seed)
+core.register_on_generated(function(minp, maxp, seed)
 	table.insert(events, {
 		minp = minp,
 		maxp = maxp,
-		time = minetest.get_us_time()
+		time = core.get_us_time()
 	})
 end)
 
@@ -246,12 +246,12 @@ end -- check_mapgen
 
 -- cleanup
 local timer = 0
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if 5 > timer then return end
 
 	timer = 0
-	local time = minetest.get_us_time()
+	local time = core.get_us_time()
 	local delay_seconds = 10
 
 	local copied_events = events

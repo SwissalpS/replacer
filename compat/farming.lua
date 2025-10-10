@@ -1,4 +1,4 @@
-if not minetest.get_modpath('farming') then return end
+if not core.get_modpath('farming') then return end
 
 local rgp = replacer.group_placeholder
 rgp['group:food_cheese'] = 'farming:cheese_vegan'

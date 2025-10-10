@@ -1,4 +1,4 @@
-if not minetest.get_modpath('itemframes') then return end
+if not core.get_modpath('itemframes') then return end
 
 -- for inspection tool --
 local S = replacer.S
@@ -8,7 +8,7 @@ local function add_recipe_itemframe(item_name, context, recipes)
 
     if not (context and context.pos) then return end
 
-	local held_name = minetest.get_meta(context.pos):get_string('item')
+	local held_name = core.get_meta(context.pos):get_string('item')
 	if '' == held_name then return end
 
 	recipes[#recipes + 1] = {
@@ -28,7 +28,7 @@ local function add_recipe_pedestal(item_name, context, recipes)
 
     if not (context and context.pos) then return end
 
-	local held_name = minetest.get_meta(context.pos):get_string('item')
+	local held_name = core.get_meta(context.pos):get_string('item')
 	if '' == held_name then return end
 
 	recipes[#recipes + 1] = {

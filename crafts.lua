@@ -2,7 +2,7 @@ local r = replacer
 local rm = r.materials
 
 if not r.hide_recipe_basic then
-	minetest.register_craft({
+	core.register_craft({
 		output = r.tool_name_basic,
 		recipe = {
 			{ rm.chest, '', rm.gold_ingot },
@@ -16,7 +16,7 @@ end
 -- only if technic mod is installed
 if r.has_technic_mod then
 	if not r.hide_recipe_technic_upgrade then
-		minetest.register_craft({
+		core.register_craft({
 			output = r.tool_name_technic,
 			recipe = {
 				{ r.tool_name_basic, 'technic:green_energy_crystal', '' },
@@ -27,7 +27,7 @@ if r.has_technic_mod then
 	end
 	if not r.hide_recipe_technic_direct then
 		-- direct upgrade craft
-		minetest.register_craft({
+		core.register_craft({
 			output = r.tool_name_technic,
 			recipe = {
 				{ rm.chest, 'technic:green_energy_crystal', rm.gold_ingot },
@@ -37,7 +37,7 @@ if r.has_technic_mod then
 		})
 	end
 elseif r.enable_recipe_technic_without_technic then
-	minetest.register_craft({
+	core.register_craft({
 		output = r.tool_name_technic,
 		recipe = {
 			{ rm.chest, rm.axe_diamond, rm.gold_ingot },
@@ -48,7 +48,7 @@ elseif r.enable_recipe_technic_without_technic then
 end
 
 
-minetest.register_craft({
+core.register_craft({
   output = 'replacer:inspect',
   recipe = {
 		{ rm.torch },

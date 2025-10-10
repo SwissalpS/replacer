@@ -1,17 +1,17 @@
 local r = replacer
 local rb = replacer.blabla
-local chat_send_player = minetest.chat_send_player
-local get_player_by_name = minetest.get_player_by_name
-local get_node_drops = minetest.get_node_drops
-local core_log = minetest.log
+local chat_send_player = core.chat_send_player
+local get_player_by_name = core.get_player_by_name
+local get_node_drops = core.get_node_drops
+local core_log = core.log
 local floor = math.floor
 local absolute = math.abs
 local concat = table.concat
 local insert = table.insert
 local gmatch = string.gmatch
-local registered_nodes = minetest.registered_nodes
-local pos_to_string = minetest.pos_to_string
-local sound_play = minetest.sound_play
+local registered_nodes = core.registered_nodes
+local pos_to_string = core.pos_to_string
+local sound_play = core.sound_play
 
 
 function replacer.common_list_items(list1, list2)
@@ -39,7 +39,7 @@ end -- common_list_items
 -- e.g. server override could check for a priv allowing
 -- user to have 'creative' priv only with replacer
 function replacer.has_creative(name)
-	if minetest.global_exists('creative') and creative.is_enabled_for then
+	if core.global_exists('creative') and creative.is_enabled_for then
 		return creative.is_enabled_for(name)
 	end
 	return false

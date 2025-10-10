@@ -1,4 +1,4 @@
-if not minetest.get_modpath('digtron') then return end
+if not core.get_modpath('digtron') then return end
 
 -- prevent accidental replacement of digtron crates
 -- also placing isn't a good idea either

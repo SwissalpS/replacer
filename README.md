@@ -1,4 +1,4 @@
-Replacement tool for creative building (Mod for Minetest)
+Replacement tool for creative building (Mod for Luanti)
 =========================================================
 
 This tool is helpful for creative purposes (e.g. build a wall and "paint" windows into it).

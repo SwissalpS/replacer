@@ -14,7 +14,7 @@ replacer.chatcommand_mute = {
 	params = rb.ccm_params,--(chat|audio) (0|1)
 	description = rb.ccm_description,
 	func = function(name, param)
-		local player = minetest.get_player_by_name(name)
+		local player = core.get_player_by_name(name)
 		-- can happen if command was issued by e.g. command block
 		-- while owner isn't online. Rather unlikely but possible.
 		if not player then
@@ -75,5 +75,5 @@ function replacer.chatcommand_set_title(player, title)
 end
 
 
-minetest.register_chatcommand('replacer', replacer.chatcommand_mute)
+core.register_chatcommand('replacer', replacer.chatcommand_mute)
 

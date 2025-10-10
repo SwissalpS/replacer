@@ -1,4 +1,4 @@
-if not minetest.get_modpath('vines') then return end
+if not core.get_modpath('vines') then return end
 
 local S = replacer.S
 

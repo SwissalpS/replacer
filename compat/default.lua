@@ -1,4 +1,4 @@
-if not minetest.get_modpath('default') then return end
+if not core.get_modpath('default') then return end
 -- helpers for inspection tool
 -- some common groups
 replacer.group_placeholder['group:water_bucket'] = 'bucket:bucket_river_water'
@@ -42,7 +42,7 @@ end
 -- handle the standard dye color groups
 if replacer.has_basic_dyes then
 	for _, color in ipairs(dye.basecolors) do
-		local def = minetest.registered_items['dye:' .. color]
+		local def = core.registered_items['dye:' .. color]
 		if def and def.groups then
 			for k, _ in pairs(def.groups) do
 				if 'dye' ~= k then

@@ -15,24 +15,24 @@ local floor = math.floor
 local max, min = math.max, math.min
 local concat = table.concat
 local insert = table.insert
-local chat = minetest.chat_send_player
-local mfe = minetest.formspec_escape
-local deserialize = minetest.deserialize
-local parse_json = minetest.parse_json
-local get_node_or_nil = minetest.get_node_or_nil
-local get_node_light = minetest.get_node_light
-local get_pointed_thing_position = minetest.get_pointed_thing_position
-local get_all_craft_recipes = minetest.get_all_craft_recipes
-local is_protected = minetest.is_protected
-local show_formspec = minetest.show_formspec
-local registered_abms = minetest.registered_abms
-local registered_lbms = minetest.registered_lbms
-local registered_aliases = minetest.registered_aliases
-local registered_tools = minetest.registered_tools
-local registered_nodes = minetest.registered_nodes
-local registered_items = minetest.registered_items
-local registered_entities = minetest.registered_entities
-local registered_craftitems = minetest.registered_craftitems
+local chat = core.chat_send_player
+local mfe = core.formspec_escape
+local deserialize = core.deserialize
+local parse_json = core.parse_json
+local get_node_or_nil = core.get_node_or_nil
+local get_node_light = core.get_node_light
+local get_pointed_thing_position = core.get_pointed_thing_position
+local get_all_craft_recipes = core.get_all_craft_recipes
+local is_protected = core.is_protected
+local show_formspec = core.show_formspec
+local registered_abms = core.registered_abms
+local registered_lbms = core.registered_lbms
+local registered_aliases = core.registered_aliases
+local registered_tools = core.registered_tools
+local registered_nodes = core.registered_nodes
+local registered_items = core.registered_items
+local registered_entities = core.registered_entities
+local registered_craftitems = core.registered_craftitems
 -- luacheck: push ignore unused pd
 local pd = r.print_dump
 -- luacheck: pop
@@ -72,7 +72,7 @@ function replacer.register_craft_method(uid, machine_itemstring, func_inspect,
 end -- register_craft_method
 
 
-minetest.register_tool('replacer:inspect', {
+core.register_tool('replacer:inspect', {
 	description = rbi.description,
 	groups = {},
 	inventory_image = 'replacer_inspect.png',
@@ -514,7 +514,7 @@ function replacer.image_button_link(stack_string)
 		-- dynamically figure out a group replacement
 		g = stack_string:sub(1 + stack_string:find(':', 2))
 		for item_name, _ in pairs(registered_items) do
-			if 0 ~= minetest.get_item_group(item_name, g) then
+			if 0 ~= core.get_item_group(item_name, g) then
 				r.group_placeholder[stack_string] = item_name
 				stack_string = item_name
 				group = 'G'
@@ -788,5 +788,5 @@ end
 
 -- establish a callback so that input from the player-specific
 -- formspec gets handled
-minetest.register_on_player_receive_fields(replacer.form_input_handler)
+core.register_on_player_receive_fields(replacer.form_input_handler)
 

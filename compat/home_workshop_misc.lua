@@ -1,4 +1,4 @@
-if not minetest.get_modpath('home_workshop_misc') then return end
+if not core.get_modpath('home_workshop_misc') then return end
 
 -- for replacer
 local mug = 'home_workshop_misc:beer_mug'

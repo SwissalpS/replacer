@@ -1,4 +1,4 @@
-if not minetest.get_modpath('bucket') then return end
+if not core.get_modpath('bucket') then return end
 
 local rbi = replacer.blabla.inspect
 

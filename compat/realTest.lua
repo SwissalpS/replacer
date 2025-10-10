@@ -1,10 +1,10 @@
 -- overrides for replacer:inspect
 -- support for RealTest
-if minetest.get_modpath('trees')
-	and minetest.get_modpath('core')
-	and minetest.get_modpath('instruments')
-	and minetest.get_modpath('anvil')
-	and minetest.get_modpath('scribing_table')
+if core.get_modpath('trees')
+	and core.get_modpath('core')
+	and core.get_modpath('instruments')
+	and core.get_modpath('anvil')
+	and core.get_modpath('scribing_table')
 then
 	replacer.image_replacements['group:planks'] = 'trees:pine_planks'
 	replacer.image_replacements['group:plank'] = 'trees:pine_plank'
