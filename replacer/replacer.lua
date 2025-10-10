@@ -46,18 +46,39 @@ replacer.mode_colours = {
 	{ '#f4b755', '#d29533', '#9F6200' }
 }
 
+function replacer.convert_legacy_meta(stack, meta)
+	local data = meta:get_string('replacer'):split(' ')
+	local node = {
+		name = data[1] or r.tool_default_node,
+		param1 = tonumber(data[2] or 0),
+		param2 = tonumber(data[3] or 0)
+	}
+	local mode, mode_bare = {}, meta:get_string('mode'):split('.')
+	mode.major = tonumber(mode_bare[1] or 1)
+	mode.minor = tonumber(mode_bare[2] or 1)
+	-- remove old entries
+	meta:set_string('replacer', '')
+	meta:set_string('mode', '')
+	-- write in new format
+	r.set_data(stack, node, mode)
+end -- convert_legacy
+
 
 function replacer.get_data(stack)
 	local meta = stack:get_meta()
-	local data = meta:get_string('replacer'):split(' ') or {}
+	if meta:contains('replacer') then
+		r.convert_legacy_meta(stack, meta)
+	end
+	local name = meta:get_string('_name')
 	local node = {
-		name = data[1] or r.tool_default_node,
-		param1 = tonumber(data[2]) or 0,
-		param2 = tonumber(data[3]) or 0
+		name = '' ~= name and name or r.tool_default_node,
+		param1 = max(0, min(255, meta:get_int('_param1'))),
+		param2 = max(0, min(255, meta:get_int('_param2'))),
 	}
-	local mode, mode_bare = {}, meta:get_string('mode'):split('.') or {}
-	mode.major = tonumber(mode_bare[1] or 1) or 1
-	mode.minor = tonumber(mode_bare[2] or 1)
+	local mode = {
+		major = max(1, min(3, meta:get_int('_mmajor'))),
+		minor = max(1, min(3, meta:get_int('_mminor'))),
+	}
 	if r.disable_minor_modes then mode.minor = 1 end
 	return node, mode
 end -- get_data
@@ -70,26 +91,31 @@ function replacer.set_data(stack, node, mode)
 		local _
 		_, mode = r.get_data(stack)
 	end
+	mode.major = mode.major or 1
+	mode.minor = mode.minor or 1
 	if r.disable_minor_modes then mode.minor = 1 end
 	local tool_itemstring = stack:get_name()
 	local tool_def = core_registered_items[tool_itemstring]
 	-- some accidents or deliberate actions can be harmful
 	-- if user has an unknown item. So we check here to
 	-- prevent possible server crash
-	if (not tool_itemstring) or (not tool_def) then
+	if not (tool_itemstring and tool_def) then
 		local t = {
 			'Blessed', 'Somewhat known', 'Unknown if known',
 			'Pwned', 'Hued', 'Strange', 'Found'
 		}
 		return t[os.date('*t').wday] .. ' Item'
 	end
-	local param1 = tostring(node.param1 or 0)
-	local param2 = tostring(node.param2 or 0)
+
 	local node_name = node.name or r.tool_default_node
-	local data = node_name .. ' ' .. param1 .. ' ' .. param2
+	local param1 = node.param1 or 0
+	local param2 = node.param2 or 0
 	local meta = stack:get_meta()
-	meta:set_string('mode', mode.major .. '.' .. mode.minor)
-	meta:set_string('replacer', data)
+	meta:set_string('_name', node_name)
+	meta:set_int('_param1', param1)
+	meta:set_int('_param2', param2)
+	meta:set_int('_mmajor', mode.major)
+	meta:set_int('_mminor', mode.minor)
 	meta:set_string('color', r.mode_colours[mode.major][mode.minor])
 	local node_def = core_registered_items[node_name]
 	local node_description = node_name
@@ -103,8 +129,9 @@ function replacer.set_data(stack, node, mode)
 	local tool_name = tool_def.description
 	local short_description = rb.tool_short_description:format(
 		param1, param2, colour_name, node_name)
+	local title = meta:contains('_title') and meta:get_string('_title')
 	local description = rb.tool_long_description:format(
-		tool_name, short_description, node_description) -- r.titleCase(colour_name))
+		title or tool_name, short_description, node_description) -- r.titleCase(colour_name))
 
 	meta:set_string('description', description)
 	return short_description
