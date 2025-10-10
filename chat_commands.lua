@@ -30,12 +30,11 @@ replacer.chatcommand_mute = {
 		local parts = lower:split(' ')
 		local usage = rb.ccm_params .. '\n'
 			.. rb.ccm_description
-		if 2 > #parts then return false, usage end
+		local command, value, key = parts[1], parts[2], nil
 
-		local command, value, key = parts[1], parts[2]
-		if 'chat' == command then
+		if 'chat' == command and value then
 			key = 'replacer_mute'
-		elseif 'audio' == command then
+		elseif 'audio' == command and value then
 			key = 'replacer_muteS'
 		elseif 'version' == command then
 			return true, tostring(replacer.version)
