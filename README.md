@@ -67,7 +67,15 @@ When Place-button is pressed, Rotation Mode does not make much sense as mostly a
 
 # Chat Commands
 
-* /replacer (audio|chat) (1|0) toggles chat messages for advanced users. Also allows muting sounds. This command also accepts variants of "on"/"off" words in several languages.
+* /replacer (audio|chat) (1|0)
+  Toggles chat messages for advanced users. Also allows muting sounds.
+  This command also accepts variants of "on"/"off" words in several languages.
+* /replacer title <some string>
+  Sets the description of currently wielded replacer to <some string>.
+  This title persists when changing other settings of the tool.
+* /replacer help TODO: output usage help of tool and chat commands.
+* /replacer version
+  Outputs current version of replacer mod to chat.
 * /place_all [dry-run][ move_player][ no_support_node][ [<include pattern1>] ... [ <include patternN>]]
   This is only available to players with **priv** priv and only in development mode. [Read the comments in (test.lua)](test.lua)
 
