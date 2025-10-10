@@ -27,6 +27,7 @@ Time-limit reached.=Достигнут лимит времени.
 
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Включает многословие. @nchat: когда включено, сообщения отправляются в чат. @naudio: когда выключено, заменитель молчит.
 
+Wrong type of item wielded.=В руке находится не тот предмет.
 Minor modes are disabled on this server.=Второстепенные режимы отключены на этом сервере.
 <no positional information>=<нет информации о местоположении>
 days=дни

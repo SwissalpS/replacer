@@ -27,6 +27,7 @@ Time-limit reached.=
 
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=
 
+Wrong type of item wielded.=
 Minor modes are disabled on this server.=
 <no positional information>=
 days=

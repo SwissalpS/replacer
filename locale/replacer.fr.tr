@@ -27,6 +27,7 @@ Time-limit reached.=Délai atteint.
 
 Toggles verbosity.@nchat: When on, messages are posted to chat.@naudio: When off, replacer is silent.=Active/désactive la verbosité.@nchat : lorsque cette option est activée, les messages sont publiés sur le chat.@naudio : lorsqu'elle est désactivée, le remplaçant est silencieux.
 
+Wrong type of item wielded.=Mauvais type d'objet utilisé en main.
 Minor modes are disabled on this server.=Les modes mineurs sont désactivés sur ce serveur.
 <no positional information>=<aucune information de position>
 days=jours
