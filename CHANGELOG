@@ -1,3 +1,5 @@
+20251011 * SwissalpS fixes bug when using this mod without xcompat.
+         * minetest to Luanti and core rename.
 20251010 * SwissalpS rolled own charge logic for more game/mod independance.
          * Changed meta data storage format
          * Added 'title' chat subcommand (also enabled 'version' subcommand).
