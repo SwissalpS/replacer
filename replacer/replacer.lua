@@ -18,10 +18,8 @@ local core_get_item_group = core.get_item_group
 local core_registered_items = core.registered_items
 local core_registered_nodes = core.registered_nodes
 local core_swap_node = core.swap_node
-local deserialize = core.deserialize
 local get_craft_recipe = core.get_craft_recipe
 local has_creative = r.has_creative
-local serialize = core.serialize
 local us_time = core.get_us_time
 -- vector
 local vector_distance = vector.distance
