@@ -26,16 +26,28 @@ replacer.chatcommand_mute = {
 			return false, rb.ccm_player_meta_error
 		end
 
+		local simple_toggles = {
+			chat = 'replacer_mute',
+			audio = 'replacer_muteS',
+		}
 		local lower = string.lower(param)
 		local parts = lower:split(' ')
 		local usage = rb.ccm_params .. '\n'
 			.. rb.ccm_description
-		local command, value, key = parts[1], parts[2], nil
+		local command, value = parts[1], parts[2]
+		local key = simple_toggles[command]
 
-		if 'chat' == command and value then
-			key = 'replacer_mute'
-		elseif 'audio' == command and value then
-			key = 'replacer_muteS'
+		if value and key then
+			if tOff[value] then
+				value = 1
+			elseif tOn[value] then
+				value = 0
+			else
+				return false, usage
+			end
+
+			meta:set_int(key, value)
+			return true, ''
 		elseif 'version' == command then
 			return true, tostring(replacer.version)
 		elseif 'title' == command then
@@ -45,17 +57,6 @@ replacer.chatcommand_mute = {
 		else
 			return false, usage
 		end
-
-		if tOff[value] then
-			value = 1
-		elseif tOn[value] then
-			value = 0
-		else
-			return false, usage
-		end
-
-		meta:set_int(key, value)
-		return true, ''
 	end
 }
 
