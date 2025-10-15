@@ -19,12 +19,12 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
--- Version 4.95 (20251011)
+-- Version 4.96 (20251015)
 
 -- Changelog: see CHANGELOG file
 
 replacer = {}
-replacer.version = 20251011
+replacer.version = 20251015
 
 replacer.has_bakedclay = core.get_modpath('bakedclay')
 replacer.has_basic_dyes = core.get_modpath('dye')

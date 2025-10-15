@@ -1,3 +1,4 @@
+20251015 * SwissalpS fixed bugs caused by recent fixes/additions
 20251011 * SwissalpS fixes bug when using this mod without xcompat.
          * minetest to Luanti and core rename.
 20251010 * SwissalpS rolled own charge logic for more game/mod independance.
